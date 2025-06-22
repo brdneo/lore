@@ -4,7 +4,7 @@ _Um estudo sobre vida artificial e comportamento emergente em um microverso econ
 
 ![Lore N.A. Logo](assets/lore.png)
 
-Obrigado Rick and Morty
+_Obrigado Rick and Morty_
 
 ---
 
@@ -44,5 +44,3 @@ Este universo foi construído sobre uma fundação de código aberto, auto-hospe
 -   A infraestrutura base de microsserviços está 100% online e estável.
 -   O Limbo e o Cartório foram criados e populados.
 -   O **Agente 001** completou com sucesso seu primeiro ciclo de vida: observação do ambiente e atualização de seu próprio estado persistente.
-
-O palco está montado. Os primeiros artefatos estão na prateleira. O primeiro habitante despertou.
