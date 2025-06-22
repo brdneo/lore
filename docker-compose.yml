@@ -1,0 +1,68 @@
+services:
+    db:
+        image: postgres:15-alpine
+        restart: unless-stopped
+        volumes:
+            - db_data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_PASSWORD=loredevpassword2025
+
+    meta:
+        image: supabase/postgres-meta:v0.89.3
+        restart: unless-stopped
+        depends_on:
+            - db
+        environment:
+            - PG_META_DB_HOST=db
+            - PG_META_DB_PORT=5432
+            - PG_META_DB_USER=postgres
+            - PG_META_DB_PASSWORD=loredevpassword2025
+
+    rest:
+        image: postgrest/postgrest:v12.2.12
+        restart: unless-stopped
+        depends_on:
+            - db
+        environment:
+            - PGRST_DB_URI=postgresql://postgres:loredevpassword2025@db:5432/postgres
+            - PGRST_JWT_SECRET=b1e1c28690299844046aab46c1ae0fb37d7aaf2c2f0d01d1c348272b2c2cd22c
+            - PGRST_DB_SCHEMAS=public,storage
+
+    kong:
+        image: kong:2.8.1
+        restart: unless-stopped
+        ports:
+            - "8000:8000"
+        depends_on:
+            - rest
+        environment:
+            - KONG_DATABASE=off
+            - KONG_DECLARATIVE_CONFIG=/var/lib/kong/kong.yml
+            - KONG_PROXY_LISTEN=0.0.0.0:8000
+        volumes:
+            - ./kong.yml:/var/lib/kong/kong.yml
+
+    studio:
+        image: supabase/studio:latest
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD-SHELL", "true"]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+        depends_on:
+            - meta
+            - kong
+        environment:
+            - SUPABASE_URL=http://localhost:8000
+            - POSTGRES_PASSWORD=loredevpassword2025
+            - STUDIO_PG_META_URL=http://meta:8080
+            - SUPABASE_DB_HOST=db
+            - SUPABASE_DB_PORT=5432
+
+    debug-client:
+        image: nicolaka/netshoot
+        command: ["sleep", "infinity"]
+
+volumes:
+    db_data:

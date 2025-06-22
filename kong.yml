@@ -1,0 +1,33 @@
+_format_version: "2.1"
+
+consumers:
+    - username: anon
+    - username: service_role
+
+keyauth_credentials:
+    - consumer: service_role
+      key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIn0.-XR2X0zBSl8hPKCKwzPR2sekDr1WyVE1BngGGu_ct_A
+
+services:
+    # Serviço para a API
+    - name: api
+      url: http://rest:3000
+      routes:
+          - name: api-routes
+            paths:
+                - /rest/v1/
+
+    # Serviço para o Painel
+    - name: studio
+      url: http://studio:3000
+      routes:
+          - name: studio-route
+            paths:
+                - /
+
+plugins:
+    - name: key-auth
+      service: api
+      config:
+          key_names:
+              - apikey
