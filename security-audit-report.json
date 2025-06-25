@@ -1,0 +1,84 @@
+{
+  "timestamp": "2025-06-24T21:57:40.197168",
+  "passed_checks": [
+    {
+      "check": "FILE_PERMISSIONS",
+      "message": "Arquivo .env tem permiss\u00f5es seguras (600)",
+      "timestamp": "2025-06-24T21:57:40.195188"
+    },
+    {
+      "check": "FILE_PERMISSIONS",
+      "message": "Arquivo .env.secure tem permiss\u00f5es seguras (600)",
+      "timestamp": "2025-06-24T21:57:40.195290"
+    },
+    {
+      "check": "FILE_PERMISSIONS",
+      "message": "Arquivo .env.production tem permiss\u00f5es seguras (600)",
+      "timestamp": "2025-06-24T21:57:40.195404"
+    },
+    {
+      "check": "FILE_PERMISSIONS",
+      "message": "Arquivo secrets.json tem permiss\u00f5es seguras (600)",
+      "timestamp": "2025-06-24T21:57:40.195457"
+    },
+    {
+      "check": "FILE_PERMISSIONS",
+      "message": "Arquivo infra/kong.yml tem permiss\u00f5es seguras (600)",
+      "timestamp": "2025-06-24T21:57:40.195519"
+    },
+    {
+      "check": "WEAK_CREDENTIALS",
+      "message": "Nenhuma senha fraca detectada em .env",
+      "timestamp": "2025-06-24T21:57:40.196317"
+    },
+    {
+      "check": "WEAK_CREDENTIALS",
+      "message": "Nenhuma senha fraca detectada em .env.secure",
+      "timestamp": "2025-06-24T21:57:40.196554"
+    },
+    {
+      "check": "WEAK_CREDENTIALS",
+      "message": "Nenhuma senha fraca detectada em infra/kong.yml",
+      "timestamp": "2025-06-24T21:57:40.196747"
+    },
+    {
+      "check": "SECRET_EXPOSURE",
+      "message": "Todos os padr\u00f5es de secrets est\u00e3o no .gitignore",
+      "timestamp": "2025-06-24T21:57:40.196884"
+    },
+    {
+      "check": "DOCKER_SECURITY",
+      "message": "Restart policies configuradas",
+      "timestamp": "2025-06-24T21:57:40.196973"
+    },
+    {
+      "check": "DOCKER_SECURITY",
+      "message": "Healthchecks configurados",
+      "timestamp": "2025-06-24T21:57:40.196981"
+    },
+    {
+      "check": "NETWORK_SECURITY",
+      "message": "Plugin JWT configurado no Kong",
+      "timestamp": "2025-06-24T21:57:40.197081"
+    },
+    {
+      "check": "NETWORK_SECURITY",
+      "message": "Rate limiting configurado",
+      "timestamp": "2025-06-24T21:57:40.197090"
+    },
+    {
+      "check": "NETWORK_SECURITY",
+      "message": "CORS configurado",
+      "timestamp": "2025-06-24T21:57:40.197098"
+    }
+  ],
+  "issues": [],
+  "summary": {
+    "total_checks": 14,
+    "passed": 14,
+    "high_issues": 0,
+    "medium_issues": 0,
+    "low_issues": 0,
+    "security_score": 100
+  }
+}

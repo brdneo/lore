@@ -1,0 +1,8 @@
+# requirements-dev.txt
+# Dependências para ferramentas de desenvolvimento e scripts locais.
+
+# Biblioteca para ler variáveis de ambiente de arquivos .env
+python-dotenv==0.21.1
+
+# Biblioteca padrão da indústria para codificar e decodificar JWTs.
+PyJWT==2.8.0

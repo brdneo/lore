@@ -1,0 +1,18 @@
+# requirements.txt
+# Dependências para o serviço do Agente Neural
+
+# Biblioteca para fazer requisições HTTP para a API do Lore N.A.
+requests==2.32.3
+
+# Biblioteca para geração e validação de JWT
+PyJWT==2.8.0
+
+# Dependências para análise de sentimento (MVM)
+asyncio  # Built-in, mas listado para clareza
+dataclasses  # Built-in no Python 3.7+
+
+# LeIA - Análise de Sentimento em Português (usado no Twitter/Instagram)
+leia==0.1.0
+
+# NLTK - Natural Language Toolkit com VADER Sentiment Analyzer
+nltk>=3.8

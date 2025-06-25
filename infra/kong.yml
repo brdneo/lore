@@ -1,0 +1,73 @@
+_format_version: "2.1"
+
+consumers:
+    # Agente Gênesis - Pioneiro/Comprador
+    - username: agent_genesis
+      jwt_secrets:
+          - key: agent_genesis
+            secret: hUvixfQ73iEyZaECo8o3EwnrU
+            algorithm: HS256
+
+    # Agente Trader - Comerciante/Especulador
+    - username: agent_trader
+      jwt_secrets:
+          - key: agent_trader
+            secret: ${KONG_JWT_SECRET_TRADER}
+            algorithm: HS256
+
+    # Agente Collector - Colecionador/Conservador
+    - username: agent_collector
+      jwt_secrets:
+          - key: agent_collector
+            secret: ${KONG_JWT_SECRET_COLLECTOR}
+            algorithm: HS256
+
+services:
+    - name: postgrest
+      url: http://rest:3000
+      routes:
+          - name: rest_v1
+            paths:
+                - /rest/v1
+            strip_path: true
+      plugins:
+          # Autenticação JWT obrigatória
+          - name: jwt
+            config:
+                claims_to_verify: [exp]
+                key_claim_name: iss
+                secret_is_base64: false
+                header_names: [authorization]
+                run_on_preflight: false
+
+          # Rate limiting por consumer
+          - name: rate-limiting
+            config:
+                minute: 60
+                hour: 1000
+                policy: local
+                fault_tolerant: true
+                hide_client_headers: false
+
+          # Logging de segurança
+          - name: file-log
+            config:
+                path: /tmp/kong-access.log
+
+          # Remover header de autorização antes de encaminhar
+          - name: request-transformer
+            config:
+                remove:
+                    headers: [authorization]
+                add:
+                    headers: ["X-Forwarded-By:Kong-Gateway"]
+
+          # CORS para aplicações web futuras
+          - name: cors
+            config:
+                origins: ["https://app.lore.local", "https://admin.lore.local"]
+                methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+                headers: ["Accept", "Content-Type", "Authorization"]
+                exposed_headers: ["X-Request-ID"]
+                credentials: true
+                max_age: 3600

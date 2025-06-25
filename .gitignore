@@ -1,0 +1,81 @@
+# Lore N.A. - Arquivos a serem ignorados pelo Git
+
+# === SECRETS E CONFIGURAÇÕES SENSÍVEIS ===
+.env
+.env.secure
+.env.production
+secrets.json
+*.key
+*.pem
+*.crt
+*.p12
+
+# === DADOS E VOLUMES ===
+supabase/volumes/
+data/
+logs/
+backups/
+
+# === TEMPORÁRIOS ===
+*.tmp
+*.log
+*.pid
+.cache/
+
+# === PYTHON ===
+.venv
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# === DOCKER ===
+.dockerignore
+
+# === IDEs ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# === OS ===
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+# Arquivos de segurança
+docker-limits.yml
+firewall-rules.sh
+ufw-backup-*.txt
+logrotate.conf
+backups/
+logs/
+*.backup
+*.gpg
+
+# Scripts de configuração sensível
+security-hardening.sh
+docker-cleanup.sh
+backup-secrets.sh
+monitor.sh
+
