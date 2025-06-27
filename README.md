@@ -14,6 +14,41 @@ _Um estudo sobre vida artificial e comportamento emergente em um microverso econ
 
 ---
 
+## 🚀 Instalação Rápida (2 minutos)
+
+### **Opção 1: Auto-Setup (Recomendado)**
+```bash
+# Clonar repositório
+git clone https://github.com/your-username/lore.git
+cd lore
+
+# Executar setup automático
+bash setup.sh
+
+# OU navegar diretamente e executar o launcher
+cd services/agent_runner
+python3 advanced_launcher.py
+```
+
+### **Opção 2: Manual**
+```bash
+# Clonar e instalar dependências
+git clone https://github.com/your-username/lore.git
+cd lore/services/agent_runner
+pip install -r requirements.txt
+
+# Executar sistema
+python3 advanced_launcher.py
+```
+
+### **✅ Pronto! Acesse:**
+- **Dashboard:** http://localhost:8501
+- **API:** http://localhost:8000/docs
+
+**📋 Requisitos:** Python 3.8+ e pip
+
+---
+
 ## 🌟 O Conceito
 
 **O que acontece quando você cria um ecossistema digital completo e o popula com agentes de IA programados não apenas para interagir, mas para desejar, comprar e sentir?**

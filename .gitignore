@@ -121,6 +121,9 @@ token_generator.py
 wait-for-postgrest.sh
 check-system.sh
 
+# === SETUP E INSTALAÇÃO ===
+.lore_setup_complete
+
 # === SCRIPTS DE MANUTENÇÃO ===
-install.sh
+# install.sh - comentado para manter no repo público
 

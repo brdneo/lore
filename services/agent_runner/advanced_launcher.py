@@ -4,6 +4,7 @@ Advanced Launcher - Lore N.A.
 =============================
 
 Launcher para módulos avançados do sistema Lore N.A.
+- Instalação automática de dependências
 - API Server (FastAPI)
 - Dashboard (Streamlit)
 - Sistema de Economia Emocional
@@ -19,10 +20,161 @@ import signal
 import webbrowser
 from time import sleep
 import threading
+import importlib
 
 def clear_screen():
     """Limpa a tela do terminal"""
     os.system('clear' if os.name == 'posix' else 'cls')
+
+def check_and_install_dependencies():
+    """Verifica e instala dependências automaticamente"""
+    print("🔍 Verificando dependências...")
+    
+    # Lista de dependências críticas para verificar
+    critical_deps = {
+        'fastapi': 'FastAPI',
+        'uvicorn': 'Uvicorn',
+        'streamlit': 'Streamlit',
+        'plotly': 'Plotly',
+        'pandas': 'Pandas',
+        'numpy': 'NumPy',
+        'requests': 'Requests'
+    }
+    
+    missing_deps = []
+    
+    for module, name in critical_deps.items():
+        try:
+            importlib.import_module(module)
+            print(f"   ✅ {name}")
+        except ImportError:
+            print(f"   ❌ {name} - FALTANDO")
+            missing_deps.append(module)
+    
+    if missing_deps:
+        print(f"\n📦 Instalando {len(missing_deps)} dependências faltantes...")
+        
+        # Atualizar pip primeiro
+        print("🔄 Atualizando pip...")
+        try:
+            subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "pip"], 
+                         check=True, capture_output=True)
+            print("   ✅ pip atualizado")
+        except subprocess.CalledProcessError:
+            print("   ⚠️  Falha ao atualizar pip (continuando...)")
+        
+        # Instalar requirements.txt completo
+        print("📥 Instalando todas as dependências do requirements.txt...")
+        try:
+            result = subprocess.run([
+                sys.executable, "-m", "pip", "install", 
+                "-r", "requirements.txt"
+            ], check=True, capture_output=True, text=True)
+            
+            print("   ✅ Todas as dependências instaladas com sucesso!")
+            
+            # Verificar novamente
+            print("\n🔍 Verificando instalação...")
+            all_installed = True
+            for module, name in critical_deps.items():
+                try:
+                    importlib.import_module(module)
+                    print(f"   ✅ {name} - OK")
+                except ImportError:
+                    print(f"   ❌ {name} - AINDA FALTANDO")
+                    all_installed = False
+            
+            if all_installed:
+                print("\n🎉 SISTEMA PRONTO PARA USO!")
+            else:
+                print("\n⚠️  Algumas dependências ainda estão faltando.")
+                print("💡 Tente instalar manualmente: pip install -r requirements.txt")
+                
+        except subprocess.CalledProcessError as e:
+            print(f"   ❌ Erro na instalação: {e}")
+            print("💡 Tente instalar manualmente: pip install -r requirements.txt")
+            return False
+    else:
+        print("\n✅ Todas as dependências estão instaladas!")
+    
+    return True
+
+def check_system_requirements():
+    """Verifica requisitos do sistema"""
+    print("\n🖥️  Verificando requisitos do sistema...")
+    
+    # Verificar Python
+    python_version = sys.version_info
+    if python_version >= (3, 8):
+        print(f"   ✅ Python {python_version.major}.{python_version.minor}.{python_version.micro}")
+    else:
+        print(f"   ❌ Python {python_version.major}.{python_version.minor} - REQUER 3.8+")
+        return False
+    
+    # Verificar pip
+    try:
+        import pip
+        print(f"   ✅ pip disponível")
+    except ImportError:
+        print(f"   ❌ pip não encontrado")
+        return False
+    
+    return True
+
+def first_time_setup():
+    """Setup inicial para novos usuários"""
+    clear_screen()
+    print("🌟" + "=" * 58 + "🌟")
+    print("🚀" + " " * 12 + "BEM-VINDO AO LORE N.A. GENESIS!" + " " * 12 + "🚀")
+    print("🌟" + "=" * 58 + "🌟")
+    print()
+    print("🎯 SISTEMA DE VIDA ARTIFICIAL NEURAL")
+    print("🧬 Agentes autônomos com DNA digital e evolução genética")
+    print("🌐 Interface web e API para observação e análise")
+    print()
+    print("📋 SETUP INICIAL:")
+    print()
+    
+    # Verificar sistema
+    if not check_system_requirements():
+        print("\n❌ Requisitos do sistema não atendidos!")
+        input("Pressione ENTER para sair...")
+        return False
+    
+    # Verificar e instalar dependências
+    if not check_and_install_dependencies():
+        print("\n❌ Falha na instalação de dependências!")
+        print("💡 Tente instalar manualmente antes de continuar.")
+        input("Pressione ENTER para continuar mesmo assim...")
+    
+    print("\n🎉 SETUP CONCLUÍDO!")
+    print("🚀 O sistema está pronto para uso!")
+    input("\nPressione ENTER para continuar...")
+    return True
+
+def check_if_first_run():
+    """Verifica se é a primeira execução"""
+    setup_file = ".lore_setup_complete"
+    
+    if not os.path.exists(setup_file):
+        # Primeira execução
+        if first_time_setup():
+            # Marcar setup como completo
+            with open(setup_file, 'w') as f:
+                f.write("Setup completed successfully\n")
+            return True
+        else:
+            return False
+    else:
+        # Verificação rápida de dependências críticas
+        try:
+            import fastapi, streamlit, plotly
+            return True
+        except ImportError:
+            print("⚠️  Algumas dependências parecem estar faltando...")
+            if input("🔧 Executar verificação de dependências? (y/N): ").lower() == 'y':
+                check_and_install_dependencies()
+            return True
 
 def run_api_server():
     """Executa o servidor API FastAPI"""
@@ -274,6 +426,12 @@ def show_documentation():
 
 def main():
     """Função principal do launcher"""
+    
+    # Verificar se é primeira execução e fazer setup
+    if not check_if_first_run():
+        print("❌ Setup inicial falhou. Encerrando...")
+        return
+    
     while True:
         show_menu()
         
@@ -303,19 +461,28 @@ def main():
             elif choice == "5":
                 clear_screen()
                 print("🧪 Executando teste rápido...")
-                subprocess.run([sys.executable, "quick_test.py"])
+                try:
+                    subprocess.run([sys.executable, "quick_test.py"])
+                except FileNotFoundError:
+                    print("⚠️  Arquivo quick_test.py não encontrado (arquivo de desenvolvimento)")
                 input("\nPressione ENTER para continuar...")
                 
             elif choice == "6":
                 clear_screen()
                 print("📊 Verificando status do sistema...")
-                subprocess.run([sys.executable, "system_status.py"])
+                try:
+                    subprocess.run([sys.executable, "system_status.py"])
+                except FileNotFoundError:
+                    print("⚠️  Arquivo system_status.py não encontrado (arquivo de desenvolvimento)")
                 input("\nPressione ENTER para continuar...")
                 
             elif choice == "7":
                 clear_screen()
                 print("🔗 Abrindo menu Neural Web...")
-                subprocess.run(["./neural_web_runner.sh"])
+                try:
+                    subprocess.run(["./neural_web_runner.sh"])
+                except FileNotFoundError:
+                    print("⚠️  Script neural_web_runner.sh não encontrado (arquivo de desenvolvimento)")
                 input("\nPressione ENTER para continuar...")
                 
             elif choice == "8":
