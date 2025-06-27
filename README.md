@@ -1,10 +1,10 @@
-# Lore N.A. 🧠🤖
+# Lore N.A.
 
 _Um estudo sobre vida artificial e comportamento emergente em um microverso econômico autossuficiente_
 
 ![Lore N.A. Logo](assets/lore.png)
 
-> _"Wubba Lubba Dub-Dub!"_ - Obrigado Rick and Morty pela inspiração
+> Obrigado Rick and Morty pela inspiração
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://docker.com)
@@ -100,405 +100,83 @@ graph TB
 }
 ```
 
-## 📊 Status Atual do Projeto
+## 🧬 Genesis Protocol: DNA Digital e Evolução
 
-### ✅ Fase 1: Gênesis - **CONCLUÍDA**
+**REVOLUÇÃO**: O Lore N.A. agora implementa **evolução darwiniana real** com DNA digital! Cada agente possui genes únicos que influenciam seu comportamento nos 5 universos.
 
--   [x] **Infraestrutura**: Microsserviços 100% online e estáveis
--   [x] **Database**: PostgreSQL com schemas completos (Limbo + Cartório)
--   [x] **API Gateway**: Kong configurado com autenticação JWT
--   [x] **API REST**: PostgREST gerando endpoints automáticos
--   [x] **Agente 001**: Primeiro ciclo de vida completo executado
-
-### ✅ Fase 2: Evolução Neural - **CONCLUÍDA**
-
--   [x] **Migração de IA**: LeIA removido, sistema híbrido implementado
--   [x] **VADER**: Análise rápida para textos informais (25% peso)
--   [x] **TextBlob**: Polaridade e subjetividade (20% peso)
--   [x] **Transformers**: Modelo BERT multilingual (35% peso)
--   [x] **Análise Contextual**: Qualidade, preço, expectativas (20% peso)
--   [x] **Testes**: Validação em múltiplos cenários de uso
--   [x] **Documentação**: Guias completos de migração e uso
-
-### 🚧 Fase 3: Expansão - **EM PROGRESSO**
-
--   [ ] **População**: Criação de múltiplos agentes com personalidades únicas
--   [ ] **Interação Social**: Agentes influenciando uns aos outros
--   [ ] **Economia Dinâmica**: Preços flutuando baseado em demanda
--   [ ] **Métricas**: Dashboard de observação em tempo real
--   [ ] **Machine Learning**: Agentes aprendendo uns com os outros
-
-## 🚀 Instalação Rápida
-
-### Opção 1: Script Automático (Recomendado)
-
-```bash
-# Clone o repositório
-git clone https://github.com/seu-usuario/lore.git
-cd lore
-
-# Execute o script de instalação automática
-chmod +x install.sh
-./install.sh
-```
-
-O script automático vai:
-
--   ✅ Verificar dependências (Docker, Docker Compose)
--   ✅ Criar arquivo `.env` a partir do template
--   ✅ Gerar secrets de segurança automaticamente
--   ✅ Construir e iniciar todos os containers
--   ✅ Configurar Kong e PostgREST
--   ✅ Configurar ambiente Python dos agentes
--   ✅ Testar conectividade de todos os serviços
--   ✅ Instalar dependências de IA (VADER, TextBlob, Transformers)
-
-### Opção 2: Instalação Manual Detalhada
-
-## 🚀 Instalação e Configuração
-
-### Pré-requisitos
-
--   **Docker** 20.10+ e **Docker Compose** v2
--   **Git** para clonagem do repositório
--   **8GB RAM** mínimo (recomendado 16GB para Transformers)
--   **Linux/macOS** (Windows via WSL2)
-
-### 1️⃣ Clone do Repositório
-
-```bash
-git clone https://github.com/seu-usuario/lore.git
-cd lore
-```
-
-### 2️⃣ Configuração de Ambiente
-
-```bash
-# Copie o arquivo de exemplo
-cp .env.example .env
-
-# Configure as variáveis de ambiente
-nano .env
-```
-
-**Variáveis essenciais no `.env`:**
-
-```env
-# Database
-POSTGRES_DB=lore_na
-POSTGRES_USER=lore_admin
-POSTGRES_PASSWORD=sua_senha_super_segura
-
-# Kong
-KONG_DATABASE=postgres
-KONG_PG_HOST=postgres
-KONG_PG_DATABASE=kong
-
-# JWT
-JWT_SECRET=seu_jwt_secret_muito_longo_e_seguro
-```
-
-### 3️⃣ Inicialização dos Serviços
-
-```bash
-# Construir e iniciar todos os containers
-docker-compose up -d
-
-# Verificar se todos os serviços estão rodando
-docker-compose ps
-
-# Logs dos serviços (opcional)
-docker-compose logs -f
-```
-
-### 4️⃣ Configuração do Database
-
-```bash
-# Aplicar schemas iniciais
-docker-compose exec postgres psql -U $POSTGRES_USER -d $POSTGRES_DB -f /docker-entrypoint-initdb.d/00-initial-schema.sql
-
-# Aplicar schema do MVM (agentes)
-docker-compose exec postgres psql -U $POSTGRES_USER -d $POSTGRES_DB -f /docker-entrypoint-initdb.d/01-mvm-schema.sql
-```
-
-### 5️⃣ Configuração do Kong (API Gateway)
-
-```bash
-# Aplicar configuração do Kong
-curl -X POST http://localhost:8001/config \
-  -F config=@infra/kong.yml
-
-# Verificar serviços configurados
-curl http://localhost:8001/services
-```
-
-### 6️⃣ Teste de Conectividade
-
-```bash
-# Testar API PostgREST
-curl http://localhost:8000/
-
-# Testar através do Kong
-curl http://localhost:8080/api/
-
-# Verificar agentes (se houver)
-curl http://localhost:8080/api/agents
-```
-
-## 🧪 Executando os Agentes
-
-### Configuração do Ambiente Python
-
-```bash
-# Entrar no diretório dos agentes
-cd services/agent_runner
-
-# Criar ambiente virtual
-python3 -m venv .venv
-source .venv/bin/activate  # Linux/macOS
-# .venv\Scripts\activate   # Windows
-
-# Instalar dependências
-pip install -r requirements.txt
-```
-
-### Teste do Sistema de Sentimento
-
-```bash
-# Testar bibliotecas de IA
-python test_sentiment_libs.py
-
-# Testar serviço completo
-python test_sentiment_service.py
-```
-
-### Executar um Agente
-
-```bash
-# Executar agente básico
-python main.py --agent-id agent_001
-
-# Executar com configurações específicas
-python frugal_agent.py --wallet 100 --personality conservative
-```
-
-## 📈 Monitoramento e Observação
-
-### Logs dos Serviços
-
-```bash
-# Logs em tempo real
-docker-compose logs -f
-
-# Logs específicos
-docker-compose logs postgres
-docker-compose logs kong
-docker-compose logs agent_runner
-```
-
-### Database Inspection
-
-```bash
-# Conectar ao PostgreSQL
-docker-compose exec postgres psql -U $POSTGRES_USER -d $POSTGRES_DB
-
-# Comandos SQL úteis
-\dt                    # Listar tabelas
-SELECT * FROM agents;  # Ver agentes
-SELECT * FROM transactions; # Ver transações
-```
-
-### APIs de Monitoramento
-
-```bash
-# Status dos agentes
-curl http://localhost:8080/api/agents
-
-# Transações recentes
-curl http://localhost:8080/api/transactions?order=created_at.desc&limit=10
-
-# Produtos no limbo
-curl http://localhost:8080/api/limbo
-```
-
-## 🔧 Desenvolvimento e Contribuição
-
-### Estrutura do Projeto
-
-```
-lore/
-├── 📁 assets/                 # Recursos visuais
-├── 📁 infra/                  # Configurações de infraestrutura
-│   └── kong.yml              # Config do API Gateway
-├── 📁 logs/                   # Logs dos serviços
-├── 📁 scripts/                # Scripts de utilidade
-│   ├── generate-secrets.py   # Geração de segredos
-│   └── security-audit.py     # Auditoria de segurança
-├── 📁 services/               # Microsserviços
-│   └── agent_runner/         # Serviço dos agentes neurais
-│       ├── main.py           # Agente principal
-│       ├── frugal_agent.py   # Agente econômico
-│       ├── sentiment_service.py # IA de sentimento
-│       └── requirements.txt  # Dependências Python
-├── 📁 supabase/              # Database e volumes
-│   └── volumes/
-│       ├── db/init/          # Scripts de inicialização
-│       └── api/              # Configurações PostgREST
-├── docker-compose.yml        # Orquestração dos containers
-├── secrets.json             # Configurações sensíveis
-└── README.md                # Esta documentação
-```
-
-### Adicionando Novos Agentes
-
-1. **Criar novo arquivo** em `services/agent_runner/`
-2. **Herdar de `BaseAgent`** para funcionalidades básicas
-3. **Implementar lógica** específica de decisão
-4. **Testar** com diferentes cenários
+### DNA Digital por Universo
 
 ```python
-from base_agent import BaseAgent
-
-class MeuNovoAgente(BaseAgent):
-    def __init__(self, agent_id: str):
-        super().__init__(agent_id)
-        self.personalidade = "aventureiro"
-
-    async def make_decision(self, products):
-        # Sua lógica de decisão aqui
-        return produto_escolhido
+# Estrutura do DNA de um agente
+AgentDNA = {
+    "limbo_genes": {
+        "risk_tolerance": 0.8,      # Tolerância a risco no mercado
+        "price_sensitivity": 0.3,   # Sensibilidade a preços
+        "quality_preference": 0.9,  # Preferência por qualidade
+        "novelty_seeking": 0.6,     # Busca por novidades
+        "brand_loyalty": 0.4        # Lealdade a marcas
+    },
+    "odyssey_genes": {
+        "creativity_drive": 0.9,    # Impulso criativo
+        "experimentation": 0.7,     # Tendência experimental
+        "aesthetic_bias": "minimalist" # Bias estético
+    },
+    "ritual_genes": {
+        "community_bonding": 0.8,   # Ligação comunitária
+        "influence_susceptibility": 0.4, # Suscetibilidade a influência
+        "leadership_tendency": 0.6   # Tendência de liderança
+    },
+    "engine_genes": {
+        "analytical_thinking": 0.7,  # Pensamento analítico
+        "pattern_recognition": 0.8,  # Reconhecimento de padrões
+        "strategic_planning": 0.5    # Planejamento estratégico
+    },
+    "logs_genes": {
+        "patience_level": 0.6,      # Nível de paciência
+        "service_expectations": 0.9, # Expectativas de serviço
+        "complaint_tendency": 0.2    # Tendência a reclamar
+    }
+}
 ```
 
-### Contribuindo
+### Evolução Darwiniana
 
-1. **Fork** este repositório
-2. **Crie uma branch** para sua feature (`git checkout -b feature/nova-feature`)
-3. **Commit** suas mudanças (`git commit -m 'Adiciona nova feature'`)
-4. **Push** para a branch (`git push origin feature/nova-feature`)
-5. **Abra um Pull Request**
+**Seleção Natural**: Agentes com melhor performance nos 5 universos têm maior chance de reproduzir.
 
-## 🛡️ Segurança
+**Reprodução Sexual**: Dois agentes bem-sucedidos podem gerar descendentes com características combinadas.
 
-### Boas Práticas Implementadas
+**Mutação**: Mudanças aleatórias introduzem diversidade genética na população.
 
--   ✅ **Autenticação JWT** em todas as APIs
--   ✅ **Secrets** gerenciados externamente
--   ✅ **Database** com credenciais seguras
--   ✅ **Kong** como proxy reverso
--   ✅ **Containers** isolados
--   ✅ **Logs** estruturados para auditoria
+**Fitness Multi-Dimensional**: Cada agente é avaliado em:
 
-### Configurações de Segurança
+-   🏪 **Limbo**: Lucro, timing de mercado, decisões acertadas
+-   🎨 **Odyssey**: Criatividade, popularidade das criações, inovação
+-   👥 **Ritual**: Engajamento social, influência, satisfação comunitária
+-   🧠 **Engine**: Precisão analítica, qualidade das previsões, contribuições de IA
+-   📦 **Logs**: Satisfação operacional, eficiência, resolução de problemas
 
-```bash
-# Gerar novos secrets
-python scripts/generate-secrets.py
+### Personalidades Emergentes
 
-# Executar auditoria de segurança
-python scripts/security-audit.py
+O sistema gera automaticamente personalidades únicas baseadas nos genes dominantes:
 
-# Backup dos secrets
-cp secrets.json secrets.backup.json
-```
+-   **Especulador Corajoso**: Alto risk_tolerance + quality_preference
+-   **Caçador de Barganha**: Alto price_sensitivity + analytical_thinking
+-   **Artista Inovador**: Alto creativity_drive + experimentation
+-   **Líder Comunitário**: Alto community_bonding + leadership_tendency
+-   **Seguidor Leal**: Alto influence_susceptibility + loyalty_factor
 
-## 🐛 Troubleshooting
-
-### Problemas Comuns
-
-**🔴 Container não inicia**
+### Testando o Genesis Protocol
 
 ```bash
-# Verificar logs
-docker-compose logs nome_do_servico
-
-# Reconstruir container
-docker-compose build --no-cache nome_do_servico
-```
-
-**🔴 Erro de conexão com database**
-
-```bash
-# Verificar se PostgreSQL está rodando
-docker-compose ps postgres
-
-# Testar conexão manual
-docker-compose exec postgres psql -U $POSTGRES_USER -d $POSTGRES_DB
-```
-
-**🔴 Kong não responde**
-
-```bash
-# Verificar status
-curl http://localhost:8001/status
-
-# Recriar configuração
-curl -X POST http://localhost:8001/config -F config=@infra/kong.yml
-```
-
-**🔴 Agente falha na análise de sentimento**
-
-```bash
-# Verificar dependências
+# Teste rápido do sistema de DNA
 cd services/agent_runner
-pip list | grep -E "(vader|textblob|transformers)"
+python test_genesis_protocol.py demo
 
-# Teste isolado
-python test_sentiment_libs.py
+# Teste completo com simulação evolutiva
+python test_genesis_protocol.py
+
+# Teste individual dos componentes
+python agent_dna.py              # Sistema de DNA
+python evolved_agent.py          # Agente evoluído
+python population_manager.py     # Gerenciador populacional
 ```
-
-### Performance
-
-**Para otimizar performance:**
-
--   **Aumente a RAM** disponível para Docker
--   **Use SSD** para volumes persistentes
--   **Configure** `DOCKER_BUILDKIT=1` para builds mais rápidos
--   **Monitore** uso de recursos com `docker stats`
-
-## 📚 Documentação Adicional
-
--   📄 [Migração do Sistema de Sentimento](MIGRACAO-SENTIMENTO.md)
--   🔒 [Relatório de Segurança](SECURITY-REPORT-FINAL.md)
--   🛠️ [Logs de Desenvolvimento](logs/)
-
-## 🤝 Comunidade e Suporte
-
-### Como Obter Ajuda
-
-1. **Issues**: Para bugs e sugestões
-2. **Discussions**: Para dúvidas e ideias
-3. **Wiki**: Para documentação detalhada
-4. **Discord**: Para chat em tempo real (em breve)
-
-### Roadmap
-
--   🎯 **Q3 2025**: População de 100+ agentes únicos
--   🎯 **Q4 2025**: Sistema de influência social entre agentes
--   🎯 **Q1 2026**: Dashboard web para observação em tempo real
--   🎯 **Q2 2026**: Machine Learning para evolução comportamental
-
-## 📜 Licença
-
-Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
-## 🙏 Agradecimentos
-
--   **Rick and Morty** pela inspiração sobre universos artificiais
--   **Comunidade Open Source** pelas ferramentas incríveis
--   **Docker** por tornar deployment simples
--   **Hugging Face** pelos modelos de IA acessíveis
--   **Todos os contribuidores** que tornaram este projeto possível
-
----
-
-## 🌟 Star este projeto!
-
-Se você achou o Lore N.A. interessante, considere dar uma ⭐ para apoiar o desenvolvimento!
-
-**Vamos observar juntos o que emerge quando código ganha vida! 🧠✨**
-
----
-
-_Feito com ❤️ por desenvolvedores curiosos sobre vida artificial_
-
-_Última atualização: 25 de junho de 2025_

@@ -63,19 +63,64 @@ wheels/
 .Trashes
 ehthumbs.db
 Thumbs.db
-# Arquivos de segurança
+
+# === ARQUIVOS DE SEGURANÇA ===
 docker-limits.yml
 firewall-rules.sh
 ufw-backup-*.txt
 logrotate.conf
-backups/
-logs/
-*.backup
-*.gpg
-
-# Scripts de configuração sensível
 security-hardening.sh
 docker-cleanup.sh
 backup-secrets.sh
 monitor.sh
+security-audit-report.json
+security-audit.py
+*.backup
+*.gpg
+
+# === ARQUIVOS DE TESTE E DESENVOLVIMENTO ===
+# Scripts de teste do sistema
+services/agent_runner/test_*.py
+services/agent_runner/quick_test.py
+services/agent_runner/system_status.py
+services/agent_runner/simple_demo.py
+services/agent_runner/simple_persistence_demo.py
+services/agent_runner/persistent_integration_demo.py
+services/agent_runner/demo_dashboard_data.py
+
+# Scripts de análise técnica
+services/agent_runner/technical_answers.py
+services/agent_runner/master_system.py
+services/agent_runner/final_answers.py
+
+# Scripts de execução de testes
+services/agent_runner/genesis_test_runner.sh
+services/agent_runner/neural_web_runner.sh
+
+# Bancos de dados de teste
+services/agent_runner/*.db
+services/agent_runner/test.db
+services/agent_runner/demo_persistence.db
+services/agent_runner/lore_persistent_universe.db
+
+# === DOCUMENTAÇÃO TÉCNICA INTERNA ===
+# Relatórios de desenvolvimento (manter apenas para desenvolvimento interno)
+SESSAO-COMPLETA-REPORT.md
+RESPOSTAS-TECNICAS-COMPLETAS.md
+MIGRACAO-SENTIMENTO.md
+SECURITY-REPORT-FINAL.md
+
+# Análises e notas de desenvolvimento
+pensamentos.txt
+*.md.backup
+
+# === ARQUIVOS DE CONFIGURAÇÃO TEMPORÁRIOS ===
+setup-kong-auth.sh
+test-jwt.sh
+token_generator.py
+wait-for-postgrest.sh
+check-system.sh
+
+# === SCRIPTS DE MANUTENÇÃO ===
+install.sh
 
