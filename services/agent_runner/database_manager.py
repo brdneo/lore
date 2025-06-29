@@ -28,6 +28,7 @@ if USE_POSTGRESQL:
     try:
         import psycopg2
         import psycopg2.extras
+        from psycopg2 import pool
         HAS_POSTGRESQL = True
     except ImportError:
         logger.warning("psycopg2 não disponível, usando SQLite")
@@ -45,6 +46,40 @@ class LoREDatabase:
         self.is_postgresql = USE_POSTGRESQL and HAS_POSTGRESQL
         self.DATABASE_URL = DATABASE_URL
         self._init_database()
+    
+    def _get_connection(self):
+        """Obtém uma conexão válida, reconectando se necessário"""
+        if self.is_postgresql:
+            try:
+                # Testa se a conexão está ativa
+                if self.connection and not self.connection.closed:
+                    cursor = self.connection.cursor()
+                    cursor.execute("SELECT 1")
+                    cursor.close()
+                    return self.connection
+            except (Exception, psycopg2.Error):
+                pass
+            
+            # Reconecta se necessário
+            try:
+                if self.connection:
+                    self.connection.close()
+                self.connection = psycopg2.connect(
+                    self.DATABASE_URL,
+                    cursor_factory=psycopg2.extras.RealDictCursor
+                )
+                self.connection.autocommit = True
+                logger.info("PostgreSQL reconectado")
+                return self.connection
+            except Exception as e:
+                logger.error(f"Erro ao reconectar PostgreSQL: {e}")
+                raise
+        else:
+            # SQLite
+            if not self.connection:
+                self.connection = sqlite3.connect(self.db_path, check_same_thread=False)
+                self.connection.row_factory = sqlite3.Row
+            return self.connection
     
     def _init_database(self):
         """Inicializa o banco de dados com todas as tabelas"""
@@ -81,20 +116,23 @@ class LoREDatabase:
     
     def _execute_sql(self, sql, params=None):
         """Executa SQL de forma compatível com ambos os databases"""
-        cursor = self.connection.cursor()
         try:
+            connection = self._get_connection()
+            cursor = connection.cursor()
+            
             if params:
                 cursor.execute(sql, params)
             else:
                 cursor.execute(sql)
             
             if not self.is_postgresql:
-                self.connection.commit()
+                connection.commit()
             
             return cursor
         except Exception as e:
             logger.error(f"Erro SQL: {e}")
-            if not self.is_postgresql:
+            print(f"Erro SQL: {e}")
+            if not self.is_postgresql and self.connection:
                 self.connection.rollback()
             raise
     
@@ -246,6 +284,7 @@ class LoREDatabase:
             
         except Exception as e:
             logger.error(f"Erro ao salvar agente: {e}")
+            print(f"Erro ao salvar agente: {e}")
             return False
     
     def get_agent(self, agent_id):
@@ -292,6 +331,7 @@ class LoREDatabase:
             
         except Exception as e:
             logger.error(f"Erro ao buscar agentes: {e}")
+            print(f"Erro ao buscar agentes: {e}")
             return []
     
     def save_connection(self, agent_a_id, agent_b_id, connection_type="neural", strength=0.5, metadata=None):
@@ -458,6 +498,7 @@ class LoREDatabase:
             
         except Exception as e:
             logger.error(f"Erro ao calcular estatísticas: {e}")
+            print(f"Erro ao calcular estatísticas: {e}")
             return {}
     
     def close(self):
