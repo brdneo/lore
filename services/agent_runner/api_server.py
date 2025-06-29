@@ -12,6 +12,7 @@ Data: 31 de Dezembro de 2024
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from typing import List, Dict, Optional
 import uvicorn
@@ -116,12 +117,44 @@ def save_agents(agents):
 @app.get("/")
 async def root():
     """Endpoint raiz com informações do sistema"""
+    # Estatísticas básicas
+    stats = {}
+    agent_count = 0
+    
+    if db:
+        try:
+            db_stats = db.get_stats()
+            agent_count = db_stats.get('total_agents', 0)
+            stats = {
+                "agents": db_stats.get('total_agents', 0),
+                "generation": db_stats.get('current_generation', 0),
+                "connections": db_stats.get('total_connections', 0),
+                "evolutions": db_stats.get('total_evolutions', 0)
+            }
+        except:
+            stats = {"error": "Unable to fetch stats"}
+    
     return {
-        "message": cloud_config["app"]["title"],
+        "message": "🧠 Lore N.A. - Neural Agents Universe",
+        "description": "Sistema de agentes neurais autônomos em execução 24/7",
         "status": "operational",
         "version": cloud_config["app"]["version"],
         "environment": "production" if is_production else "development",
-        "docs": "/docs" if not is_production else "disabled_in_production"
+        "stats": stats,
+        "endpoints": {
+            "dashboard": "/dashboard - Interface visual do sistema",
+            "health": "/health - Status detalhado do sistema",
+            "agents": "/agents - Lista todos os agentes",
+            "create_agent": "POST /agents - Criar novo agente",
+            "agent_detail": "/agents/{id} - Detalhes de um agente",
+            "population": "/population/stats - Estatísticas da população"
+        },
+        "database": {
+            "type": "PostgreSQL (Neon)" if db and db.is_postgresql else "SQLite (Local)",
+            "status": "connected" if db else "disconnected"
+        },
+        "docs": "/docs" if not is_production else "https://github.com/brdneo/lore",
+        "repository": "https://github.com/brdneo/lore"
     }
 
 @app.get("/agents", response_model=List[AgentResponse])
@@ -255,6 +288,214 @@ async def health_check():
             "error": str(e),
             "timestamp": datetime.now()
         }
+
+@app.get("/dashboard", response_class=HTMLResponse)
+async def dashboard():
+    """Dashboard HTML simples para visualização no navegador"""
+    # Buscar estatísticas
+    stats = {}
+    agents = []
+    
+    if db:
+        try:
+            db_stats = db.get_stats()
+            stats = {
+                "agents": db_stats.get('total_agents', 0),
+                "generation": db_stats.get('current_generation', 0),
+                "connections": db_stats.get('total_connections', 0),
+                "evolutions": db_stats.get('total_evolutions', 0)
+            }
+            
+            # Buscar alguns agentes para mostrar
+            all_agents = load_agents()
+            agents = list(all_agents.values())[:5]  # Primeiros 5 agentes
+            
+        except Exception as e:
+            stats = {"error": str(e)}
+    
+    html_content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Lore N.A. - Neural Agents Universe</title>
+        <meta charset="UTF-8">
+        <style>
+            body {{ 
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+                color: white;
+                margin: 0;
+                padding: 20px;
+                min-height: 100vh;
+            }}
+            .container {{ max-width: 1200px; margin: 0 auto; }}
+            .header {{ text-align: center; margin-bottom: 40px; }}
+            .header h1 {{ font-size: 3em; margin-bottom: 10px; }}
+            .subtitle {{ font-size: 1.2em; opacity: 0.8; }}
+            .stats-grid {{ 
+                display: grid; 
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+                gap: 20px; 
+                margin-bottom: 40px; 
+            }}
+            .stat-card {{ 
+                background: rgba(255,255,255,0.1); 
+                padding: 20px; 
+                border-radius: 10px; 
+                text-align: center;
+                backdrop-filter: blur(10px);
+            }}
+            .stat-number {{ font-size: 2.5em; font-weight: bold; color: #4CAF50; }}
+            .stat-label {{ font-size: 0.9em; opacity: 0.8; }}
+            .agents-section {{ 
+                background: rgba(255,255,255,0.1); 
+                padding: 30px; 
+                border-radius: 15px; 
+                margin-bottom: 30px;
+                backdrop-filter: blur(10px);
+            }}
+            .agent-card {{ 
+                background: rgba(255,255,255,0.1); 
+                padding: 15px; 
+                margin: 10px 0; 
+                border-radius: 8px; 
+                border-left: 4px solid #4CAF50;
+            }}
+            .endpoints {{ 
+                background: rgba(255,255,255,0.1); 
+                padding: 30px; 
+                border-radius: 15px;
+                backdrop-filter: blur(10px);
+            }}
+            .endpoint-item {{ 
+                margin: 10px 0; 
+                padding: 10px; 
+                background: rgba(255,255,255,0.05); 
+                border-radius: 5px; 
+            }}
+            .endpoint-url {{ color: #81C784; font-family: monospace; }}
+            .status-good {{ color: #4CAF50; }}
+            .status-warning {{ color: #FF9800; }}
+            a {{ color: #81C784; text-decoration: none; }}
+            a:hover {{ text-decoration: underline; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🧠 Lore N.A.</h1>
+                <div class="subtitle">Neural Agents Universe - Sistema Autônomo 24/7</div>
+                <div class="subtitle">
+                    <span class="status-good">● Online</span> | 
+                    PostgreSQL (Neon) | 
+                    Versão 2.0.0
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">{stats.get('agents', 0)}</div>
+                    <div class="stat-label">Agentes Ativos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{stats.get('generation', 0)}</div>
+                    <div class="stat-label">Geração Atual</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{stats.get('connections', 0)}</div>
+                    <div class="stat-label">Conexões Neurais</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{stats.get('evolutions', 0)}</div>
+                    <div class="stat-label">Evoluções</div>
+                </div>
+            </div>
+            
+            <div class="agents-section">
+                <h2>🤖 Agentes Recentes</h2>
+                {generate_agents_html(agents)}
+            </div>
+            
+            <div class="endpoints">
+                <h2>🔗 Endpoints da API</h2>
+                <div class="endpoint-item">
+                    <strong>GET <span class="endpoint-url">/health</span></strong><br>
+                    Status detalhado do sistema e banco de dados
+                </div>
+                <div class="endpoint-item">
+                    <strong>GET <span class="endpoint-url">/agents</span></strong><br>
+                    Lista todos os agentes neurais do sistema
+                </div>
+                <div class="endpoint-item">
+                    <strong>POST <span class="endpoint-url">/agents</span></strong><br>
+                    Criar um novo agente neural (JSON: name, dna, personality)
+                </div>
+                <div class="endpoint-item">
+                    <strong>GET <span class="endpoint-url">/agents/{{id}}</span></strong><br>
+                    Detalhes específicos de um agente
+                </div>
+                <div class="endpoint-item">
+                    <strong>GET <span class="endpoint-url">/population/stats</span></strong><br>
+                    Estatísticas da população e métricas de evolução
+                </div>
+                
+                <h3 style="margin-top: 30px;">📚 Links Úteis</h3>
+                <div class="endpoint-item">
+                    <a href="https://github.com/brdneo/lore" target="_blank">📁 Repositório GitHub</a><br>
+                    Código fonte completo do projeto
+                </div>
+                <div class="endpoint-item">
+                    <a href="/health" target="_blank">💓 Health Check</a><br>
+                    Verificar status do sistema em tempo real
+                </div>
+                <div class="endpoint-item">
+                    <a href="/agents" target="_blank">🤖 API de Agentes</a><br>
+                    Visualizar dados JSON dos agentes
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    
+    return html_content
+
+def generate_agents_html(agents):
+    """Gera HTML para mostrar agentes"""
+    if not agents:
+        return '<p style="opacity: 0.7;">Nenhum agente encontrado. Use POST /agents para criar o primeiro agente.</p>'
+    
+    html = ""
+    for agent in agents:
+        # Formatar DNA como string legível
+        dna_str = ""
+        if agent.get('dna'):
+            dna_items = [f"{k}: {v:.2f}" for k, v in agent['dna'].items()]
+            dna_str = " | ".join(dna_items)
+        
+        created_date = agent.get('created_at', '')
+        if created_date:
+            # Formatar data se possível
+            try:
+                from datetime import datetime
+                dt = datetime.fromisoformat(created_date.replace('Z', '+00:00'))
+                created_date = dt.strftime("%d/%m/%Y %H:%M")
+            except:
+                pass
+        
+        html += f"""
+        <div class="agent-card">
+            <strong>{agent.get('name', 'Unknown')}</strong> 
+            <span style="opacity: 0.7;">({agent.get('id', 'no-id')})</span><br>
+            <div style="font-size: 0.9em; margin-top: 5px;">
+                <strong>DNA:</strong> {dna_str}<br>
+                <strong>Personalidade:</strong> {agent.get('personality', 'N/A')}<br>
+                <strong>Criado:</strong> {created_date}
+            </div>
+        </div>
+        """
+    
+    return html
 
 if __name__ == "__main__":
     # Configuração para desenvolvimento e produção
