@@ -1,21 +1,21 @@
 {
-  "name": "lore-na-neural-agents",
-  "description": "API para sistema de agentes neurais autônomos com vida artificial",
-  "repository": "https://github.com/user/lore",
-  "stack": "container",
-  "buildpacks": [
-    {
-      "url": "heroku/python"
+    "name": "lore-na-neural-agents",
+    "description": "API para sistema de agentes neurais autônomos com vida artificial",
+    "repository": "https://github.com/user/lore",
+    "stack": "container",
+    "buildpacks": [
+        {
+            "url": "heroku/python"
+        }
+    ],
+    "env": {
+        "DATABASE_URL": {
+            "description": "PostgreSQL connection string from Neon",
+            "required": true
+        },
+        "RAILWAY_ENVIRONMENT": {
+            "description": "Environment indicator",
+            "value": "production"
+        }
     }
-  ],
-  "env": {
-    "DATABASE_URL": {
-      "description": "PostgreSQL connection string from Neon",
-      "required": true
-    },
-    "RAILWAY_ENVIRONMENT": {
-      "description": "Environment indicator",
-      "value": "production"
-    }
-  }
 }

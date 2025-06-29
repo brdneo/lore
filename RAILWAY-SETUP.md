@@ -40,9 +40,9 @@ Suas credenciais Neon estão configuradas! Agora vamos ao Railway.
 2. **Clique**: "New Variable"
 3. **Nome**: `DATABASE_URL`
 4. **Valor**: Cole EXATAMENTE isto:
-   ```
-   postgresql://neondb_owner:npg_Il2RJN8hGwYb@ep-orange-fog-a5a3ol11-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
-   ```
+    ```
+    postgresql://neondb_owner:npg_Il2RJN8hGwYb@ep-orange-fog-a5a3ol11-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+    ```
 5. **Clique**: "Add"
 
 ### 5️⃣ **Configurar Outras Variáveis**
@@ -50,21 +50,25 @@ Suas credenciais Neon estão configuradas! Agora vamos ao Railway.
 Adicione essas variáveis também:
 
 **PORT**:
+
 ```
 8000
 ```
 
 **PYTHONPATH**:
+
 ```
 /app/services/agent_runner
 ```
 
 **WEB_CONCURRENCY**:
+
 ```
 1
 ```
 
 **RAILWAY_ENVIRONMENT**:
+
 ```
 production
 ```
@@ -89,32 +93,35 @@ Após o redeploy, você terá:
 
 ## ✅ CHECKLIST RAILWAY
 
-- [ ] Conta Railway criada (GitHub)
-- [ ] Upgrade para Hobby Plan realizado
-- [ ] Repositório `lore` conectado
-- [ ] Deploy realizado com sucesso
-- [ ] Variável `DATABASE_URL` configurada ✨
-- [ ] Variáveis `PORT`, `PYTHONPATH`, etc configuradas
-- [ ] Redeploy realizado
-- [ ] URL gerada e funcionando
-- [ ] Health check respondendo `healthy`
+-   [ ] Conta Railway criada (GitHub)
+-   [ ] Upgrade para Hobby Plan realizado
+-   [ ] Repositório `lore` conectado
+-   [ ] Deploy realizado com sucesso
+-   [ ] Variável `DATABASE_URL` configurada ✨
+-   [ ] Variáveis `PORT`, `PYTHONPATH`, etc configuradas
+-   [ ] Redeploy realizado
+-   [ ] URL gerada e funcionando
+-   [ ] Health check respondendo `healthy`
 
 ---
 
 ## 🆘 SE DER PROBLEMA
 
 ### **Deploy Failed?**
-- Verifique se o repositório está público
-- Confirme que está na branch `main`
+
+-   Verifique se o repositório está público
+-   Confirme que está na branch `main`
 
 ### **Health Check Failed?**
-- Verifique se `DATABASE_URL` está EXATAMENTE como mostrado
-- Confirme que todas as variáveis foram adicionadas
-- Faça redeploy após adicionar variáveis
+
+-   Verifique se `DATABASE_URL` está EXATAMENTE como mostrado
+-   Confirme que todas as variáveis foram adicionadas
+-   Faça redeploy após adicionar variáveis
 
 ### **Connection Error?**
-- Teste connection string Neon separadamente
-- Verifique se não há espaços extras na `DATABASE_URL`
+
+-   Teste connection string Neon separadamente
+-   Verifique se não há espaços extras na `DATABASE_URL`
 
 ---
 

@@ -3,23 +3,26 @@
 ## 🐘 SUAS CONFIGURAÇÕES NEON
 
 ### 📋 **Detalhes do Database**
-- **Projeto**: lore-na-universe  
-- **Database**: neondb
-- **Role**: neondb_owner
-- **Região**: us-east-2 (Ohio)
-- **Provider**: AWS
+
+-   **Projeto**: lore-na-universe
+-   **Database**: neondb
+-   **Role**: neondb_owner
+-   **Região**: us-east-2 (Ohio)
+-   **Provider**: AWS
 
 ### 🔗 **Connection String**
+
 ```
 postgresql://neondb_owner:npg_Il2RJN8hGwYb@ep-orange-fog-a5a3ol11-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
 ```
 
 ### 🔑 **Credenciais**
-- **Host**: ep-orange-fog-a5a3ol11-pooler.us-east-2.aws.neon.tech
-- **User**: neondb_owner  
-- **Password**: npg_Il2RJN8hGwYb
-- **Database**: neondb
-- **Port**: 5432
+
+-   **Host**: ep-orange-fog-a5a3ol11-pooler.us-east-2.aws.neon.tech
+-   **User**: neondb_owner
+-   **Password**: npg_Il2RJN8hGwYb
+-   **Database**: neondb
+-   **Port**: 5432
 
 ---
 
@@ -35,6 +38,7 @@ Agora vamos configurar o Railway com essas credenciais!
 4. **Configurar**: Variável `DATABASE_URL` com sua connection string
 
 ### 🔧 **Variável de Ambiente Railway**:
+
 ```
 DATABASE_URL=postgresql://neondb_owner:npg_Il2RJN8hGwYb@ep-orange-fog-a5a3ol11-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
 ```
@@ -43,8 +47,8 @@ DATABASE_URL=postgresql://neondb_owner:npg_Il2RJN8hGwYb@ep-orange-fog-a5a3ol11-p
 
 ## ✅ STATUS ATUAL
 
-- [x] ✅ **Neon**: Database criado e configurado
-- [ ] 🔄 **Railway**: Próximo passo
-- [ ] 🧪 **Teste**: Validar sistema 24/7
+-   [x] ✅ **Neon**: Database criado e configurado
+-   [ ] 🔄 **Railway**: Próximo passo
+-   [ ] 🧪 **Teste**: Validar sistema 24/7
 
 **Metade do caminho concluída! 🎯**
