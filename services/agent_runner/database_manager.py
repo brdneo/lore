@@ -300,10 +300,17 @@ class LoREDatabase:
             
             if result:
                 agent_dict = dict(result)
-                # Parse JSON fields
-                agent_dict['dna'] = json.loads(agent_dict.get('dna_data', '{}'))
-                agent_dict['fitness_scores'] = json.loads(agent_dict.get('fitness_scores', '{}'))
-                agent_dict['emotional_state'] = json.loads(agent_dict.get('emotional_state', '{}'))
+                
+                # Handle JSON fields - PostgreSQL returns objects, SQLite returns strings  
+                if self.is_postgresql:
+                    agent_dict['dna'] = agent_dict.get('dna_data', {})
+                    agent_dict['fitness_scores'] = agent_dict.get('fitness_scores', {})
+                    agent_dict['emotional_state'] = agent_dict.get('emotional_state', {})
+                else:
+                    agent_dict['dna'] = json.loads(agent_dict.get('dna_data', '{}'))
+                    agent_dict['fitness_scores'] = json.loads(agent_dict.get('fitness_scores', '{}'))
+                    agent_dict['emotional_state'] = json.loads(agent_dict.get('emotional_state', '{}'))
+                
                 return agent_dict
             
             return None
@@ -322,9 +329,17 @@ class LoREDatabase:
             agents = []
             for result in results:
                 agent_dict = dict(result)
-                agent_dict['dna'] = json.loads(agent_dict.get('dna_data', '{}'))
-                agent_dict['fitness_scores'] = json.loads(agent_dict.get('fitness_scores', '{}'))
-                agent_dict['emotional_state'] = json.loads(agent_dict.get('emotional_state', '{}'))
+                
+                # Handle JSON fields - PostgreSQL returns objects, SQLite returns strings
+                if self.is_postgresql:
+                    agent_dict['dna'] = agent_dict.get('dna_data', {})
+                    agent_dict['fitness_scores'] = agent_dict.get('fitness_scores', {})
+                    agent_dict['emotional_state'] = agent_dict.get('emotional_state', {})
+                else:
+                    agent_dict['dna'] = json.loads(agent_dict.get('dna_data', '{}'))
+                    agent_dict['fitness_scores'] = json.loads(agent_dict.get('fitness_scores', '{}'))
+                    agent_dict['emotional_state'] = json.loads(agent_dict.get('emotional_state', '{}'))
+                
                 agents.append(agent_dict)
             
             return agents
