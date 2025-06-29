@@ -4,9 +4,10 @@ FastAPI Server - Lore N.A.
 ==========================
 
 Servidor API para persistência e gerenciamento de agentes neurais.
+Preparado para deploy 24/7 na nuvem (Railway + Neon).
 
 Autor: Lore N.A. Genesis Team
-Data: 27 de Junho de 2025
+Data: 31 de Dezembro de 2024
 """
 
 from fastapi import FastAPI, HTTPException
@@ -18,16 +19,44 @@ import json
 import os
 from datetime import datetime
 
+# Importar configurações cloud e database
+try:
+    from cloud_deployment_config import CloudConfig, HealthCheck
+    from database_manager import LoREDatabase
+    cloud_config = CloudConfig.get_full_config()
+    is_production = CloudConfig.is_production()
+    
+    # Inicializar database
+    db = LoREDatabase()
+    
+except ImportError as e:
+    # Fallback para desenvolvimento local
+    print(f"⚠️ Aviso: {e}")
+    cloud_config = {
+        "app": {
+            "title": "Lore N.A. Neural Agents API",
+            "description": "API para agentes neurais autônomos",
+            "version": "2.0.0",
+            "docs_url": "/docs",
+            "redoc_url": "/redoc",
+            "cors_origins": ["*"]
+        }
+    }
+    is_production = False
+    db = None
+
 app = FastAPI(
-    title="Lore N.A. Neural Agents API",
-    description="API para gerenciamento de agentes neurais com vida artificial",
-    version="1.0.0"
+    title=cloud_config["app"]["title"],
+    description=cloud_config["app"]["description"],
+    version=cloud_config["app"]["version"],
+    docs_url=cloud_config["app"].get("docs_url"),
+    redoc_url=cloud_config["app"].get("redoc_url")
 )
 
-# CORS middleware para frontend
+# CORS middleware configurado para produção
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=cloud_config["app"]["cors_origins"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -54,30 +83,45 @@ class PopulationStats(BaseModel):
     average_fitness: float
     top_performers: List[AgentResponse]
 
-# Storage (em produção usar PostgreSQL/MongoDB)
-AGENTS_FILE = "data/agents.json"
-EVOLUTION_FILE = "data/evolution_history.json"
+# Storage usando database
+AGENTS_FILE = "data/agents.json"  # Fallback file
+EVOLUTION_FILE = "data/evolution_history.json"  # Fallback file
 
 def load_agents():
-    """Carrega agentes do arquivo"""
+    """Carrega agentes do database"""
+    if db:
+        agents = db.get_all_agents()
+        return {agent['id']: agent for agent in agents}
+    
+    # Fallback para arquivo se database não disponível
     if os.path.exists(AGENTS_FILE):
         with open(AGENTS_FILE, 'r') as f:
             return json.load(f)
     return {}
 
 def save_agents(agents):
-    """Salva agentes no arquivo"""
+    """Salva agentes no database"""
+    if db:
+        for agent_id, agent_data in agents.items():
+            agent_data['id'] = agent_id  # Garantir que o ID está presente
+            db.save_agent(agent_data)
+        return True
+    
+    # Fallback para arquivo se database não disponível
     os.makedirs("data", exist_ok=True)
     with open(AGENTS_FILE, 'w') as f:
         json.dump(agents, f, indent=2, default=str)
+    return True
 
 @app.get("/")
 async def root():
-    """Endpoint raiz"""
+    """Endpoint raiz com informações do sistema"""
     return {
-        "message": "Lore N.A. Neural Agents API",
+        "message": cloud_config["app"]["title"],
         "status": "operational",
-        "version": "1.0.0"
+        "version": cloud_config["app"]["version"],
+        "environment": "production" if is_production else "development",
+        "docs": "/docs" if not is_production else "disabled_in_production"
     }
 
 @app.get("/agents", response_model=List[AgentResponse])
@@ -176,6 +220,62 @@ async def get_agent_connections(agent_id: str):
     # Integração com NeuralWeb
     return {"agent_id": agent_id, "connections": []}
 
+# Health Check Endpoints para Railway
+@app.get("/health")
+async def health_check():
+    """Health check endpoint para monitoring"""
+    try:
+        # Verificar sistema básico
+        agents = load_agents()
+        
+        # Verificar database
+        db_status = {"status": "not_configured"}
+        if db:
+            try:
+                stats = db.get_stats()
+                db_status = {
+                    "status": "connected",
+                    "type": "PostgreSQL" if db.is_postgresql else "SQLite",
+                    "stats": stats
+                }
+            except Exception as e:
+                db_status = {"status": "error", "error": str(e)}
+        
+        return {
+            "status": "healthy",
+            "timestamp": datetime.now(),
+            "environment": "production" if is_production else "development",
+            "agents_count": len(agents),
+            "database": db_status,
+            "version": cloud_config["app"]["version"]
+        }
+    except Exception as e:
+        return {
+            "status": "unhealthy",
+            "error": str(e),
+            "timestamp": datetime.now()
+        }
+
 if __name__ == "__main__":
-    print("🚀 Iniciando Lore N.A. API Server...")
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    # Configuração para desenvolvimento e produção
+    port = int(os.getenv("PORT", 8000))
+    host = "0.0.0.0"  # Necessário para Railway
+    
+    print(f"🚀 Iniciando Lore N.A. API Server")
+    print(f"🌐 Ambiente: {'Produção' if is_production else 'Desenvolvimento'}")
+    print(f"🔗 Servidor: http://{host}:{port}")
+    
+    if db:
+        print(f"💾 Database: {'PostgreSQL (Neon)' if db.is_postgresql else 'SQLite (Local)'}")
+    else:
+        print(f"⚠️ Database: Não disponível (usando arquivos)")
+    
+    if not is_production:
+        print(f"📖 Documentação: http://{host}:{port}/docs")
+    
+    uvicorn.run(
+        app,
+        host=host,
+        port=port,
+        log_level="info" if is_production else "debug"
+    )

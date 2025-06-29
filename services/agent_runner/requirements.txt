@@ -1,5 +1,6 @@
 # requirements.txt
 # Dependências para o serviço do Agente Neural - Lore N.A.
+# Otimizado para deploy na nuvem (Railway + Neon)
 
 # === CORE DEPENDENCIES ===
 # Biblioteca para fazer requisições HTTP para a API do Lore N.A.
@@ -12,6 +13,14 @@ PyJWT==2.8.0
 # FastAPI - Framework web moderno para APIs
 fastapi>=0.104.0
 uvicorn[standard]>=0.24.0
+
+# === DATABASE ===
+# PostgreSQL para produção (Neon)
+psycopg2-binary>=2.9.7
+sqlalchemy>=2.0.0
+
+# SQLite para desenvolvimento local (built-in Python)
+# No additional package needed
 
 # === DASHBOARD & VISUALIZATION ===
 # Streamlit - Dashboard web interativo
@@ -46,10 +55,6 @@ seaborn>=0.11.0
 
 # === GRAPH & NETWORK ANALYSIS ===
 networkx>=3.0
-community>=1.0.0
-
-# === DATABASE ===
-sqlite3  # Built-in, mas listado para clareza
 
 # === UTILITIES ===
 python-dateutil>=2.8.0

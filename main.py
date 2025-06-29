@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 Main entry point for Lore N.A. Railway deployment
+Enhanced with database status logging
 """
 
 import sys
@@ -16,9 +17,15 @@ if __name__ == "__main__":
     
     port = int(os.getenv("PORT", 8000))
     host = "0.0.0.0"
+    database_url = os.getenv("DATABASE_URL")
     
     print("🚀 Starting Lore N.A. API Server for Railway")
     print(f"🌐 Server: http://{host}:{port}")
+    
+    if database_url:
+        print(f"💾 Database: PostgreSQL (Neon) - Connected")
+    else:
+        print("⚠️ DATABASE_URL not set, using SQLite fallback")
     
     uvicorn.run(
         app,

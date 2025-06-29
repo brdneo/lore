@@ -20,6 +20,7 @@ import json
 from typing import Dict, List, Tuple, Optional
 from datetime import datetime
 from dataclasses import dataclass
+import time
 
 
 @dataclass
@@ -451,6 +452,17 @@ class AgentNameGenerator:
         except Exception as e:
             print(f"❌ Erro ao carregar base de identidades: {e}")
             return {}
+    
+    def generate_simple_identity(self, agent_id: str = None) -> AgentIdentity:
+        """Gera identidade simples para testes"""
+        if agent_id is None:
+            agent_id = f"test_agent_{int(time.time() * 1000)}"
+        
+        # Usar valores padrão simples
+        personality = "balanced"
+        dna_genes = {"curiosity": 0.5, "creativity": 0.5, "logic": 0.5}
+        
+        return self.generate_identity(agent_id, personality, dna_genes)
 
 
 def main():

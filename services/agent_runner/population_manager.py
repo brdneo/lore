@@ -26,6 +26,7 @@ from pathlib import Path
 
 from agent_dna import AgentDNA, DNAGenerator, EvolutionEngine, GeneticTraits
 from evolved_agent import EvolvedAgent
+from database_manager import LoREDatabase
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +48,40 @@ class PopulationManager:
                  elite_ratio: float = 0.2,
                  mutation_rate: float = 0.1,
                  crossover_rate: float = 0.7,
-                 generation_cycles: int = 100):
+                 generation_cycles: int = 100,
+                 enable_persistence: bool = True,
+                 database_path: str = "lore_universe.db"):
+        """
+        Inicializa gerenciador de população
+        
+        Args:
+            api_base_url (str): URL base da API
+            population_size (int): Tamanho da população
+            elite_ratio (float): Proporção de elite mantida
+            mutation_rate (float): Taxa de mutação
+            crossover_rate (float): Taxa de crossover
+            generation_cycles (int): Ciclos entre gerações
+            enable_persistence (bool): Habilitar persistência automática
+            database_path (str): Caminho para o banco de dados
+        """
+        self.api_base_url = api_base_url
+        self.population_size = population_size
+        self.elite_ratio = elite_ratio
+        self.generation_cycles = generation_cycles
+        
+        # Configurar logger
+        self.logger = logging.getLogger(__name__)
+        
+        # Persistência
+        self.enable_persistence = enable_persistence
+        self.database = None
+        if self.enable_persistence:
+            try:
+                self.database = LoREDatabase(database_path)
+                self.logger.info(f"💾 Persistência ativada: {database_path}")
+            except Exception as e:
+                self.logger.warning(f"⚠️ Persistência falhou: {e}")
+                self.enable_persistence = False
         """
         Inicializa gerenciador de população
         
@@ -123,6 +157,21 @@ class PopulationManager:
         
         # Coletar estatísticas iniciais
         await self._collect_generation_stats()
+        
+        # Persistir população inicial
+        await self.persist_full_population()
+        
+        # Registrar evento de criação do universo
+        if self.database:
+            self.database.log_universe_event(
+                "universe_genesis",
+                {
+                    "generation": 0,
+                    "population_size": len(self.active_population),
+                    "timestamp": datetime.now().isoformat()
+                },
+                [agent.agent_id for agent in self.active_population]
+            )
     
     async def run_population_cycle(self):
         """Executa um ciclo completo da população"""
@@ -155,21 +204,27 @@ class PopulationManager:
         # 2. Coletar estatísticas da geração atual
         await self._collect_generation_stats()
         
-        # 3. Evolução do DNA
+        # 3. Persistir geração atual (antes da evolução)
+        await self.persist_full_population()
+        
+        # 4. Evolução do DNA
         current_dna_population = [agent.dna for agent in self.active_population]
         new_dna_population = self.evolution_engine.evolve_generation(current_dna_population)
         
-        # 4. Criar nova população de agentes
+        # 5. Criar nova população de agentes
         await self._create_new_generation(new_dna_population)
         
-        # 5. Atualizar estatísticas
+        # 6. Atualizar estatísticas
         self.current_generation += 1
         self.last_evolution = datetime.now()
         
         self.logger.info(f"🧬 Evolução concluída: Geração {self.current_generation}")
         
-        # 6. Salvar dados evolutivos
+        # 7. Salvar dados evolutivos
         await self._save_evolution_data()
+        
+        # 8. Persistir nova geração
+        await self.persist_full_population()
     
     async def _calculate_population_fitness(self):
         """Calcula fitness de toda a população"""
@@ -364,6 +419,93 @@ class PopulationManager:
             
         except Exception as e:
             self.logger.error(f"🧬 Erro ao salvar dados evolutivos: {e}")
+    
+    def _save_agent_to_database(self, agent: EvolvedAgent):
+        """Salva um agente no database"""
+        if not self.enable_persistence or not self.database:
+            return
+            
+        try:
+            # Preparar dados do agente
+            agent_data = {
+                'id': agent.dna.agent_id,
+                'name': agent.identity.name if hasattr(agent, 'identity') else agent.dna.agent_id,
+                'created_at': datetime.now()
+            }
+            
+            # Preparar dados do DNA
+            dna_data = {
+                'agent_id': agent.dna.agent_id,
+                'genes': agent.dna.genes,
+                'fitness': agent.dna.fitness_scores,
+                'generation': agent.dna.generation,
+                'parents': getattr(agent.dna, 'parents', []),
+                'mutations': getattr(agent.dna, 'mutations', [])
+            }
+            
+            # Preparar dados da identidade
+            identity_data = {}
+            if hasattr(agent, 'identity'):
+                identity_data = {
+                    'name': agent.identity.name,
+                    'full_name': agent.identity.full_name,
+                    'nickname': agent.identity.nickname,
+                    'personality_archetype': agent.identity.personality_archetype,
+                    'origin': agent.identity.origin
+                }
+            
+            # Salvar no database
+            self.database.save_agent(agent_data, dna_data, identity_data)
+            
+        except Exception as e:
+            self.logger.error(f"❌ Erro ao salvar agente {agent.dna.agent_id}: {e}")
+    
+    def _save_generation_stats(self):
+        """Salva estatísticas da geração atual"""
+        if not self.enable_persistence or not self.database:
+            return
+            
+        try:
+            # Calcular estatísticas
+            fitness_scores = [agent.dna.fitness_scores['overall'] for agent in self.active_population]
+            
+            stats = {
+                'population_size': len(self.active_population),
+                'avg_fitness': sum(fitness_scores) / len(fitness_scores) if fitness_scores else 0,
+                'max_fitness': max(fitness_scores) if fitness_scores else 0,
+                'min_fitness': min(fitness_scores) if fitness_scores else 0,
+                'diversity_index': len(set(fitness_scores)) / len(fitness_scores) if fitness_scores else 0
+            }
+            
+            # Salvar no database
+            self.database.save_generation_stats(self.current_generation, stats)
+            
+            self.logger.info(f"📊 Estatísticas da geração {self.current_generation} salvas")
+            
+        except Exception as e:
+            self.logger.error(f"❌ Erro ao salvar estatísticas: {e}")
+    
+    def _save_evolution_event(self, event_type: str, event_data: dict):
+        """Salva um evento de evolução no database"""
+        if not self.enable_persistence or not self.database:
+            return
+            
+        try:
+            # Preparar dados do evento
+            event_record = {
+                'event_type': event_type,
+                'event_data': event_data,
+                'agents_involved': event_data.get('agents_involved', []),
+                'timestamp': datetime.now()
+            }
+            
+            # Salvar evento
+            # Note: Assumindo que database_manager tem método para eventos
+            if hasattr(self.database, 'save_universe_event'):
+                self.database.save_universe_event(event_type, event_data, event_data.get('agents_involved', []))
+                
+        except Exception as e:
+            self.logger.error(f"❌ Erro ao salvar evento {event_type}: {e}")
     
     def get_population_summary(self) -> Dict[str, Any]:
         """Retorna resumo da população atual"""
