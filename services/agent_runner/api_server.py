@@ -10,9 +10,9 @@ Autor: Lore N.A. Genesis Team
 Data: 31 de Dezembro de 2024
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import BaseModel
 from typing import List, Dict, Optional
 import uvicorn
@@ -115,8 +115,18 @@ def save_agents(agents):
     return True
 
 @app.get("/")
-async def root():
-    """Endpoint raiz com informações do sistema"""
+async def root(request: Request):
+    """Endpoint raiz - detecta navegador e redireciona para dashboard ou retorna JSON"""
+    
+    # Detectar se é um navegador pela header User-Agent
+    user_agent = request.headers.get("user-agent", "").lower()
+    is_browser = any(browser in user_agent for browser in ["mozilla", "chrome", "safari", "edge", "firefox"])
+    
+    # Se for navegador, redirecionar para dashboard
+    if is_browser:
+        return RedirectResponse(url="/dashboard", status_code=302)
+    
+    # Caso contrário, retornar JSON para APIs/curl
     # Estatísticas básicas
     stats = {}
     agent_count = 0
@@ -319,6 +329,7 @@ async def dashboard():
     <head>
         <title>Lore N.A. - Neural Agents Universe</title>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
             body {{ 
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -330,7 +341,7 @@ async def dashboard():
             }}
             .container {{ max-width: 1200px; margin: 0 auto; }}
             .header {{ text-align: center; margin-bottom: 40px; }}
-            .header h1 {{ font-size: 3em; margin-bottom: 10px; }}
+            .header h1 {{ font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }}
             .subtitle {{ font-size: 1.2em; opacity: 0.8; }}
             .stats-grid {{ 
                 display: grid; 
@@ -344,8 +355,11 @@ async def dashboard():
                 border-radius: 10px; 
                 text-align: center;
                 backdrop-filter: blur(10px);
+                border: 1px solid rgba(255,255,255,0.2);
+                transition: transform 0.3s ease;
             }}
-            .stat-number {{ font-size: 2.5em; font-weight: bold; color: #4CAF50; }}
+            .stat-card:hover {{ transform: translateY(-5px); }}
+            .stat-number {{ font-size: 2.5em; font-weight: bold; color: #4CAF50; text-shadow: 0 0 10px rgba(76, 175, 80, 0.5); }}
             .stat-label {{ font-size: 0.9em; opacity: 0.8; }}
             .agents-section {{ 
                 background: rgba(255,255,255,0.1); 
@@ -353,6 +367,7 @@ async def dashboard():
                 border-radius: 15px; 
                 margin-bottom: 30px;
                 backdrop-filter: blur(10px);
+                border: 1px solid rgba(255,255,255,0.2);
             }}
             .agent-card {{ 
                 background: rgba(255,255,255,0.1); 
@@ -360,24 +375,91 @@ async def dashboard():
                 margin: 10px 0; 
                 border-radius: 8px; 
                 border-left: 4px solid #4CAF50;
+                transition: background 0.3s ease;
             }}
+            .agent-card:hover {{ background: rgba(255,255,255,0.15); }}
             .endpoints {{ 
                 background: rgba(255,255,255,0.1); 
                 padding: 30px; 
                 border-radius: 15px;
                 backdrop-filter: blur(10px);
+                border: 1px solid rgba(255,255,255,0.2);
+                margin-bottom: 30px;
             }}
             .endpoint-item {{ 
                 margin: 10px 0; 
                 padding: 10px; 
                 background: rgba(255,255,255,0.05); 
                 border-radius: 5px; 
+                transition: background 0.3s ease;
             }}
+            .endpoint-item:hover {{ background: rgba(255,255,255,0.1); }}
             .endpoint-url {{ color: #81C784; font-family: monospace; }}
             .status-good {{ color: #4CAF50; }}
             .status-warning {{ color: #FF9800; }}
             a {{ color: #81C784; text-decoration: none; }}
             a:hover {{ text-decoration: underline; }}
+            .demo-section {{
+                background: rgba(255,255,255,0.1);
+                padding: 30px;
+                border-radius: 15px;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255,255,255,0.2);
+                margin-bottom: 30px;
+            }}
+            .demo-form {{
+                display: grid;
+                gap: 15px;
+                max-width: 600px;
+                margin: 20px auto;
+            }}
+            .form-group {{
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+            }}
+            .form-group label {{
+                font-weight: bold;
+                color: #81C784;
+            }}
+            .form-group input, .form-group textarea {{
+                padding: 10px;
+                border: 1px solid rgba(255,255,255,0.3);
+                border-radius: 5px;
+                background: rgba(255,255,255,0.1);
+                color: white;
+                backdrop-filter: blur(5px);
+            }}
+            .form-group input::placeholder, .form-group textarea::placeholder {{
+                color: rgba(255,255,255,0.6);
+            }}
+            .btn {{
+                padding: 12px 24px;
+                background: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 1em;
+                transition: background 0.3s ease;
+            }}
+            .btn:hover {{ background: #45a049; }}
+            .response-area {{
+                margin-top: 20px;
+                padding: 15px;
+                background: rgba(0,0,0,0.2);
+                border-radius: 5px;
+                border: 1px solid rgba(255,255,255,0.2);
+                font-family: monospace;
+                white-space: pre-wrap;
+                max-height: 300px;
+                overflow-y: auto;
+            }}
+            @media (max-width: 768px) {{
+                .header h1 {{ font-size: 2em; }}
+                .stats-grid {{ grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }}
+                .container {{ padding: 10px; }}
+            }}
         </style>
     </head>
     <body>
@@ -414,6 +496,27 @@ async def dashboard():
             <div class="agents-section">
                 <h2>🤖 Agentes Recentes</h2>
                 {generate_agents_html(agents)}
+            </div>
+            
+            <div class="demo-section">
+                <h2>🚀 Teste Rápido - Criar Agente</h2>
+                <p style="opacity: 0.8; text-align: center;">Experimente criar um novo agente neural diretamente pelo navegador!</p>
+                
+                <form class="demo-form" onsubmit="createAgent(event)">
+                    <div class="form-group">
+                        <label for="agentName">Nome do Agente:</label>
+                        <input type="text" id="agentName" placeholder="Ex: Sophia, Marcus, Luna..." required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="agentPersonality">Personalidade:</label>
+                        <textarea id="agentPersonality" rows="3" placeholder="Ex: Curioso e analítico, focado em descobrir padrões. Gosta de fazer perguntas e explorar novas ideias." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn">Criar Agente Neural</button>
+                </form>
+                
+                <div id="response" class="response-area" style="display: none;"></div>
             </div>
             
             <div class="endpoints">
@@ -454,6 +557,68 @@ async def dashboard():
                 </div>
             </div>
         </div>
+        
+        <script>
+            async function createAgent(event) {{
+                event.preventDefault();
+                
+                const responseDiv = document.getElementById('response');
+                const nameInput = document.getElementById('agentName');
+                const personalityInput = document.getElementById('agentPersonality');
+                
+                responseDiv.style.display = 'block';
+                responseDiv.textContent = 'Criando agente...';
+                
+                try {{
+                    // Gerar DNA aleatório simples
+                    const randomDNA = {{
+                        intelligence: Math.random(),
+                        creativity: Math.random(),
+                        adaptability: Math.random(),
+                        social: Math.random(),
+                        curiosity: Math.random()
+                    }};
+                    
+                    const response = await fetch('/agents', {{
+                        method: 'POST',
+                        headers: {{
+                            'Content-Type': 'application/json',
+                        }},
+                        body: JSON.stringify({{
+                            name: nameInput.value,
+                            personality: personalityInput.value,
+                            dna: randomDNA
+                        }})
+                    }});
+                    
+                    if (response.ok) {{
+                        const agent = await response.json();
+                        responseDiv.innerHTML = `
+                            <strong>✅ Agente criado com sucesso!</strong>
+                            
+                            ID: ${{agent.id}}
+                            Nome: ${{agent.name}}
+                            Personalidade: ${{agent.personality}}
+                            DNA: ${{JSON.stringify(agent.dna, null, 2)}}
+                            
+                            🎉 Agora você pode ver seu agente na seção "Agentes Recentes" acima!
+                        `;
+                        
+                        // Limpar formulário
+                        nameInput.value = '';
+                        personalityInput.value = '';
+                        
+                        // Recarregar página após 3 segundos para mostrar o novo agente
+                        setTimeout(() => location.reload(), 3000);
+                    }} else {{
+                        const error = await response.text();
+                        responseDiv.textContent = `❌ Erro ao criar agente: ${{error}}`;
+                    }}
+                }} catch (error) {{
+                    responseDiv.textContent = `❌ Erro de conexão: ${{error.message}}`;
+                }}
+            }}
+        </script>
     </body>
     </html>
     """
