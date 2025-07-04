@@ -16,7 +16,7 @@ from typing import Dict, Any
 
 class CloudConfig:
     """Configurações para deployment na nuvem"""
-    
+
     # Railway Configuration
     RAILWAY_CONFIG = {
         "port": int(os.getenv("PORT", 8000)),
@@ -25,7 +25,7 @@ class CloudConfig:
         "timeout": 300,
         "keep_alive": 2
     }
-    
+
     # Neon PostgreSQL Configuration
     DATABASE_CONFIG = {
         "url": os.getenv("DATABASE_URL", "postgresql://neondb_owner:npg_Il2RJN8hGwYb@ep-orange-fog-a5a3ol11-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"),
@@ -44,16 +44,16 @@ class CloudConfig:
         "database": "neondb",
         "user": "neondb_owner"
     }
-    
+
     # Environment Detection
     @staticmethod
     def is_production() -> bool:
         return os.getenv("RAILWAY_ENVIRONMENT") == "production"
-    
+
     @staticmethod
     def is_development() -> bool:
         return not CloudConfig.is_production()
-    
+
     # Application Settings
     @staticmethod
     def get_app_config():
@@ -72,14 +72,14 @@ class CloudConfig:
                 "http://localhost:8080"
             ] if not is_dev else ["*"]
         }
-    
+
     # Monitoring & Health Check
     MONITORING_CONFIG = {
         "health_check_interval": 30,  # seconds
         "metrics_enabled": True,
         "log_level": "INFO"
     }
-    
+
     @staticmethod
     def get_database_url() -> str:
         """Retorna URL do database baseada no ambiente"""
@@ -89,7 +89,7 @@ class CloudConfig:
         else:
             # Local SQLite para desenvolvimento
             return "sqlite:///lore_local.db"
-    
+
     @staticmethod
     def get_full_config() -> Dict[str, Any]:
         """Retorna configuração completa"""
@@ -107,7 +107,7 @@ class CloudConfig:
 # Health Check Endpoints
 class HealthCheck:
     """Sistema de monitoramento de saúde"""
-    
+
     @staticmethod
     def check_database_connection():
         """Verifica conexão com database"""
@@ -120,7 +120,7 @@ class HealthCheck:
             return {"status": "healthy", "timestamp": datetime.now()}
         except Exception as e:
             return {"status": "unhealthy", "error": str(e), "timestamp": datetime.now()}
-    
+
     @staticmethod
     def check_agents_system():
         """Verifica sistema de agentes"""
@@ -129,7 +129,7 @@ class HealthCheck:
             pm = PopulationManager("http://localhost:8000")
             agent_count = len(pm.agents)
             return {
-                "status": "healthy", 
+                "status": "healthy",
                 "agent_count": agent_count,
                 "timestamp": datetime.now()
             }
@@ -141,10 +141,10 @@ def prepare_for_deployment():
     """Prepara ambiente para deployment"""
     print("🚀 PREPARANDO PARA DEPLOY CLOUD")
     print("=" * 50)
-    
+
     # 1. Verificar dependências
     print("1️⃣ Verificando dependências...")
-    
+
     # 2. Configurar variáveis de ambiente
     print("2️⃣ Configurando variáveis de ambiente...")
     env_vars = {
@@ -153,10 +153,10 @@ def prepare_for_deployment():
         "PYTHONPATH": "/app/src",
         "RAILWAY_ENVIRONMENT": "production"
     }
-    
+
     # 3. Criar arquivos de configuração
     print("3️⃣ Criando arquivos de deploy...")
-    
+
     print("✅ Preparação concluída!")
     print(f"📊 Configuração atual: {CloudConfig.get_full_config()}")
 
