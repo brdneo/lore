@@ -115,6 +115,10 @@ def check_python_imports():
                 print_error(f"Módulo {module_name}.py não encontrado")
                 continue
 
+            if spec.loader is None:
+                print_error(f"Loader não disponível para {module_name}.py")
+                continue
+
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
             print_success(f"Import {module_name}")
@@ -211,6 +215,10 @@ def validate_api_server():
         spec = importlib.util.spec_from_file_location("api_server", "src/api_server.py")
         if spec is None:
             print_error("Arquivo api_server.py não encontrado")
+            return
+
+        if spec.loader is None:
+            print_error("Loader não disponível para api_server.py")
             return
 
         api_module = importlib.util.module_from_spec(spec)
