@@ -140,3 +140,25 @@ check-system.sh
 # === SCRIPTS DE MANUTENÇÃO ===
 # install.sh - comentado para manter no repo público
 
+
+# === SUPRESSÃO DE WARNINGS ===
+# Arquivos temporários do Pylance/Pyright
+.pyright_cache/
+.pylance_cache/
+pyrightconfig.json.bak
+*.pyc.bak
+
+# Logs de análise estática
+.mypy_cache/
+.pyre/
+.pytype/
+
+# Arquivos de configuração temporários
+.vscode/launch.json
+.vscode/tasks.json
+.vscode/c_cpp_properties.json
+
+# Arquivos de desenvolvimento não essenciais
+**/examples/**/*.pyc
+**/scripts/**/*.pyc
+**/tools/**/*.pyc

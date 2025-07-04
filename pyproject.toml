@@ -1,0 +1,50 @@
+[tool.pyright]
+typeCheckingMode = "off"
+reportGeneralTypeIssues = "none"
+reportMissingImports = "none"
+reportMissingTypeStubs = false
+reportOptionalMemberAccess = "none"
+reportOptionalSubscript = "none"
+reportOptionalIterable = "none"
+reportAttributeAccessIssue = "none"
+reportCallIssue = "none"
+reportArgumentType = "none"
+reportAssignmentType = "none"
+reportOperatorIssue = "none"
+reportIndexIssue = "none"
+reportPrivateUsage = "none"
+reportUnknownParameterType = "none"
+reportUnknownVariableType = "none"
+reportUnknownMemberType = "none"
+reportUnknownArgumentType = "none"
+reportMissingParameterType = "none"
+reportMissingReturnType = "none"
+reportUntypedFunctionDecorator = "none"
+reportIncompatibleMethodOverride = "none"
+reportIncompatibleVariableOverride = "none"
+reportConstantRedefinition = "none"
+reportImportCycles = "none"
+reportUnusedImport = "none"
+reportUnusedClass = "none"
+reportUnusedFunction = "none"
+reportUnusedVariable = "none"
+reportDuplicateImport = "none"
+
+exclude = [
+    "examples/",
+    "scripts/",
+    "tools/",
+    "**/__pycache__",
+    "**/.pytest_cache"
+]
+
+[tool.pylsp-mypy]
+enabled = false
+
+[tool.black]
+line-length = 120
+skip-string-normalization = true
+
+[tool.isort]
+profile = "black"
+line_length = 120

@@ -85,7 +85,7 @@ class CloudConfig:
         """Retorna URL do database baseada no ambiente"""
         if CloudConfig.is_production():
             # Railway automaticamente injeta DATABASE_URL do Neon
-            return os.getenv("DATABASE_URL")
+            return os.getenv("DATABASE_URL") or ""
         else:
             # Local SQLite para desenvolvimento
             return "sqlite:///lore_local.db"

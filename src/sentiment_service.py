@@ -51,16 +51,20 @@ except ImportError:
 
 # Hugging Face Transformers - Estado da arte para análise contextual
 try:
-    from transformers import pipeline
+    from transformers import pipeline  # type: ignore
     TRANSFORMERS_AVAILABLE = True
 except ImportError:
     TRANSFORMERS_AVAILABLE = False
     logging.warning("Transformers não disponível")
-    from nltk.sentiment import SentimentIntensityAnalyzer as NLTKSentimentAnalyzer
-    NLTK_AVAILABLE = True
-except ImportError:
-    NLTK_AVAILABLE = False
-    logging.warning("NLTK VADER não disponível.")
+    pipeline = None  # type: ignore
+    
+    # Fallback para NLTK
+    try:
+        from nltk.sentiment import SentimentIntensityAnalyzer as NLTKSentimentAnalyzer
+        NLTK_AVAILABLE = True
+    except ImportError:
+        NLTK_AVAILABLE = False
+        logging.warning("NLTK VADER não disponível.")
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -232,10 +236,10 @@ class SentimentService:
     
     def _get_transformer_pipeline(self):
         """Carrega o modelo Transformer sob demanda para economizar recursos"""
-        if self.transformer_pipeline is None and TRANSFORMERS_AVAILABLE:
+        if self.transformer_pipeline is None and TRANSFORMERS_AVAILABLE and pipeline:
             try:
                 # Modelo multilingual estável para sentimento 
-                self.transformer_pipeline = pipeline(
+                self.transformer_pipeline = pipeline(  # type: ignore
                     "sentiment-analysis",
                     model="nlptown/bert-base-multilingual-uncased-sentiment"
                 )
@@ -244,7 +248,7 @@ class SentimentService:
                 self.logger.warning(f"Erro ao carregar modelo Transformer: {e}")
                 # Tentar modelo alternativo mais simples
                 try:
-                    self.transformer_pipeline = pipeline("sentiment-analysis")
+                    self.transformer_pipeline = pipeline("sentiment-analysis")  # type: ignore
                     self.logger.info("Modelo Transformer padrão carregado")
                 except Exception as e2:
                     self.logger.warning(f"Erro ao carregar modelo padrão: {e2}")

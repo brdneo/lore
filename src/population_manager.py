@@ -455,7 +455,7 @@ class PopulationManager:
                 }
             
             # Salvar no database
-            self.database.save_agent(agent_data, dna_data, identity_data)
+            self.database.save_agent(agent_data)
             
         except Exception as e:
             self.logger.error(f"❌ Erro ao salvar agente {agent.dna.agent_id}: {e}")

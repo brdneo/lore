@@ -1,5 +1,25 @@
 {
+    "python.analysis.typeCheckingMode": "off",
+    "python.analysis.autoImportCompletions": false,
+    "python.analysis.diagnosticMode": "openFilesOnly",
+    "python.linting.enabled": false,
+    "python.analysis.logLevel": "Error",
+    "python.analysis.useLibraryCodeForTypes": false,
+    "python.analysis.stubPath": "",
+    "python.analysis.extraPaths": [],
+    "python.analysis.exclude": [
+        "**/examples/**",
+        "**/scripts/**",
+        "**/tools/**",
+        "**/__pycache__/**",
+        "**/.pytest_cache/**"
+    ],
+    "files.associations": {
+        "*.py": "python"
+    },
+    "python.defaultInterpreterPath": "./.venv/bin/python",
     "markdownlint.config": {
+        "MD009": false,
         "MD026": false,
         "MD030": false,
         "MD050": false,
@@ -10,28 +30,5 @@
         "MD032": false,
         "MD031": false,
         "MD036": false
-    },
-    "files.trimTrailingWhitespace": true,
-    "files.insertFinalNewline": true,
-    "markdown.validate.enabled": false,
-
-    // Python Configuration
-    "python.analysis.extraPaths": ["./src"],
-    "python.defaultInterpreterPath": "./.venv/bin/python",
-    "python.analysis.autoSearchPaths": true,
-    "python.analysis.diagnosticMode": "workspace",
-    "python.analysis.typeCheckingMode": "off",
-    "python.linting.enabled": false,
-    "python.linting.pylintEnabled": false,
-    "python.linting.flake8Enabled": false,
-    "files.exclude": {
-        "**/__pycache__": true,
-        "**/*.pyc": true,
-        "**/.pytest_cache": true,
-        "**/node_modules": true,
-        "**/.git": false
-    },
-    "python.testing.pytestEnabled": true,
-    "python.testing.pytestArgs": ["tests"],
-    "python.envFile": "${workspaceFolder}/.env"
+    }
 }

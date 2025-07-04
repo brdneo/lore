@@ -22,6 +22,7 @@ from typing import Dict, List, Set, Optional, Any, Tuple
 from dataclasses import dataclass, field
 import logging
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D  # type: ignore
 import seaborn as sns
 
 from neural_web import NeuralWeb, ConnectionType
@@ -112,8 +113,20 @@ class SocialNetworkManager:
         """Converte agentes da população em agentes sociais"""
         for agent_id, agent_data in self.population_manager.agents.items():
             if agent_id not in self.social_agents:
-                # Reconstrói DNA do agente
-                dna = AgentDNA()
+                # Reconstrói DNA do agente - usando valores padrão para evitar erro de tipagem
+                dna = AgentDNA(  # type: ignore
+                    agent_id=agent_id,
+                    generation=agent_data.get('generation', 0),
+                    parent_ids=[],
+                    birth_timestamp=datetime.now().isoformat(),
+                    limbo_genes={},
+                    odyssey_genes={},
+                    ritual_genes={},
+                    engine_genes={},
+                    logs_genes={},
+                    fitness_scores={},
+                    mutation_history=[]
+                )
                 dna.genes = agent_data['dna']
                 
                 # Cria agente social
@@ -770,12 +783,12 @@ class SocialNetworkManager:
                 influence = self.neural_web.agent_metrics.get(node, type('obj', (object,), {'influence_score': 0})).influence_score
                 node_sizes.append(200 + influence * 800)
             
-            nx.draw_networkx_nodes(G, pos, node_color=node_colors, node_size=node_sizes, alpha=0.8)
+            nx.draw_networkx_nodes(G, pos, node_color=node_colors, node_size=node_sizes, alpha=0.8)  # type: ignore
             
             # Desenha arestas com espessura baseada na força
             edges = G.edges()
             edge_weights = [G[u][v]['weight'] for u, v in edges]
-            nx.draw_networkx_edges(G, pos, width=[w*3 for w in edge_weights], alpha=0.6, edge_color='gray')
+            nx.draw_networkx_edges(G, pos, width=[w*3 for w in edge_weights], alpha=0.6, edge_color='gray')  # type: ignore
             
             # Labels
             nx.draw_networkx_labels(G, pos, font_size=8)
@@ -784,7 +797,7 @@ class SocialNetworkManager:
             plt.axis('off')
             
             # Legenda
-            legend_elements = [plt.Line2D([0], [0], marker='o', color='w', 
+            legend_elements = [Line2D([0], [0], marker='o', color='w', 
                                         markerfacecolor=color, markersize=10, label=personality)
                              for personality, color in personality_colors.items()]
             plt.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.15, 1))
