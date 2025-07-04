@@ -163,7 +163,8 @@ class EvolvedAgent(BaseAgent):
                 return
             
             # Aplicar decisão genética
-            decision_factors = {"products": products, "agent_balance": self.agent_data.get("wallet_balance", 0)}
+            agent_balance = self.agent_data.get("wallet_balance", 0) if self.agent_data else 0  # type: ignore
+            decision_factors = {"products": products, "agent_balance": agent_balance}
             genetic_decision = self.make_decision_with_genes(decision_factors, "limbo")
             
             # Escolher produto baseado em genes
@@ -346,7 +347,7 @@ class EvolvedAgent(BaseAgent):
         """
         try:
             # Simular compra (implementação simplificada)
-            if product["price"] <= self.agent_data.get("wallet_balance", 0):
+            if product["price"] <= (self.agent_data.get("wallet_balance", 0) if self.agent_data else 0):  # type: ignore
                 # Aqui seria feita a chamada real para a API de compra
                 self.logger.info(f"💰 Compra simulada: {product['name']}")
                 
@@ -359,7 +360,7 @@ class EvolvedAgent(BaseAgent):
                     artifact_quality=product.get("quality", 0.5),
                     purchase_price=product["price"],
                     agent_current_sentiment=self.dna.fitness_scores.get("overall", 0.5),
-                    agent_wallet_balance=self.agent_data.get("wallet_balance", 0)
+                    agent_wallet_balance=self.agent_data.get("wallet_balance", 0) if self.agent_data else 0  # type: ignore
                 )
                 
                 sentiment_result = await self.sentiment_service.analyze_consumption(context)

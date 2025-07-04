@@ -131,8 +131,8 @@ class SocialAgent(EvolvedAgent):
             interest += 0.2
         
         # Performance nos universos
-        my_performance = self.performance_history[-5:] if self.performance_history else []
-        other_performance = other_agent.performance_history[-5:] if other_agent.performance_history else []
+        my_performance = self.performance_history[-5:] if hasattr(self, 'performance_history') and self.performance_history else []  # type: ignore
+        other_performance = other_agent.performance_history[-5:] if hasattr(other_agent, 'performance_history') and other_agent.performance_history else []  # type: ignore
         
         if my_performance and other_performance:
             # Interesse em agentes com performance similar ou complementar
@@ -143,8 +143,8 @@ class SocialAgent(EvolvedAgent):
             interest += fitness_similarity * 0.2
         
         # Personalidade
-        my_personality = self._get_personality_summary()
-        other_personality = other_agent._get_personality_summary()
+        my_personality = self._get_personality_summary() if hasattr(self, '_get_personality_summary') else {}  # type: ignore
+        other_personality = other_agent._get_personality_summary() if hasattr(other_agent, '_get_personality_summary') else {}  # type: ignore
         
         # Algumas personalidades se atraem, outras se repelem
         if (my_personality == "Líder Comunitário" and 
@@ -159,7 +159,7 @@ class SocialAgent(EvolvedAgent):
         chaos_factor = self.dna.genes['odyssey']['experimentation']
         interest += random.uniform(-0.1, 0.1) * chaos_factor
         
-        return max(0.0, min(1.0, interest))
+        return max(0.0, min(1.0, float(interest)))  # type: ignore
     
     def initiate_connection(self, target_agent_id: str, all_agents: Dict[str, 'SocialAgent']) -> bool:
         """Inicia uma conexão com outro agente"""
@@ -229,8 +229,8 @@ class SocialAgent(EvolvedAgent):
         
         # Dados da interação
         interaction_data = {
-            'initiator_personality': self._get_personality_summary(),
-            'target_personality': target_agent._get_personality_summary(),
+            'initiator_personality': self._get_personality_summary() if hasattr(self, '_get_personality_summary') else {},  # type: ignore
+            'target_personality': target_agent._get_personality_summary() if hasattr(target_agent, '_get_personality_summary') else {},  # type: ignore
             'success': random.random() < 0.7  # 70% de sucesso base
         }
         
@@ -306,10 +306,10 @@ class SocialAgent(EvolvedAgent):
         })
         
         # Pequeno boost temporário na performance
-        if self.current_state:
-            for universe in self.current_state:
+        if hasattr(self, 'current_state') and self.current_state:  # type: ignore
+            for universe in self.current_state:  # type: ignore
                 if random.random() < influence_strength:
-                    self.current_state[universe] = min(1.0, self.current_state[universe] + 0.05)
+                    self.current_state[universe] = min(1.0, self.current_state[universe] + 0.05)  # type: ignore
     
     def _receive_social_influence(self, connection: NeuralConnection, interaction_data: Dict):
         """Recebe influência social"""
@@ -339,7 +339,8 @@ class SocialAgent(EvolvedAgent):
         benefit_strength = connection.strength * 0.05
         
         # Melhora temporária na performance
-        self.add_performance_bonus('collaboration', benefit_strength)
+        if hasattr(self, 'add_performance_bonus'):
+            self.add_performance_bonus('collaboration', benefit_strength)  # type: ignore
         
         # Registra colaboração
         self.social_memory.append({

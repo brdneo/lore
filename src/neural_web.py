@@ -18,7 +18,7 @@ import json
 import random
 import numpy as np
 from datetime import datetime, timedelta
-from typing import Dict, List, Set, Tuple, Optional, Any
+from typing import Dict, List, Set, Tuple, Optional, Any, Union
 from dataclasses import dataclass, field
 from enum import Enum
 import logging
@@ -139,7 +139,7 @@ class NeuralWeb:
     
     def create_connection(self, agent_id: str, target_id: str, 
                          agent_dna: Dict, target_dna: Dict,
-                         connection_type: ConnectionType = None) -> Optional[NeuralConnection]:
+                         connection_type: Optional[ConnectionType] = None) -> Optional[NeuralConnection]:
         """Cria uma conexão neural entre dois agentes"""
         if agent_id == target_id:
             return None

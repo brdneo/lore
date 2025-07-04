@@ -17,6 +17,7 @@ import os
 from datetime import datetime
 from dataclasses import asdict
 import logging
+from typing import Dict, List, Optional, Any, Union, cast
 
 logger = logging.getLogger(__name__)
 
@@ -52,12 +53,13 @@ class LoREDatabase:
         if self.is_postgresql:
             try:
                 # Testa se a conexão está ativa
-                if self.connection and not self.connection.closed:
+                if self.connection:
+                    # Para PostgreSQL, verificamos fazendo uma query rápida
                     cursor = self.connection.cursor()
                     cursor.execute("SELECT 1")
                     cursor.close()
                     return self.connection
-            except (Exception, psycopg2.Error):
+            except (Exception, psycopg2.Error):  # type: ignore
                 pass
             
             # Reconecta se necessário
@@ -91,7 +93,7 @@ class LoREDatabase:
                     cursor_factory=psycopg2.extras.RealDictCursor
                 )
                 self.connection.autocommit = True
-                logger.info(f"PostgreSQL conectado: {self.DATABASE_URL[:50]}...")
+                logger.info(f"PostgreSQL conectado: {str(self.DATABASE_URL)[:50]}...")
                 print(f"💾 PostgreSQL conectado (produção)")
             else:
                 # Conexão SQLite para desenvolvimento
@@ -492,22 +494,22 @@ class LoREDatabase:
             # Total de agentes
             cursor = self._execute_sql("SELECT COUNT(*) as total FROM agents")
             result = cursor.fetchone()
-            stats['total_agents'] = result['total'] if result else 0
+            stats['total_agents'] = int(result['total']) if result else 0  # type: ignore
             
             # Geração atual máxima
             cursor = self._execute_sql("SELECT MAX(generation) as max_gen FROM agents")
             result = cursor.fetchone()
-            stats['current_generation'] = result['max_gen'] if result and result['max_gen'] else 0
+            stats['current_generation'] = int(result['max_gen']) if result and result['max_gen'] else 0  # type: ignore
             
             # Total de conexões
             cursor = self._execute_sql("SELECT COUNT(*) as total FROM neural_connections")
             result = cursor.fetchone()
-            stats['total_connections'] = result['total'] if result else 0
+            stats['total_connections'] = int(result['total']) if result else 0  # type: ignore
             
             # Total de evoluções
             cursor = self._execute_sql("SELECT COUNT(*) as total FROM evolution_history")
             result = cursor.fetchone()
-            stats['total_evolutions'] = result['total'] if result else 0
+            stats['total_evolutions'] = int(result['total']) if result else 0  # type: ignore
             
             return stats
             

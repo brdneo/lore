@@ -1,0 +1,12 @@
+{
+  "python.analysis.ignore": [
+    "**/examples/**",
+    "**/scripts/**",
+    "**/tools/**"
+  ],
+  "python.analysis.exclude": [
+    "**/examples/**",
+    "**/scripts/**", 
+    "**/tools/**"
+  ]
+}

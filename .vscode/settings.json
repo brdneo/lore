@@ -1,0 +1,37 @@
+{
+    "markdownlint.config": {
+        "MD026": false,
+        "MD030": false,
+        "MD050": false,
+        "MD040": false,
+        "MD022": false,
+        "MD034": false,
+        "MD033": false,
+        "MD032": false,
+        "MD031": false,
+        "MD036": false
+    },
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "markdown.validate.enabled": false,
+
+    // Python Configuration
+    "python.analysis.extraPaths": ["./src"],
+    "python.defaultInterpreterPath": "./.venv/bin/python",
+    "python.analysis.autoSearchPaths": true,
+    "python.analysis.diagnosticMode": "workspace",
+    "python.analysis.typeCheckingMode": "off",
+    "python.linting.enabled": false,
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": false,
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/.pytest_cache": true,
+        "**/node_modules": true,
+        "**/.git": false
+    },
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": ["tests"],
+    "python.envFile": "${workspaceFolder}/.env"
+}

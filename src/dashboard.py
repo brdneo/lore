@@ -243,7 +243,7 @@ def main():
     
     with col3:
         best_agent = df.loc[df['fitness_overall'].idxmax()]
-        st.metric("Melhor Agente", best_agent['nickname'])
+        st.metric("Melhor Agente", str(best_agent['nickname']))  # type: ignore
     
     with col4:
         personalities = df['personality'].nunique()
