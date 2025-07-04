@@ -33,17 +33,23 @@
 
 ## ⚠️ **O QUE PRECISA SER VERIFICADO**
 
-### 🚂 **Railway Deployment**
-- ❌ **URLs testadas não respondem**:
-  - https://lore-production.up.railway.app (404)
-  - https://lore-na-production.up.railway.app (404)
-  - https://web-production-a5a3ol11.up.railway.app (404)
+### 🚂 **Railway Deployment - DADOS REAIS CONFIRMADOS**
 
-- 🔍 **Possíveis cenários**:
-  1. **Deploy pausado** por inatividade
-  2. **URL diferente** da estimada
-  3. **Projeto removido** por limpeza
-  4. **Conta Railway** precisa reativar
+#### **Configuração Real do Projeto**
+- **Projeto ID**: `e20bef32-6bb9-4670-8a79-c60fa4939e71`
+- **Serviço ID**: `e5b3e063-be8f-409a-8c78-26dc34fbfa51`
+- **Ambiente ID**: `9c86a94e-8c19-47e6-a5e0-5c6a9e27b4b8`
+- **Domínio Público**: `lore-na-production.up.railway.app`
+- **Domínio Privado**: `lore-na-production.railway.internal`
+- **SSH**: `ssh root@containers-us-west1.railway.app -p 30625`
+
+#### **URLs de Acesso**
+- **Principal**: https://lore-na-production.up.railway.app
+- **Health Check**: https://lore-na-production.up.railway.app/health
+- **API Status**: https://lore-na-production.up.railway.app/api/status
+
+#### **Status Atual**
+- 🔍 **Verificação necessária**: URL correta confirmada, status a ser testado
 
 ---
 

@@ -1,0 +1,65 @@
+{
+  "timestamp": "2025-07-03 23:42:18",
+  "railway_config": {
+    "projectId": "e20bef32-6bb9-4670-8a79-c60fa4939e71",
+    "serviceId": "e5b3e063-be8f-409a-8c78-26dc34fbfa51",
+    "environmentId": "9c86a94e-8c19-47e6-a5e0-5c6a9e27b4b8",
+    "privateDomain": "lore-na-production.railway.internal",
+    "publicDomain": "lore-na-production.up.railway.app",
+    "sshConnection": "ssh root@containers-us-west1.railway.app -p 30625"
+  },
+  "status_checks": {
+    "https://lore-na-production.up.railway.app": {
+      "url": "https://lore-na-production.up.railway.app",
+      "status_code": 404,
+      "response_time": 0.762664,
+      "accessible": true,
+      "content_length": 101,
+      "headers": {
+        "Content-Length": "101",
+        "Content-Type": "application/json",
+        "Server": "railway-edge",
+        "X-Railway-Edge": "railway/us-east4",
+        "X-Railway-Fallback": "true",
+        "X-Railway-Request-Id": "fZQXJYxlRfu5d1ise6l53A",
+        "Date": "Fri, 04 Jul 2025 02:42:19 GMT"
+      },
+      "error": "Not Found"
+    },
+    "https://lore-na-production.up.railway.app/health": {
+      "url": "https://lore-na-production.up.railway.app/health",
+      "status_code": 404,
+      "response_time": 0.708601,
+      "accessible": true,
+      "content_length": 101,
+      "headers": {
+        "Content-Length": "101",
+        "Content-Type": "application/json",
+        "Server": "railway-edge",
+        "X-Railway-Edge": "railway/us-east4",
+        "X-Railway-Fallback": "true",
+        "X-Railway-Request-Id": "QuGwK-QeSquidUZTe6l53A",
+        "Date": "Fri, 04 Jul 2025 02:42:20 GMT"
+      },
+      "error": "Not Found"
+    },
+    "https://lore-na-production.up.railway.app/api/status": {
+      "url": "https://lore-na-production.up.railway.app/api/status",
+      "status_code": 404,
+      "response_time": 0.787848,
+      "accessible": true,
+      "content_length": 101,
+      "headers": {
+        "Content-Length": "101",
+        "Content-Type": "application/json",
+        "Server": "railway-edge",
+        "X-Railway-Edge": "railway/us-east4",
+        "X-Railway-Fallback": "true",
+        "X-Railway-Request-Id": "NNM5c9NbSOu-gPoLNJjgjg",
+        "Date": "Fri, 04 Jul 2025 02:42:21 GMT"
+      },
+      "error": "Not Found"
+    }
+  },
+  "deploy_status": "INACTIVE"
+}

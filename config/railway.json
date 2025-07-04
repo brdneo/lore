@@ -1,4 +1,10 @@
 {
+    "projectId": "e20bef32-6bb9-4670-8a79-c60fa4939e71",
+    "serviceId": "e5b3e063-be8f-409a-8c78-26dc34fbfa51",
+    "environmentId": "9c86a94e-8c19-47e6-a5e0-5c6a9e27b4b8",
+    "privateDomain": "lore-na-production.railway.internal",
+    "publicDomain": "lore-na-production.up.railway.app",
+    "sshConnection": "ssh root@containers-us-west1.railway.app -p 30625",
     "build": {
         "builder": "NIXPACKS"
     },
