@@ -29,9 +29,10 @@ python start.py --full
 ```
 
 ### **Acesso Imediato**
-- **🌐 API Server**: http://localhost:8000
-- **📖 Documentação**: http://localhost:8000/docs
-- **📊 Dashboard**: http://localhost:8501
+
+-   **🌐 API Server**: http://localhost:8000
+-   **📖 Documentação**: http://localhost:8000/docs
+-   **📊 Dashboard**: http://localhost:8501
 
 ---
 
@@ -39,57 +40,65 @@ python start.py --full
 
 O **Lore N.A.** é um sistema experimental de **vida artificial** onde agentes neurais autônomos:
 
-- 🧬 **Evoluem** com DNA único e hereditário
-- 💭 **Desenvolvem** personalidades complexas
-- 🤝 **Interagem** em uma rede social dinâmica
-- 💰 **Participam** de uma economia emocional
-- 🧠 **Aprendem** com análise de sentimento avançada
-- 🌱 **Emergem** comportamentos não programados
+-   🧬 **Evoluem** com DNA único e hereditário
+-   💭 **Desenvolvem** personalidades complexas
+-   🤝 **Interagem** em uma rede social dinâmica
+-   💰 **Participam** de uma economia emocional
+-   🧠 **Aprendem** com análise de sentimento avançada
+-   🌱 **Emergem** comportamentos não programados
 
 ### 🔬 Características Científicas
 
-- **Algoritmos Genéticos**: DNA evolutivo com mutação e seleção
-- **Redes Neurais**: Tomada de decisão adaptativa
-- **Análise de Sentimento**: IA híbrida (VADER + TextBlob + Transformers)
-- **Economia Comportamental**: Trocas baseadas em emoções
-- **Sistemas Complexos**: Emergência de padrões sociais
+-   **Algoritmos Genéticos**: DNA evolutivo com mutação e seleção
+-   **Redes Neurais**: Tomada de decisão adaptativa
+-   **Análise de Sentimento**: IA híbrida (VADER + TextBlob + Transformers)
+-   **Economia Comportamental**: Trocas baseadas em emoções
+-   **Sistemas Complexos**: Emergência de padrões sociais
 
 ---
 
 ## 🚀 Modos de Execução
 
 ### **1. Modo Completo (Recomendado)**
+
 ```bash
 python start.py --full
 ```
-- ✅ API Server + Dashboard
-- ✅ Interface completa
-- ✅ Monitoramento em tempo real
+
+-   ✅ API Server + Dashboard
+-   ✅ Interface completa
+-   ✅ Monitoramento em tempo real
 
 ### **2. Apenas API**
+
 ```bash
 python start.py
 ```
-- ✅ Servidor RESTful
-- ✅ 14 endpoints disponíveis
-- ✅ Documentação automática
+
+-   ✅ Servidor RESTful
+-   ✅ 14 endpoints disponíveis
+-   ✅ Documentação automática
 
 ### **3. Apenas Dashboard**
+
 ```bash
 python start.py --dash
 ```
-- ✅ Interface visual
-- ✅ Gráficos interativos
-- ✅ Controles de experimento
+
+-   ✅ Interface visual
+-   ✅ Gráficos interativos
+-   ✅ Controles de experimento
 
 ### **4. Validação Completa**
+
 ```bash
 python validate_project.py
 ```
-- ✅ Verifica dependências
-- ✅ Testa imports
-- ✅ Executa testes unitários
-- ✅ Valida estrutura
+
+-   ✅ Verifica dependências
+-   ✅ Testa imports
+-   ✅ Executa testes unitários
+-   ✅ Valida estrutura
 
 ---
 
@@ -98,7 +107,7 @@ python validate_project.py
 ```
 lore/
 ├── 🚀 start.py                   # Inicializador principal
-├── 🧪 validate_project.py        # Validador completo  
+├── 🧪 validate_project.py        # Validador completo
 ├── 📖 QUICKSTART.md              # Guia rápido
 ├── 📊 RELATORIO-FINAL.md         # Análise técnica
 │
@@ -122,76 +131,88 @@ lore/
 ## 🤖 Tipos de Agentes
 
 ### **🤝 Social Agent**
-- Busca conexões e relacionamentos
-- Valoriza interação social
-- Compartilha recursos facilmente
 
-### **💰 Frugal Agent** 
-- Foco em eficiência econômica
-- Decisões baseadas em custo-benefício
-- Acumula recursos estrategicamente
+-   Busca conexões e relacionamentos
+-   Valoriza interação social
+-   Compartilha recursos facilmente
+
+### **💰 Frugal Agent**
+
+-   Foco em eficiência econômica
+-   Decisões baseadas em custo-benefício
+-   Acumula recursos estrategicamente
 
 ### **🧬 Evolved Agent**
-- DNA altamente desenvolvido
-- Comportamentos adaptativos complexos
-- Múltiplas estratégias de sobrevivência
+
+-   DNA altamente desenvolvido
+-   Comportamentos adaptativos complexos
+-   Múltiplas estratégias de sobrevivência
 
 ---
 
 ## 🔧 Tecnologias
 
 ### **Backend**
-- **FastAPI**: API RESTful moderna
-- **SQLAlchemy**: ORM para persistência
-- **PostgreSQL/SQLite**: Banco de dados
-- **Uvicorn**: Servidor ASGI de alta performance
 
-### **Frontend**  
-- **Streamlit**: Dashboard interativo
-- **Plotly**: Visualizações dinâmicas
-- **Altair**: Gráficos estatísticos
+-   **FastAPI**: API RESTful moderna
+-   **SQLAlchemy**: ORM para persistência
+-   **PostgreSQL/SQLite**: Banco de dados
+-   **Uvicorn**: Servidor ASGI de alta performance
+
+### **Frontend**
+
+-   **Streamlit**: Dashboard interativo
+-   **Plotly**: Visualizações dinâmicas
+-   **Altair**: Gráficos estatísticos
 
 ### **IA/ML**
-- **Transformers**: Modelos de linguagem (Hugging Face)
-- **VADER**: Análise de sentimento especializada
-- **TextBlob**: Processamento de linguagem natural
-- **NLTK**: Toolkit de linguística
+
+-   **Transformers**: Modelos de linguagem (Hugging Face)
+-   **VADER**: Análise de sentimento especializada
+-   **TextBlob**: Processamento de linguagem natural
+-   **NLTK**: Toolkit de linguística
 
 ### **Deploy**
-- **Railway**: Hospedagem cloud
-- **Docker**: Containerização
-- **GitHub Actions**: CI/CD
+
+-   **Railway**: Hospedagem cloud
+-   **Docker**: Containerização
+-   **GitHub Actions**: CI/CD
 
 ---
 
 ## 📊 API Endpoints
 
 ### **Agentes**
-- `GET /agents` - Listar todos os agentes
-- `POST /agents` - Criar novo agente
-- `GET /agents/{id}` - Detalhes do agente
-- `PUT /agents/{id}` - Atualizar agente
-- `DELETE /agents/{id}` - Remover agente
+
+-   `GET /agents` - Listar todos os agentes
+-   `POST /agents` - Criar novo agente
+-   `GET /agents/{id}` - Detalhes do agente
+-   `PUT /agents/{id}` - Atualizar agente
+-   `DELETE /agents/{id}` - Remover agente
 
 ### **População**
-- `GET /population/stats` - Estatísticas gerais
-- `GET /population/evolution` - Histórico evolutivo
-- `GET /population/top` - Top performers
+
+-   `GET /population/stats` - Estatísticas gerais
+-   `GET /population/evolution` - Histórico evolutivo
+-   `GET /population/top` - Top performers
 
 ### **Economia**
-- `GET /economy/transactions` - Histórico de trocas
-- `GET /economy/market` - Estado do mercado
-- `POST /economy/trade` - Executar troca
+
+-   `GET /economy/transactions` - Histórico de trocas
+-   `GET /economy/market` - Estado do mercado
+-   `POST /economy/trade` - Executar troca
 
 ### **Sentimento**
-- `POST /sentiment/analyze` - Analisar texto
-- `GET /sentiment/history` - Histórico de análises
+
+-   `POST /sentiment/analyze` - Analisar texto
+-   `GET /sentiment/history` - Histórico de análises
 
 ---
 
 ## 🧪 Exemplos de Uso
 
 ### **Criar Agente via API**
+
 ```python
 import requests
 
@@ -207,6 +228,7 @@ print(f"Agente criado: {agent['name']}")
 ```
 
 ### **Análise de Sentimento**
+
 ```python
 from src.sentiment_service import SentimentService
 
@@ -216,6 +238,7 @@ print(f"Score: {result.sentiment_score}")
 ```
 
 ### **Executar Simulação**
+
 ```python
 from src.population_manager import PopulationManager
 
@@ -230,6 +253,7 @@ print(f"Geração: {stats.generation}")
 ## 🔬 Experimentos Científicos
 
 ### **1. Evolução Darwiniana**
+
 ```bash
 # Executar 100 gerações
 python -c "
@@ -242,6 +266,7 @@ for i in range(100):
 ```
 
 ### **2. Economia Emergente**
+
 ```bash
 # Simular mercado por 24h
 python -c "
@@ -252,6 +277,7 @@ sim.run_market_simulation(hours=24)
 ```
 
 ### **3. Análise de Rede Social**
+
 ```bash
 # Mapear conexões sociais
 python -c "
@@ -267,13 +293,15 @@ network.export_graph('social_network.png')
 ## 📈 Métricas e Monitoramento
 
 ### **Dashboard Streamlit**
-- 📊 População em tempo real
-- 📈 Gráficos de evolução
-- 🎯 Top performers
-- 💰 Estado da economia
-- 🧠 Análises de sentimento
+
+-   📊 População em tempo real
+-   📈 Gráficos de evolução
+-   🎯 Top performers
+-   💰 Estado da economia
+-   🧠 Análises de sentimento
 
 ### **Logs do Sistema**
+
 ```bash
 tail -f logs/lore_system.log    # Sistema geral
 tail -f logs/agents.log         # Atividade dos agentes
@@ -285,6 +313,7 @@ tail -f logs/economy.log        # Transações econômicas
 ## 🚀 Deploy em Produção
 
 ### **Railway (Recomendado)**
+
 ```bash
 # O projeto já está configurado
 git push origin main
@@ -292,12 +321,14 @@ git push origin main
 ```
 
 ### **Docker**
+
 ```bash
 cd config
 docker-compose up -d
 ```
 
 ### **Heroku**
+
 ```bash
 heroku create lore-neural-life
 git push heroku main
@@ -308,11 +339,13 @@ git push heroku main
 ## 🧪 Testes
 
 ### **Executar Todos os Testes**
+
 ```bash
 python validate_project.py
 ```
 
 ### **Testes Específicos**
+
 ```bash
 # Teste de sentimento
 python tests/unit/test_sentiment_service.py
@@ -329,6 +362,7 @@ pytest tests/integration/test_api.py
 ## 🔧 Configuração Avançada
 
 ### **Variáveis de Ambiente**
+
 ```bash
 export DATABASE_URL="postgresql://user:pass@host:5432/lore"
 export API_BASE_URL="http://localhost:8000"
@@ -337,11 +371,12 @@ export LOG_LEVEL="INFO"
 ```
 
 ### **Configurações de IA**
+
 ```python
 # config/ai_settings.py
 SENTIMENT_CONFIG = {
     "vader_weight": 0.3,
-    "textblob_weight": 0.3, 
+    "textblob_weight": 0.3,
     "transformers_weight": 0.4,
     "model_name": "cardiffnlp/twitter-roberta-base-sentiment"
 }
@@ -358,21 +393,22 @@ SENTIMENT_CONFIG = {
 5. **Abra** um Pull Request
 
 ### **Áreas de Contribuição**
-- 🧠 Algoritmos de IA mais avançados
-- 📊 Novas visualizações
-- 🤖 Tipos adicionais de agentes
-- 🔬 Experimentos científicos
-- 📚 Documentação e tutoriais
+
+-   🧠 Algoritmos de IA mais avançados
+-   📊 Novas visualizações
+-   🤖 Tipos adicionais de agentes
+-   🔬 Experimentos científicos
+-   📚 Documentação e tutoriais
 
 ---
 
 ## 📚 Documentação Técnica
 
-- **[Guia Rápido](QUICKSTART.md)** - Como começar em 2 minutos
-- **[Relatório Final](RELATORIO-FINAL.md)** - Análise técnica completa
-- **[Arquitetura](docs/project/ESTRUTURA.md)** - Design do sistema
-- **[Deploy](docs/deployment/DEPLOY-GUIDE.md)** - Guia de produção
-- **[API Docs](http://localhost:8000/docs)** - Documentação interativa
+-   **[Guia Rápido](QUICKSTART.md)** - Como começar em 2 minutos
+-   **[Relatório Final](RELATORIO-FINAL.md)** - Análise técnica completa
+-   **[Arquitetura](docs/project/ESTRUTURA.md)** - Design do sistema
+-   **[Deploy](docs/deployment/DEPLOY-GUIDE.md)** - Guia de produção
+-   **[API Docs](http://localhost:8000/docs)** - Documentação interativa
 
 ---
 
@@ -380,29 +416,31 @@ SENTIMENT_CONFIG = {
 
 **✅ PROJETO 100% FUNCIONAL E VALIDADO**
 
-- ✅ **16 módulos** Python funcionando
-- ✅ **14 endpoints** API testados  
-- ✅ **Dashboard** interativo operacional
-- ✅ **Testes automatizados** passando
-- ✅ **IA híbrida** de sentimento ativa
-- ✅ **Deploy configs** prontas
-- ✅ **Documentação** completa
+-   ✅ **16 módulos** Python funcionando
+-   ✅ **14 endpoints** API testados
+-   ✅ **Dashboard** interativo operacional
+-   ✅ **Testes automatizados** passando
+-   ✅ **IA híbrida** de sentimento ativa
+-   ✅ **Deploy configs** prontas
+-   ✅ **Documentação** completa
 
 ---
 
 ## 🎯 Próximos Desenvolvimentos
 
 ### **V2.0 (Q3 2025)**
-- 🧠 Redes neurais mais profundas
-- 🌍 Ambiente 3D para agentes
-- 🔊 Comunicação por voz
-- 📱 App mobile
+
+-   🧠 Redes neurais mais profundas
+-   🌍 Ambiente 3D para agentes
+-   🔊 Comunicação por voz
+-   📱 App mobile
 
 ### **V2.1 (Q4 2025)**
-- 🤖 Integração com LLMs
-- 🎮 Interface gamificada
-- ☁️ Computação distribuída
-- 📊 Analytics avançados
+
+-   🤖 Integração com LLMs
+-   🎮 Interface gamificada
+-   ☁️ Computação distribuída
+-   📊 Analytics avançados
 
 ---
 
@@ -414,10 +452,10 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](L
 
 ## 🌟 Agradecimentos
 
-- **Rick and Morty** pela inspiração do conceito
-- **Comunidade Python** pelas bibliotecas incríveis
-- **Hugging Face** pelos modelos de IA
-- **Streamlit Team** pelo framework fantástico
+-   **Rick and Morty** pela inspiração do conceito
+-   **Comunidade Python** pelas bibliotecas incríveis
+-   **Hugging Face** pelos modelos de IA
+-   **Streamlit Team** pelo framework fantástico
 
 ---
 
@@ -425,7 +463,7 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](L
 
 **🌟 Feito com ❤️ pela Lore N.A. Genesis Team 🌟**
 
-*"Where artificial life meets real intelligence"*
+_"Where artificial life meets real intelligence"_
 
 [⭐ Star no GitHub](https://github.com/brdneo/lore) • [🐛 Report Bug](https://github.com/brdneo/lore/issues) • [✨ Request Feature](https://github.com/brdneo/lore/issues)
 

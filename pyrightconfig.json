@@ -1,0 +1,38 @@
+{
+    "include": [
+        "src",
+        "tests",
+        "main.py",
+        "start.py",
+        "validate_project.py"
+    ],
+    "exclude": [
+        "**/__pycache__",
+        "**/.pytest_cache",
+        "**/node_modules",
+        "**/.venv"
+    ],
+    "extraPaths": [
+        "./src"
+    ],
+    "pythonVersion": "3.12",
+    "pythonPlatform": "Linux",
+    "typeCheckingMode": "basic",
+    "useLibraryCodeForTypes": true,
+    "autoImportCompletions": true,
+    "reportMissingImports": "warning",
+    "reportMissingTypeStubs": false,
+    "reportGeneralTypeIssues": "warning",
+    "reportOptionalMemberAccess": "warning",
+    "reportOptionalSubscript": "warning",
+    "reportOptionalIterable": "warning",
+    "reportUntypedFunctionDecorator": false,
+    "reportUnknownParameterType": false,
+    "reportUnknownVariableType": false,
+    "reportUnknownMemberType": false,
+    "reportMissingParameterType": false,
+    "reportMissingReturnType": false,
+    "reportUnknownArgumentType": false,
+    "venvPath": "./",
+    "venv": ".venv"
+}

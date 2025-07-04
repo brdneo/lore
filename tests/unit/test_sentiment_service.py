@@ -6,12 +6,32 @@ Teste completo do SentimentService híbrido para o projeto Lore N.A.
 import sys
 import os
 
+import sys
+import os
+import importlib.util
+
 # Adicionar o diretório src ao path
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 src_path = os.path.join(project_root, 'src')
 sys.path.insert(0, src_path)
 
-from sentiment_service import SentimentService, ConsumptionContext
+# Import with proper error handling
+try:
+    from sentiment_service import SentimentService, ConsumptionContext  # type: ignore
+except ImportError:
+    # Fallback import using importlib
+    spec = importlib.util.spec_from_file_location(
+        "sentiment_service", 
+        os.path.join(src_path, "sentiment_service.py")
+    )
+    if spec is not None and spec.loader is not None:
+        sentiment_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(sentiment_module)
+        SentimentService = sentiment_module.SentimentService  # type: ignore
+        ConsumptionContext = sentiment_module.ConsumptionContext  # type: ignore
+    else:
+        raise ImportError("Could not load sentiment_service module")
+
 import asyncio
 
 async def test_sentiment_service():

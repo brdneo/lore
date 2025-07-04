@@ -28,7 +28,22 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 def start_api_server(port=8000):
     """Inicia o servidor API"""
     try:
-        from api_server import app
+        # Import with proper error handling
+        import importlib.util
+        
+        # Import api_server module
+        src_path = os.path.join(os.path.dirname(__file__), 'src')
+        spec = importlib.util.spec_from_file_location(
+            "api_server", 
+            os.path.join(src_path, "api_server.py")
+        )
+        if spec is not None and spec.loader is not None:
+            api_module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(api_module)
+            app = api_module.app  # type: ignore
+        else:
+            raise ImportError("Could not load api_server module")
+        
         import uvicorn
 
         host = "0.0.0.0"

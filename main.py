@@ -42,7 +42,27 @@ def install_dependencies():
 def start_api_server():
     """Inicia o servidor API"""
     try:
-        from api_server import app
+        # Import with proper error handling
+        import sys
+        import os
+        import importlib.util
+        
+        # Add src to path
+        src_path = os.path.join(os.path.dirname(__file__), 'src')
+        sys.path.insert(0, src_path)
+        
+        # Import api_server module
+        spec = importlib.util.spec_from_file_location(
+            "api_server", 
+            os.path.join(src_path, "api_server.py")
+        )
+        if spec is not None and spec.loader is not None:
+            api_module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(api_module)
+            app = api_module.app  # type: ignore
+        else:
+            raise ImportError("Could not load api_server module")
+        
         import uvicorn
 
         port = int(os.getenv("PORT", 8000))

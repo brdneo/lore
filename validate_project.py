@@ -129,7 +129,7 @@ def check_dependencies():
     # Dependências com nomes alternativos
     dependencies = [
         ("fastapi", "fastapi"),
-        ("uvicorn", "uvicorn"), 
+        ("uvicorn", "uvicorn"),
         ("streamlit", "streamlit"),
         ("plotly", "plotly"),
         ("sqlalchemy", "sqlalchemy"),
@@ -202,23 +202,23 @@ def check_config_files():
 def validate_api_server():
     """Valida se o servidor API pode ser iniciado"""
     print_header("VALIDAÇÃO DO SERVIDOR API")
-    
+
     try:
         # Test import with proper path handling
         sys.path.insert(0, "src")
-        
+
         # Import with error handling
         spec = importlib.util.spec_from_file_location("api_server", "src/api_server.py")
         if spec is None:
             print_error("Arquivo api_server.py não encontrado")
             return
-            
+
         api_module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(api_module)
-        
+
         if hasattr(api_module, 'app'):
             print_success("API server pode ser importado")
-            
+
             # Check if FastAPI app exists
             if hasattr(api_module.app, 'routes'):
                 print_success(f"API tem {len(api_module.app.routes)} rotas configuradas")
@@ -226,7 +226,7 @@ def validate_api_server():
                 print_warning("Aplicação FastAPI sem rotas configuradas")
         else:
             print_warning("Módulo api_server não possui objeto 'app'")
-            
+
     except Exception as e:
         print_warning(f"API server não pode ser validado: {str(e)}")
         print_warning("Isso pode ser normal se dependências não estiverem instaladas")
