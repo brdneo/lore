@@ -21,7 +21,7 @@ try:
 except ImportError:
     # Fallback import using importlib
     spec = importlib.util.spec_from_file_location(
-        "sentiment_service", 
+        "sentiment_service",
         os.path.join(src_path, "sentiment_service.py")
     )
     if spec is not None and spec.loader is not None:

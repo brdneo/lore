@@ -46,14 +46,14 @@ def start_api_server():
         import sys
         import os
         import importlib.util
-        
+
         # Add src to path
         src_path = os.path.join(os.path.dirname(__file__), 'src')
         sys.path.insert(0, src_path)
-        
+
         # Import api_server module
         spec = importlib.util.spec_from_file_location(
-            "api_server", 
+            "api_server",
             os.path.join(src_path, "api_server.py")
         )
         if spec is not None and spec.loader is not None:
@@ -62,7 +62,7 @@ def start_api_server():
             app = api_module.app  # type: ignore
         else:
             raise ImportError("Could not load api_server module")
-        
+
         import uvicorn
 
         port = int(os.getenv("PORT", 8000))

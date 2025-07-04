@@ -203,6 +203,25 @@ def check_config_files():
         else:
             print_warning(f"Config {config_file} não encontrado")
 
+def check_documentation():
+    """Verifica documentação organizada"""
+    print_header("VERIFICAÇÃO DE DOCUMENTAÇÃO")
+
+    doc_files = [
+        "README.md",
+        "docs/guides/QUICKSTART.md",
+        "docs/guides/COMANDOS.md",
+        "docs/reports/RELATORIO-FINAL.md",
+        "docs/development/PROXIMOS-PASSOS.md",
+        "docs/development/CONTRIBUTING.md"
+    ]
+
+    for doc_file in doc_files:
+        if check_file_exists(doc_file):
+            print_success(f"Doc {doc_file}")
+        else:
+            print_warning(f"Doc {doc_file} não encontrado")
+
 def validate_api_server():
     """Valida se o servidor API pode ser iniciado"""
     print_header("VALIDAÇÃO DO SERVIDOR API")
@@ -253,6 +272,7 @@ def main():
     check_dependencies()
     check_python_imports()
     check_config_files()
+    check_documentation()
     validate_api_server()
     run_tests()
 

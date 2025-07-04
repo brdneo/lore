@@ -18,6 +18,16 @@ backups/
 
 # === TEMPORÁRIOS ===
 *.tmp
+*.bak
+*.backup
+*~
+*.orig
+*.rej
+*_backup.py
+*_old.py
+*_fixed.py
+*.db-journal
+*.sqlite-journal
 *.log
 *.pid
 .cache/

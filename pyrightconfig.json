@@ -1,20 +1,12 @@
 {
-    "include": [
-        "src",
-        "tests",
-        "main.py",
-        "start.py",
-        "validate_project.py"
-    ],
+    "include": ["src", "tests", "main.py", "start.py", "validate_project.py"],
     "exclude": [
         "**/__pycache__",
         "**/.pytest_cache",
         "**/node_modules",
         "**/.venv"
     ],
-    "extraPaths": [
-        "./src"
-    ],
+    "extraPaths": ["./src"],
     "pythonVersion": "3.12",
     "pythonPlatform": "Linux",
     "typeCheckingMode": "basic",

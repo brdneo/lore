@@ -30,11 +30,11 @@ def start_api_server(port=8000):
     try:
         # Import with proper error handling
         import importlib.util
-        
+
         # Import api_server module
         src_path = os.path.join(os.path.dirname(__file__), 'src')
         spec = importlib.util.spec_from_file_location(
-            "api_server", 
+            "api_server",
             os.path.join(src_path, "api_server.py")
         )
         if spec is not None and spec.loader is not None:
@@ -43,7 +43,7 @@ def start_api_server(port=8000):
             app = api_module.app  # type: ignore
         else:
             raise ImportError("Could not load api_server module")
-        
+
         import uvicorn
 
         host = "0.0.0.0"
