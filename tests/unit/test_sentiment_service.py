@@ -6,8 +6,10 @@ Teste completo do SentimentService híbrido para o projeto Lore N.A.
 import sys
 import os
 
-# Adicionar o diretório do projeto ao path
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Adicionar o diretório src ao path
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+src_path = os.path.join(project_root, 'src')
+sys.path.insert(0, src_path)
 
 from sentiment_service import SentimentService, ConsumptionContext
 import asyncio
@@ -16,10 +18,10 @@ async def test_sentiment_service():
     """Testa o SentimentService completo"""
     print("🧪 Testando SentimentService híbrido...")
     print("=" * 60)
-    
+
     # Inicializar o serviço
     service = SentimentService()
-    
+
     # Criar contexto de teste
     context = ConsumptionContext(
         agent_id="agent_001",
@@ -31,7 +33,7 @@ async def test_sentiment_service():
         agent_current_sentiment=0.2,  # Ligeiramente positivo
         agent_wallet_balance=200.0
     )
-    
+
     print("📋 Contexto de teste:")
     print(f"  Agente: {context.agent_name}")
     print(f"  Artefato: {context.artifact_name}")
@@ -39,11 +41,11 @@ async def test_sentiment_service():
     print(f"  Preço: R$ {context.purchase_price}")
     print(f"  Sentimento atual: {context.agent_current_sentiment}")
     print()
-    
+
     # Executar análise
     try:
         result = await service.analyze_consumption(context)
-        
+
         print("✅ Análise concluída com sucesso!")
         print()
         print("📊 Resultados:")
@@ -61,9 +63,9 @@ async def test_sentiment_service():
         print()
         print("🧠 Raciocínio:")
         print(f'  {result.reasoning}')
-        
+
         return True
-        
+
     except Exception as e:
         print(f"❌ Erro na análise: {e}")
         return False
@@ -71,13 +73,13 @@ async def test_sentiment_service():
 async def test_multiple_scenarios():
     """Testa múltiplos cenários"""
     service = SentimentService()
-    
+
     scenarios = [
         {
             "name": "Produto Caro e Ruim",
             "context": ConsumptionContext(
                 agent_id="agent_002",
-                agent_name="PoorAgent", 
+                agent_name="PoorAgent",
                 artifact_name="Cristal Falsificado",
                 artifact_description="Um cristal que deveria dar energia mas não funciona",
                 artifact_quality=0.2,  # Baixa qualidade
@@ -100,10 +102,10 @@ async def test_multiple_scenarios():
             )
         }
     ]
-    
+
     print("\n🎭 Testando múltiplos cenários...")
     print("=" * 60)
-    
+
     for scenario in scenarios:
         print(f"\n📋 Cenário: {scenario['name']}")
         try:
@@ -115,11 +117,11 @@ async def test_multiple_scenarios():
 
 if __name__ == "__main__":
     print("🚀 Iniciando testes do SentimentService...")
-    
+
     # Teste básico
     loop = asyncio.get_event_loop()
     success = loop.run_until_complete(test_sentiment_service())
-    
+
     if success:
         # Testes adicionais
         loop.run_until_complete(test_multiple_scenarios())

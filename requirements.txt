@@ -2,7 +2,7 @@
 # This file helps Railway detect this as a Python project
 
 # Core dependencies for the main application
--r services/agent_runner/requirements.txt
+-r src/requirements.txt
 
 # Additional production dependencies
 gunicorn>=20.1.0
