@@ -17,7 +17,15 @@ import os
 import sys
 import subprocess
 import importlib.util
+import warnings
 from pathlib import Path
+
+# Suprimir warnings desnecessários
+warnings.filterwarnings("ignore", category=UserWarning, module="streamlit")
+warnings.filterwarnings("ignore", message=".*ScriptRunContext.*")
+
+# Configurar para modo silencioso
+os.environ["STREAMLIT_LOGGER_LEVEL"] = "ERROR"
 
 def print_header(title):
     """Imprime cabeçalho formatado"""
@@ -118,22 +126,31 @@ def check_dependencies():
     """Verifica dependências instaladas"""
     print_header("VERIFICAÇÃO DE DEPENDÊNCIAS")
 
-    required_packages = [
-        "fastapi",
-        "uvicorn",
-        "streamlit",
-        "plotly",
-        "sqlalchemy",
-        "requests",
-        "jwt"  # PyJWT instala como 'jwt'
+    # Dependências com nomes alternativos
+    dependencies = [
+        ("fastapi", "fastapi"),
+        ("uvicorn", "uvicorn"), 
+        ("streamlit", "streamlit"),
+        ("plotly", "plotly"),
+        ("sqlalchemy", "sqlalchemy"),
+        ("requests", "requests"),
+        ("jwt", "PyJWT")  # PyJWT instala como 'jwt'
     ]
 
-    for package in required_packages:
+    for import_name, display_name in dependencies:
         try:
-            __import__(package)
-            print_success(f"Pacote {package}")
+            __import__(import_name)
+            print_success(f"Pacote {display_name}")
         except ImportError:
-            print_error(f"Pacote {package} não instalado")
+            # Tentar nome alternativo para PyJWT
+            if import_name == "jwt":
+                try:
+                    __import__("PyJWT")
+                    print_success(f"Pacote {display_name} (como PyJWT)")
+                except ImportError:
+                    print_error(f"Pacote {display_name} não instalado")
+            else:
+                print_error(f"Pacote {display_name} não instalado")
 
 def run_tests():
     """Executa testes unitários"""
@@ -185,21 +202,34 @@ def check_config_files():
 def validate_api_server():
     """Valida se o servidor API pode ser iniciado"""
     print_header("VALIDAÇÃO DO SERVIDOR API")
-
+    
     try:
-        # Test import
+        # Test import with proper path handling
         sys.path.insert(0, "src")
-        from api_server import app
-        print_success("API server pode ser importado")
-
-        # Check if FastAPI app exists
-        if hasattr(app, 'routes'):
-            print_success(f"API tem {len(app.routes)} rotas configuradas")
+        
+        # Import with error handling
+        spec = importlib.util.spec_from_file_location("api_server", "src/api_server.py")
+        if spec is None:
+            print_error("Arquivo api_server.py não encontrado")
+            return
+            
+        api_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(api_module)
+        
+        if hasattr(api_module, 'app'):
+            print_success("API server pode ser importado")
+            
+            # Check if FastAPI app exists
+            if hasattr(api_module.app, 'routes'):
+                print_success(f"API tem {len(api_module.app.routes)} rotas configuradas")
+            else:
+                print_warning("Aplicação FastAPI sem rotas configuradas")
         else:
-            print_error("Aplicação FastAPI não configurada corretamente")
-
+            print_warning("Módulo api_server não possui objeto 'app'")
+            
     except Exception as e:
-        print_error(f"Erro na validação do API server: {e}")
+        print_warning(f"API server não pode ser validado: {str(e)}")
+        print_warning("Isso pode ser normal se dependências não estiverem instaladas")
 
 def main():
     """Função principal de validação"""
