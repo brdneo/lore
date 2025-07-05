@@ -9,6 +9,19 @@ Autor: Lore N.A. Genesis Team
 Data: 27 de Junho de 2025
 """
 
+import logging
+import traceback
+from typing import Optional, Any
+
+# Configuração de logging robusto
+logger = logging.getLogger(__name__)
+if not logger.handlers:
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
+
 import streamlit as st
 import plotly.graph_objects as go
 import plotly.express as px

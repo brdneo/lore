@@ -10,6 +10,18 @@ Autor: Lore N.A. Genesis Team
 Data: 27 de Junho de 2025
 """
 
+import traceback
+from typing import Optional, Any
+
+# Configuração de logging robusto
+logger = logging.getLogger(__name__)
+if not logger.handlers:
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
+
 import random
 import json
 from typing import Dict, List, Optional, Tuple

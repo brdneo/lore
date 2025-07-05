@@ -14,6 +14,18 @@ Autor: Lore N.A. Genesis Protocol
 Data: 26 de Junho de 2025
 """
 
+import traceback
+from datetime import datetime
+
+# Configuração de logging robusto
+logger = logging.getLogger(__name__)
+if not logger.handlers:
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
+
 import random
 import json
 import uuid
