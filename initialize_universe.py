@@ -69,9 +69,11 @@ def create_initial_population(size=30):
                     }
                 }
                 
-                # Simular salvamento no banco
-                # db.save_hybrid_agent(agent_data)
-                agents_created += 1
+                # Salvar agente híbrido no banco
+                if db.save_hybrid_agent(agent_data):
+                    agents_created += 1
+                else:
+                    print(f"   ⚠️  Falha ao salvar agente {agent_id} no banco")
                 
                 if agents_created % 10 == 0:
                     print(f"   ✅ {agents_created} agentes híbridos criados...")
@@ -153,9 +155,11 @@ def create_universe_catalog():
                         'created_at': datetime.now().isoformat()
                     })
                     
-                    # Salvar no banco (assumindo que existe método save_product)
-                    # db.save_product(product)
-                    products_created += 1
+                    # Salvar produto no banco
+                    if db.save_product(product):
+                        products_created += 1
+                    else:
+                        print(f"   ⚠️  Falha ao salvar produto {product['name']}")
                     
                 except Exception as e:
                     print(f"   ❌ Erro ao criar produto {product['name']}: {e}")
@@ -212,7 +216,7 @@ def test_hybrid_system():
         print("🧪 Executando testes básicos...")
         
         # 1. Teste genetic
-        params = lore_engine.EvolutionParams(20, 0.1, 0.8, 100)
+        params = lore_engine.EvolutionParams(20, 0.1, 0.8, 0.7)  # selection_pressure entre 0.0 e 1.0
         engine = lore_engine.GeneticEngine(params)
         population = engine.create_random_population(5)
         print(f"   ✅ Genético: {len(population)} agentes criados")
@@ -258,14 +262,14 @@ def check_universe_status():
         
         # Contar agentes
         try:
-            agent_count = 0  # db.count_agents()
+            agent_count = db.count_agents()
             print(f"🤖 Agentes ativos: {agent_count}")
         except:
             print("🤖 Agentes ativos: Não foi possível verificar")
         
         # Contar produtos  
         try:
-            product_count = 0  # db.count_products()
+            product_count = db.count_products()
             print(f"🛒 Produtos disponíveis: {product_count}")
         except:
             print("🛒 Produtos disponíveis: Não foi possível verificar")
@@ -279,6 +283,102 @@ def check_universe_status():
         
     except Exception as e:
         print(f"❌ Erro ao verificar status: {e}")
+        return False
+
+def run_hybrid_benchmark():
+    """Executa benchmark do sistema híbrido vs Python puro"""
+    
+    print("🏃 Executando benchmark do sistema híbrido...")
+    
+    try:
+        import lore_engine
+        import time
+        import random
+        
+        print("✅ Sistema híbrido carregado!")
+        
+        # Teste 1: Criação de população
+        print("\n🧪 Teste 1: Criação de população")
+        start_time = time.time()
+        
+        # Rust
+        params = lore_engine.EvolutionParams(50, 0.1, 0.8, 0.7)  # selection_pressure entre 0.0 e 1.0
+        engine = lore_engine.GeneticEngine(params)
+        rust_population = engine.create_random_population(100)
+        rust_time = time.time() - start_time
+        
+        # Python equivalente (simulado)
+        start_time = time.time()
+        python_population = []
+        for i in range(100):
+            genes = [random.uniform(-1.0, 1.0) for _ in range(10)]
+            python_population.append({"genes": genes, "fitness": random.uniform(0.0, 1.0)})
+        python_time = time.time() - start_time
+        
+        speedup_1 = python_time / rust_time if rust_time > 0 else 0
+        print(f"   🦀 Rust: {rust_time:.4f}s ({len(rust_population)} agentes)")
+        print(f"   🐍 Python: {python_time:.4f}s ({len(python_population)} agentes)")
+        print(f"   ⚡ Speedup: {speedup_1:.2f}x")
+        
+        # Teste 2: Processamento neural
+        print("\n🧪 Teste 2: Processamento neural")
+        start_time = time.time()
+        
+        # Rust
+        network = lore_engine.create_feedforward_network(10, [20, 15], 5, "relu")
+        for _ in range(1000):
+            inputs = [random.uniform(-1.0, 1.0) for _ in range(10)]
+            result = network.forward(inputs)
+        rust_time = time.time() - start_time
+        
+        # Python equivalente (simulado)
+        start_time = time.time()
+        for _ in range(1000):
+            inputs = [random.uniform(-1.0, 1.0) for _ in range(10)]
+            # Simulação de forward pass
+            result = [sum(inputs) / len(inputs) for _ in range(5)]
+        python_time = time.time() - start_time
+        
+        speedup_2 = python_time / rust_time if rust_time > 0 else 0
+        print(f"   🦀 Rust: {rust_time:.4f}s (1000 forward passes)")
+        print(f"   🐍 Python: {python_time:.4f}s (1000 forward passes)")
+        print(f"   ⚡ Speedup: {speedup_2:.2f}x")
+        
+        # Teste 3: Evolução genética
+        print("\n🧪 Teste 3: Evolução genética")
+        start_time = time.time()
+        
+        # Rust
+        evolved_population = engine.evolve_generation(rust_population)
+        rust_time = time.time() - start_time
+        
+        # Python equivalente (simulado)
+        start_time = time.time()
+        evolved_python = []
+        for agent in python_population[:50]:  # Selection
+            new_genes = [g + random.uniform(-0.1, 0.1) for g in agent["genes"]]  # Mutation
+            evolved_python.append({"genes": new_genes, "fitness": random.uniform(0.0, 1.0)})
+        python_time = time.time() - start_time
+        
+        speedup_3 = python_time / rust_time if rust_time > 0 else 0
+        print(f"   🦀 Rust: {rust_time:.4f}s ({len(evolved_population)} agentes)")
+        print(f"   🐍 Python: {python_time:.4f}s ({len(evolved_python)} agentes)")
+        print(f"   ⚡ Speedup: {speedup_3:.2f}x")
+        
+        # Resultado final
+        avg_speedup = (speedup_1 + speedup_2 + speedup_3) / 3
+        print(f"\n🎉 RESULTADO FINAL:")
+        print(f"   📊 Speedup médio: {avg_speedup:.2f}x")
+        print(f"   🚀 Performance: {'EXCELENTE' if avg_speedup > 5 else 'BOA' if avg_speedup > 2 else 'MODERADA'}")
+        
+        return True
+        
+    except ImportError as e:
+        print(f"❌ Sistema híbrido não disponível: {e}")
+        print("💡 Execute: maturin develop --release")
+        return False
+    except Exception as e:
+        print(f"❌ Erro no benchmark: {e}")
         return False
 
 def main():
@@ -303,6 +403,12 @@ def main():
             
         elif command == "status":
             check_universe_status()
+            
+        elif command == "test":
+            test_hybrid_system()
+            
+        elif command == "benchmark":
+            run_hybrid_benchmark()
             
         elif command == "full":
             print("🚀 Inicialização COMPLETA do universo!")
@@ -340,6 +446,8 @@ def show_help():
     print("  catalog           - Cria catálogo de produtos dos 5 universos")
     print("  simulation        - Inicia simulação contínua")
     print("  status            - Verifica status atual do universo")
+    print("  test              - Testa sistema híbrido Rust+Python")
+    print("  benchmark         - Executa benchmark de performance")
     print("  full              - Inicialização completa (recomendado)")
     print()
     print("💡 EXEMPLO:")

@@ -23,7 +23,8 @@ logger = logging.getLogger(__name__)
 
 # Detectar ambiente e configurar database
 DATABASE_URL = os.getenv("DATABASE_URL")
-USE_POSTGRESQL = DATABASE_URL is not None
+# Forçar SQLite para desenvolvimento
+USE_POSTGRESQL = DATABASE_URL is not None and DATABASE_URL.strip() != ""
 
 if USE_POSTGRESQL:
     try:
@@ -182,6 +183,20 @@ class LoREDatabase:
                     evolution_data JSONB,
                     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
+                """,
+                """
+                CREATE TABLE IF NOT EXISTS products (
+                    id VARCHAR(100) PRIMARY KEY,
+                    name VARCHAR(200) NOT NULL,
+                    price REAL DEFAULT 0,
+                    category VARCHAR(100),
+                    universe VARCHAR(50),
+                    description TEXT,
+                    rating REAL DEFAULT 0,
+                    stock INTEGER DEFAULT 0,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
                 """
             ]
             
@@ -225,6 +240,20 @@ class LoREDatabase:
                     fitness_after REAL,
                     evolution_data TEXT,
                     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+                """,
+                """
+                CREATE TABLE IF NOT EXISTS products (
+                    id TEXT PRIMARY KEY,
+                    name TEXT NOT NULL,
+                    price REAL DEFAULT 0,
+                    category TEXT,
+                    universe TEXT,
+                    description TEXT,
+                    rating REAL DEFAULT 0,
+                    stock INTEGER DEFAULT 0,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
                 """
             ]
