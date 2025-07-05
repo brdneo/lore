@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+"""
 🎯 PRÓXIMOS PASSOS PRIORITÁRIOS - LORE N.A.
 ============================================
 
