@@ -162,3 +162,8 @@ pyrightconfig.json.bak
 **/examples/**/*.pyc
 **/scripts/**/*.pyc
 **/tools/**/*.pyc
+
+
+# Added by cargo
+
+/target

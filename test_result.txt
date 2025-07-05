@@ -1,0 +1,8 @@
+[2m2025-07-05T13:04:39.134315Z[0m [32m INFO[0m [2mlore_engine[0m[2m:[0m Lore Engine evolving version initialized
+[2m2025-07-05T13:04:39.134701Z[0m [32m INFO[0m [2mlore_engine::genetic[0m[2m:[0m Genetic algorithm functions registered successfully
+[2m2025-07-05T13:04:39.135036Z[0m [32m INFO[0m [2mlore_engine::genetic[0m[2m:[0m GeneticEngine initialized with population size: 10
+SUCCESS: lore_engine imported
+Available: 22 functions/classes
+GeneticEngine created with 10 agents
+SUCCESS: Rust genetic engine working!
+HYBRID SYSTEM STATUS: OPERATIONAL

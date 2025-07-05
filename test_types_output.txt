@@ -1,0 +1,16 @@
+[2m2025-07-05T04:32:23.523126Z[0m [32m INFO[0m [2mlore_engine[0m[2m:[0m Lore Engine evolving version initialized
+[2m2025-07-05T04:32:23.543612Z[0m [32m INFO[0m [2mlore_engine::utils[0m[2m:[0m Timer 'test_operation' elapsed: 20.00ms
+✅ SUCCESS: lore_engine imported
+📦 Available: ['AgentDNA', 'DEFAULT_CROSSOVER_RATE', 'DEFAULT_MUTATION_RATE', 'DEFAULT_POPULATION_SIZE', 'DEFAULT_SELECTION_PRESSURE', 'EvolutionEngine', 'EvolutionParams', 'EvolutionResult', 'MAX_GENE_COUNT', 'MIN_POPULATION_SIZE', 'MemoryInfo', 'NetworkMetrics', 'NeuralNode', 'PerformanceCounter', 'ProfileResult', 'Timer', 'benchmark_function', 'get_system_info', 'lore_engine']
+🧬 DNA created with 5 genes, ID: 4ac98b68-5903-46f5-b2e5-c42447ca0419
+🎯 DNA fitness: 0.85
+⚙️  Evolution params: pop=200, mut=0.05
+📊 Default population size: 100
+📊 Max gene count: 10000
+⏱️  Timer test: 20.00ms
+🖥️  Lore Engine System Info:
+- CPU cores: 8
+- Rayon threads: 8
+- Rust version: 0.1.0
+-
+🎉 ALL TYPE TESTS PASSED!

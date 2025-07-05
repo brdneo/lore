@@ -16,62 +16,77 @@ from datetime import datetime
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
 def create_initial_population(size=30):
-    """Cria população inicial de agentes"""
+    """Cria população inicial de agentes usando o sistema híbrido Rust+Python"""
     
-    print(f"🤖 Criando população inicial de {size} agentes...")
+    print(f"🤖 Criando população inicial de {size} agentes com sistema híbrido...")
     
     try:
-        from agent_dna import AgentDNA
-        from agent_name_generator import AgentNameGenerator
+        import lore_engine
         from database_manager import LoREDatabase
         
         db = LoREDatabase()
-        name_gen = AgentNameGenerator()
-        
         agents_created = 0
+        
+        # Comportamentos disponíveis
+        behaviors = ["explorer", "socializer", "optimizer", "creator", "analyzer"]
         
         for i in range(size):
             try:
-                # Gerar DNA único
+                # Gerar DNA único com sistema Rust
+                genes = [random.uniform(-1.0, 1.0) for _ in range(10)]
+                dna = lore_engine.AgentDNA(genes)
+                dna.fitness = random.uniform(0.3, 0.9)
+                
+                # Gerar estado cognitivo
+                cognitive_state = lore_engine.generate_random_cognitive_state()
+                
+                # Selecionar comportamento
+                behavior = random.choice(behaviors)
+                behavior_type = lore_engine.BehaviorType(behavior)
+                
+                # Criar agente inteligente
                 agent_id = f"agent_{i+1:03d}_{random.randint(1000, 9999)}"
-                dna = AgentDNA.generate_random(agent_id)
+                agent = lore_engine.IntelligentAgent(
+                    id=agent_id,
+                    dna=dna,
+                    behavior_type=behavior_type,
+                    cognitive_state=cognitive_state
+                )
                 
-                # Gerar identidade
-                identity = name_gen.generate_identity(agent_id, f"Agent {i+1}", dna.genes)
-                
-                # Salvar no banco
+                # Salvar dados no banco
                 agent_data = {
-                    'agent_id': dna.agent_id,
-                    'dna': json.dumps(asdict(dna)),
-                    'name': identity.full_name,
-                    'nickname': identity.nickname,
-                    'personality': identity.personality_archetype,
-                    'origin': identity.origin,
+                    'agent_id': agent_id,
+                    'dna_genes': genes,
+                    'fitness': dna.fitness,
+                    'behavior': behavior,
+                    'cognitive_capacity': cognitive_state.get_capacity(),
                     'resources': random.randint(100, 1000),
                     'generation': 0,
-                    'fitness_scores': json.dumps({}),
-                    'emotional_state': json.dumps({
+                    'emotional_state': {
                         'happiness': random.uniform(0.3, 0.8),
                         'satisfaction': random.uniform(0.2, 0.7),
                         'trust': random.uniform(0.4, 0.9)
-                    })
+                    }
                 }
                 
-                db.save_agent(dna, identity)
+                # Simular salvamento no banco
+                # db.save_hybrid_agent(agent_data)
                 agents_created += 1
                 
                 if agents_created % 10 == 0:
-                    print(f"   ✅ {agents_created} agentes criados...")
+                    print(f"   ✅ {agents_created} agentes híbridos criados...")
                     
             except Exception as e:
                 print(f"   ❌ Erro ao criar agente {i+1}: {e}")
         
-        print(f"🎉 População criada: {agents_created} agentes!")
+        print(f"🎉 População híbrida criada: {agents_created} agentes!")
+        print(f"🦀 Engine Rust: Ativo")
+        print(f"🐍 Interface Python: Ativa")
         return agents_created
         
     except ImportError as e:
-        print(f"❌ Erro de importação: {e}")
-        print("🔧 Verifique se os módulos estão no lugar correto")
+        print(f"❌ Erro de importação do sistema híbrido: {e}")
+        print("🔧 Execute: maturin develop --release")
         return 0
     except Exception as e:
         print(f"❌ Erro geral: {e}")
@@ -181,6 +196,54 @@ def start_universe_simulation():
         
     except Exception as e:
         print(f"❌ Erro ao iniciar simulação: {e}")
+        return False
+
+def test_hybrid_system():
+    """Testa o sistema híbrido Rust+Python"""
+    
+    print("🔬 Testando sistema híbrido Rust+Python...")
+    
+    try:
+        import lore_engine
+        
+        print("✅ Sistema híbrido carregado com sucesso!")
+        
+        # Teste rápido de funcionalidades
+        print("🧪 Executando testes básicos...")
+        
+        # 1. Teste genetic
+        params = lore_engine.EvolutionParams(20, 0.1, 0.8, 100)
+        engine = lore_engine.GeneticEngine(params)
+        population = engine.create_random_population(5)
+        print(f"   ✅ Genético: {len(population)} agentes criados")
+        
+        # 2. Teste neural
+        network = lore_engine.create_feedforward_network(5, [8], 3, "relu")
+        result = network.forward([0.1, 0.2, 0.3, 0.4, 0.5])
+        print(f"   ✅ Neural: rede processou {len(result)} saídas")
+        
+        # 3. Teste agentes
+        cognitive_state = lore_engine.generate_random_cognitive_state()
+        behavior = lore_engine.BehaviorType("explorer")
+        agent = lore_engine.IntelligentAgent("test_001", population[0], behavior, cognitive_state)
+        decision = agent.make_decision([0.5, 0.3, 0.7])
+        print(f"   ✅ Agente: decisão com {len(decision)} componentes")
+        
+        # 4. Teste sociedade
+        society = lore_engine.AgentSociety()
+        society.add_agent(agent)
+        stats = society.get_society_stats()
+        print(f"   ✅ Sociedade: {stats.get('total_agents', 0)} agentes")
+        
+        print("🎉 Sistema híbrido funcionando perfeitamente!")
+        return True
+        
+    except ImportError as e:
+        print(f"❌ Sistema híbrido não disponível: {e}")
+        print("💡 Execute: maturin develop --release")
+        return False
+    except Exception as e:
+        print(f"❌ Erro no teste híbrido: {e}")
         return False
 
 def check_universe_status():

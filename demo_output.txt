@@ -1,0 +1,70 @@
+[2m2025-07-05T13:05:44.234096Z[0m [32m INFO[0m [2mlore_engine[0m[2m:[0m Lore Engine evolving version initialized
+[2m2025-07-05T13:05:44.234566Z[0m [32m INFO[0m [2mlore_engine::genetic[0m[2m:[0m Genetic algorithm functions registered successfully
+[2m2025-07-05T13:05:44.235107Z[0m [32m INFO[0m [2mlore_engine::genetic[0m[2m:[0m GeneticEngine initialized with population size: 100
+[2m2025-07-05T13:05:44.235155Z[0m [32m INFO[0m [2mlore_engine::genetic[0m[2m:[0m Creating random population of 100 agents with 20 genes
+[2m2025-07-05T13:05:44.236822Z[0m [32m INFO[0m [2mlore_engine::genetic[0m[2m:[0m Random population created in 1ms using parallel processing
+[2m2025-07-05T13:05:44.236940Z[0m [32m INFO[0m [2mlore_engine::utils[0m[2m:[0m Timer 'population_creation' elapsed: 1.00ms
+[2m2025-07-05T13:05:44.237754Z[0m [32m INFO[0m [2mlore_engine::utils[0m[2m:[0m Timer 'parallel_crossover' elapsed: 0.00ms
+[2m2025-07-05T13:05:44.238113Z[0m [32m INFO[0m [2mlore_engine::utils[0m[2m:[0m Timer 'parallel_mutation' elapsed: 0.00ms
+[2m2025-07-05T13:05:44.238272Z[0m [32m INFO[0m [2mlore_engine::genetic[0m[2m:[0m GeneticEngine initialized with population size: 50
+[2m2025-07-05T13:05:44.238311Z[0m [32m INFO[0m [2mlore_engine::genetic[0m[2m:[0m Creating random population of 50 agents with 10 genes
+[2m2025-07-05T13:05:44.238931Z[0m [32m INFO[0m [2mlore_engine::genetic[0m[2m:[0m Random population created in 0ms using parallel processing
+[2m2025-07-05T13:05:44.238989Z[0m [32m INFO[0m [2mlore_engine::utils[0m[2m:[0m Timer 'benchmark_50' elapsed: 0.00ms
+Traceback (most recent call last):
+  File "/home/brendo/lore/demo_final_hybrid.py", line 128, in main
+    agents_per_sec = size / bench_time * 1000
+                     ~~~~~^~~~~~~~~~~~
+ZeroDivisionError: float division by zero
+🔥 LORE ENGINE - SISTEMA HÍBRIDO RUST/PYTHON
+============================================================
+✅ Módulo lore_engine carregado com sucesso!
+
+📦 FUNCIONALIDADES DISPONÍVEIS:
+   🧬 Algoritmos Genéticos: 3 items
+      - EvolutionEngine
+      - GeneticEngine
+      - lore_engine
+   ⚡ Utilitários de Performance: 4 items
+      - MemoryInfo
+      - PerformanceCounter
+      - Timer
+      - benchmark_function
+   🔬 Tipos e Estruturas: 4 items
+      - AgentDNA
+      - EvolutionParams
+      - EvolutionResult
+      - ProfileResult
+
+🔬 TESTE DO SISTEMA DE TIPOS RUST:
+   ✅ AgentDNA criado: 8 genes
+   📊 ID único: d122ce20-e36c-48a9-ba5a-e7f0e68dd607
+   🧬 Geração: 0
+   🎯 Fitness definido: 0.85
+
+⚙️ CONFIGURAÇÃO DE PARÂMETROS:
+   📊 População: 100
+   🔄 Taxa de mutação: 0.1
+   🧬 Taxa de crossover: 0.8
+   🏆 Elitismo: 5
+
+🚀 CRIANDO ENGINE GENÉTICO EM RUST:
+   ✅ GeneticEngine inicializado
+   👥 Tamanho da população: 100
+   📈 Geração atual: 0
+   🔢 Avaliações realizadas: 0
+
+⚡ GERAÇÃO PARALELA DE POPULAÇÃO:
+   ✅ 100 agentes criados em 1.00ms
+   🧬 Cada agente tem 20 genes
+   ⚡ Performance: 100000 agentes/segundo
+
+🔄 OPERAÇÕES GENÉTICAS PARALELAS:
+   🧬 Crossover: 50 filhos em 0.00ms
+   🔄 Mutação: 100 agentes em 0.00ms
+
+🔬 TESTE DE MUTAÇÃO INDIVIDUAL:
+   🧬 Genes modificados: 4
+   📊 Mutações totais: 4
+
+🏁 BENCHMARK DE PERFORMANCE:
+❌ ERRO: float division by zero

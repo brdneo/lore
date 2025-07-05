@@ -15,6 +15,7 @@ Data: 26 de Junho de 2025
 """
 
 import traceback
+import logging
 from datetime import datetime
 
 # Configuração de logging robusto

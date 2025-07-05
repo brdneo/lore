@@ -523,3 +523,110 @@ class LoREDatabase:
         if self.connection:
             self.connection.close()
             logger.info("Database fechado")
+    
+    def save_hybrid_agent(self, agent_data):
+        """Salva dados de um agente criado pelo sistema híbrido Rust+Python"""
+        try:
+            # Extrair dados específicos do sistema híbrido
+            hybrid_data = {
+                'id': agent_data.get('agent_id'),
+                'name': agent_data.get('agent_id'),  # usar ID como nome temporário
+                'full_name': f"Hybrid Agent {agent_data.get('agent_id')}",
+                'personality': agent_data.get('behavior', 'explorer'),
+                'dna': {
+                    'genes': agent_data.get('dna_genes', []),
+                    'fitness': agent_data.get('fitness', 0.5),
+                    'generation': agent_data.get('generation', 0)
+                },
+                'generation': agent_data.get('generation', 0),
+                'fitness_scores': {
+                    'overall': agent_data.get('fitness', 0.5),
+                    'cognitive_capacity': agent_data.get('cognitive_capacity', 0.5)
+                },
+                'emotional_state': agent_data.get('emotional_state', {}),
+                'resources': agent_data.get('resources', 0),
+                'behavior_type': agent_data.get('behavior', 'explorer'),
+                'hybrid_engine': True  # Flag para identificar agentes híbridos
+            }
+            
+            # Usar método save_agent existente
+            return self.save_agent(hybrid_data)
+            
+        except Exception as e:
+            logger.error(f"Erro ao salvar agente híbrido: {e}")
+            print(f"Erro ao salvar agente híbrido: {e}")
+            return False
+    
+    def count_agents(self):
+        """Conta o número total de agentes no banco de dados"""
+        try:
+            cursor = self._execute_sql("SELECT COUNT(*) as total FROM agents")
+            result = cursor.fetchone()
+            return int(result['total']) if result else 0  # type: ignore
+        except Exception as e:
+            logger.error(f"Erro ao contar agentes: {e}")
+            return 0
+    
+    def count_products(self):
+        """Conta o número total de produtos no banco de dados"""
+        try:
+            # Assumindo que existe uma tabela de produtos
+            cursor = self._execute_sql("SELECT COUNT(*) as total FROM products")
+            result = cursor.fetchone()
+            return int(result['total']) if result else 0  # type: ignore
+        except Exception as e:
+            logger.warning("Tabela de produtos não encontrada")
+            return 0
+    
+    def save_product(self, product_data):
+        """Salva dados de um produto"""
+        try:
+            if self.is_postgresql:
+                sql = """
+                INSERT INTO products (id, name, price, category, universe, description, rating, stock)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (id) DO UPDATE SET
+                    name = EXCLUDED.name,
+                    price = EXCLUDED.price,
+                    category = EXCLUDED.category,
+                    universe = EXCLUDED.universe,
+                    description = EXCLUDED.description,
+                    rating = EXCLUDED.rating,
+                    stock = EXCLUDED.stock,
+                    updated_at = CURRENT_TIMESTAMP
+                """
+                params = (
+                    product_data.get('id'),
+                    product_data.get('name'),
+                    product_data.get('price'),
+                    product_data.get('category'),
+                    product_data.get('universe'),
+                    product_data.get('description'),
+                    product_data.get('rating'),
+                    product_data.get('stock')
+                )
+            else:
+                sql = """
+                INSERT OR REPLACE INTO products 
+                (id, name, price, category, universe, description, rating, stock)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """
+                params = (
+                    product_data.get('id'),
+                    product_data.get('name'),
+                    product_data.get('price'),
+                    product_data.get('category'),
+                    product_data.get('universe'),
+                    product_data.get('description'),
+                    product_data.get('rating'),
+                    product_data.get('stock')
+                )
+            
+            self._execute_sql(sql, params)
+            logger.info(f"Produto salvo: {product_data.get('name')}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Erro ao salvar produto: {e}")
+            print(f"Erro ao salvar produto: {e}")
+            return False

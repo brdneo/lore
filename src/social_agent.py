@@ -15,6 +15,7 @@ Data: 2024
 """
 
 import traceback
+import logging
 
 # Configuração de logging robusto
 logger = logging.getLogger(__name__)
