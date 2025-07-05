@@ -1,24 +1,19 @@
-[workspace]
-members = [
-    "crates/lore-engine",
-    # Future crates can be added here:
-    # "crates/lore-gpu",
-    # "crates/lore-distributed",
-    # "crates/lore-ai"
-]
-resolver = "2"
-
-[workspace.package]
+[package]
+name = "lore-engine"
 version = "0.1.0"
 edition = "2021"
+description = "High-performance hybrid Rust+Python engine for intelligent agent simulation"
 authors = ["Lore N.A. Team"]
 license = "MIT"
 repository = "https://github.com/lore-na/lore-engine"
 keywords = ["ai", "agents", "simulation", "genetics", "neural-networks"]
 categories = ["science", "simulation"]
 
-[workspace.dependencies]
-# Common dependencies for all crates
+[lib]
+name = "lore_engine"
+crate-type = ["cdylib"]
+
+[dependencies]
 pyo3 = { version = "0.20", features = ["extension-module"] }
 rayon = "1.8"
 rand = "0.8"
@@ -31,13 +26,17 @@ tracing = "0.1"
 tracing-subscriber = "0.3"
 ndarray = "0.15"
 approx = "0.5"
+thiserror = "1.0"
+num_cpus = "1.0"
 
-[profile.release]
-opt-level = 3
-lto = true
-codegen-units = 1
-panic = "abort"
+[dev-dependencies]
+criterion = "0.5"
+proptest = "1.4"
 
-[profile.bench]
-opt-level = 3
-debug = true
+[[bench]]
+name = "genetic_bench"
+harness = false
+
+[[bench]]
+name = "neural_bench"
+harness = false

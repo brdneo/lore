@@ -92,40 +92,38 @@ security-audit.py
 *.gpg
 
 # === ARQUIVOS DE TESTE E DESENVOLVIMENTO ===
-# Scripts de teste do sistema
-services/agent_runner/test_*.py
-services/agent_runner/quick_test.py
-services/agent_runner/system_status.py
-services/agent_runner/simple_demo.py
-services/agent_runner/simple_persistence_demo.py
-services/agent_runner/persistent_integration_demo.py
-services/agent_runner/demo_dashboard_data.py
+# Outputs de testes
+tests/outputs/
+*.test.log
+test_*.db
+*_test.db
+*.test.json
 
-# Scripts de análise técnica
-services/agent_runner/technical_answers.py
-services/agent_runner/master_system.py
-services/agent_runner/final_answers.py
+# === ARQUIVOS NA RAIZ ===
+# Manter apenas arquivos essenciais na raiz:
+# - README.md (documentação principal)
+# - LICENSE, Makefile, Dockerfile, Cargo.toml (configuração)
+# - .gitignore, .env.example (configuração)
+# - start.py, validate_project.py (scripts principais)
 
-# Scripts de execução de testes
-services/agent_runner/genesis_test_runner.sh
-services/agent_runner/neural_web_runner.sh
+# === DOCUMENTAÇÃO NA RAIZ ===
+# APENAS README.md deve ficar na raiz - todos os outros .md vão para docs/
+/*.md
+!README.md
 
-# Bancos de dados de teste
-services/agent_runner/*.db
-services/agent_runner/test.db
-services/agent_runner/demo_persistence.db
-services/agent_runner/lore_persistent_universe.db
-
-# === DOCUMENTAÇÃO TÉCNICA INTERNA ===
-# Relatórios de desenvolvimento (manter apenas para desenvolvimento interno)
-SESSAO-COMPLETA-REPORT.md
-RESPOSTAS-TECNICAS-COMPLETAS.md
-MIGRACAO-SENTIMENTO.md
-SECURITY-REPORT-FINAL.md
-
-# Análises e notas de desenvolvimento
-pensamentos.txt
-*.md.backup
+# === ARQUIVOS TEMPORÁRIOS NA RAIZ ===
+# Evitar criação de arquivos temporários na raiz
+*.tmp
+*.bak
+*.backup
+*_old.*
+*_backup.*
+*.log
+*.pid
+.cache
+cache/
+state/
+.pytest_cache/
 
 # === ARQUIVOS DE CONFIGURAÇÃO TEMPORÁRIOS ===
 setup-kong-auth.sh

@@ -22,10 +22,10 @@ git clone https://github.com/brdneo/lore.git
 cd lore
 
 # 2. Validar e instalar tudo automaticamente
-python validate_project.py
+python scripts/maintenance/validate_project.py
 
 # 3. Iniciar sistema
-python start.py --full
+python scripts/maintenance/start.py --full
 ```
 
 ### **Acesso Imediato**
@@ -62,7 +62,7 @@ O **Lore N.A.** é um sistema experimental de **vida artificial** onde agentes n
 ### **1. Modo Completo (Recomendado)**
 
 ```bash
-python start.py --full
+python scripts/maintenance/start.py --full
 ```
 
 -   ✅ API Server + Dashboard
@@ -72,7 +72,7 @@ python start.py --full
 ### **2. Apenas API**
 
 ```bash
-python start.py
+python scripts/maintenance/start.py
 ```
 
 -   ✅ Servidor RESTful
@@ -82,7 +82,7 @@ python start.py
 ### **3. Apenas Dashboard**
 
 ```bash
-python start.py --dash
+python scripts/maintenance/start.py --dash
 ```
 
 -   ✅ Interface visual
@@ -92,7 +92,7 @@ python start.py --dash
 ### **4. Validação Completa**
 
 ```bash
-python validate_project.py
+python scripts/maintenance/validate_project.py
 ```
 
 -   ✅ Verifica dependências
@@ -341,7 +341,7 @@ git push heroku main
 ### **Executar Todos os Testes**
 
 ```bash
-python validate_project.py
+python scripts/maintenance/validate_project.py
 ```
 
 ### **Testes Específicos**
