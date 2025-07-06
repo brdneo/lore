@@ -14,7 +14,7 @@ Components:
 
 The genetics system is based on the 5 Lore N.A. universes:
 - Limbo: Market behavior genes
-- Odyssey: Creativity and customization genes  
+- Odyssey: Creativity and customization genes
 - Ritual: Social behavior genes
 - Engine: Intelligence and analysis genes
 - Logs: Operational expectations genes
@@ -36,7 +36,7 @@ from .agent_name_generator import (
 
 __all__ = [
     'AgentDNA',
-    'DNAGenerator', 
+    'DNAGenerator',
     'EvolutionEngine',
     'UniverseGenes',
     'GeneticTraits',

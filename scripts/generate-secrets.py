@@ -11,14 +11,17 @@ import json
 from datetime import datetime
 import os
 
+
 def generate_secure_key(length=64):
     """Gera uma chave segura usando secrets module"""
     alphabet = string.ascii_letters + string.digits + "!@#$%^&*"
     return ''.join(secrets.choice(alphabet) for _ in range(length))
 
+
 def generate_jwt_secret():
     """Gera um secret JWT de 256 bits (32 bytes)"""
     return base64.urlsafe_b64encode(secrets.token_bytes(32)).decode('utf-8').rstrip('=')
+
 
 def generate_api_key():
     """Gera uma API key no formato padrão"""
@@ -26,15 +29,17 @@ def generate_api_key():
     random_part = secrets.token_urlsafe(32)
     return f"{prefix}_{random_part}"
 
+
 def generate_database_password():
     """Gera uma senha robusta para o banco"""
     # 20 caracteres com mix de letras, números e símbolos seguros
     alphabet = string.ascii_letters + string.digits + "!@#$%&*+-="
     return ''.join(secrets.choice(alphabet) for _ in range(20))
 
+
 def main():
     print("🔐 Gerando secrets seguros para o projeto Lore...")
-    
+
     # Gerar todos os secrets
     secrets_data = {
         "generated_at": datetime.now().isoformat(),
@@ -60,19 +65,19 @@ def main():
             "session_secret": generate_secure_key(64)
         }
     }
-    
+
     # Salvar em arquivo seguro
     secrets_file = "secrets.json"
     with open(secrets_file, 'w') as f:
         json.dump(secrets_data, f, indent=2)
-    
+
     # Definir permissões restritas (apenas owner pode ler)
     os.chmod(secrets_file, 0o600)
-    
+
     print(f"✅ Secrets gerados e salvos em {secrets_file}")
     print("⚠️  IMPORTANTE: Adicione 'secrets.json' ao .gitignore!")
     print("⚠️  IMPORTANTE: Faça backup seguro deste arquivo!")
-    
+
     # Gerar template do .env com placeholders
     env_template = """# Lore N.A. - Configuração de Segurança
 # ATENÇÃO: Nunca commitar este arquivo com valores reais!
@@ -137,18 +142,19 @@ TICK_INTERVAL_SECONDS=15
         encryption_key=secrets_data["encryption"]["encryption_key"],
         session_secret=secrets_data["encryption"]["session_secret"]
     )
-    
+
     with open(".env.production", 'w') as f:
         f.write(env_template)
-    
+
     os.chmod(".env.production", 0o600)
-    
+
     print("✅ Template .env.production criado")
     print("\n🔑 Resumo dos secrets gerados:")
     print(f"  - JWT Secrets: {len(secrets_data['jwt_secrets'])} chaves")
-    print(f"  - API Keys: {len(secrets_data['api_keys'])} chaves") 
+    print(f"  - API Keys: {len(secrets_data['api_keys'])} chaves")
     print(f"  - Encryption Keys: {len(secrets_data['encryption'])} chaves")
     print(f"  - Database: Senha robusta de {len(secrets_data['database']['postgres_password'])} caracteres")
+
 
 if __name__ == "__main__":
     main()

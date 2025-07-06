@@ -3,6 +3,7 @@
 Teste completo do SentimentService híbrido para o projeto Lore N.A.
 """
 
+import asyncio
 import sys
 import os
 
@@ -32,7 +33,7 @@ except ImportError:
     else:
         raise ImportError("Could not load sentiment_service module")
 
-import asyncio
+
 
 async def test_sentiment_service():
     """Testa o SentimentService completo"""
@@ -90,6 +91,7 @@ async def test_sentiment_service():
         print(f"❌ Erro na análise: {e}")
         return False
 
+
 async def test_multiple_scenarios():
     """Testa múltiplos cenários"""
     service = SentimentService()
@@ -131,7 +133,7 @@ async def test_multiple_scenarios():
         try:
             result = await service.analyze_consumption(scenario['context'])
             print(f"  Score: {result.sentiment_score:.3f} | Categoria: {result.emotion_category}")
-            print(f"  Review: \"{result.review_text}\"")
+            print("  Review: \"{result.review_text}\"")
         except Exception as e:
             print(f"  ❌ Erro: {e}")
 

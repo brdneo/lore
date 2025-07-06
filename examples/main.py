@@ -16,6 +16,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
 class HealthHandler(BaseHTTPRequestHandler):
     """Handler simples para health checks"""
     def do_GET(self):
@@ -27,10 +28,11 @@ class HealthHandler(BaseHTTPRequestHandler):
         else:
             self.send_response(404)
             self.end_headers()
-    
+
     def log_message(self, format, *args):
         # Silencia logs do servidor HTTP para não poluir os logs do agente
         pass
+
 
 def start_health_server():
     """Inicia servidor HTTP para health checks em thread separada"""
@@ -39,6 +41,7 @@ def start_health_server():
         server.serve_forever()
     except Exception as e:
         logger.warning(f"Falha ao iniciar servidor de health check: {e}")
+
 
 def main():
     """
@@ -74,12 +77,12 @@ def main():
         health_thread = threading.Thread(target=start_health_server, daemon=True)
         health_thread.start()
         logger.info("Servidor de health check iniciado na porta 8080", extra=system_log_extra)
-        
+
         agent = FrugalBuyerAgent(
             name=agent_name,
             api_base_url=api_base_url
         )
-        
+
         # --- Execução do Ciclo de Vida ---
         agent.run_life_cycle(tick_interval)
 

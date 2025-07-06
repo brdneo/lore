@@ -47,7 +47,7 @@ except ImportError:
 
 __all__ = [
     "Universe",
-    "Simulation", 
+    "Simulation",
     "PopulationManager",
     "Agent",
     "AgentDNA",
@@ -63,9 +63,11 @@ VERSION_INFO = {
     "python_version": f"{__import__('sys').version_info.major}.{__import__('sys').version_info.minor}",
 }
 
+
 def get_version_info():
     """Get detailed version information."""
     return VERSION_INFO.copy()
+
 
 def health_check():
     """Perform system health check."""
@@ -74,11 +76,13 @@ def health_check():
         "rust_engine": RUST_ENGINE_AVAILABLE,
         "dependencies": True,
     }
-    
+
     try:
-        import numpy, pandas, matplotlib
+        import numpy
+        import pandas
+        import matplotlib
         checks["scientific_libraries"] = True
     except ImportError:
         checks["scientific_libraries"] = False
-    
+
     return checks

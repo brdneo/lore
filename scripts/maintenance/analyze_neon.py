@@ -7,22 +7,23 @@ Resumo dos dados do Neon baseado na URL de conexão
 import re
 from urllib.parse import urlparse
 
+
 def analyze_neon_url():
     """Analisa a URL do Neon sem conectar"""
-    
+
     # DATABASE_URL do Neon fornecida
     database_url = "postgresql://neondb_owner:npg_Il2RJN8hGwYb@ep-orange-fog-a5a3ol11-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
-    
+
     print("🐘 NEON DATABASE - ANÁLISE DE CONFIGURAÇÃO")
     print("=" * 55)
     print()
-    
+
     try:
         parsed = urlparse(database_url)
-        
+
         # Extrair detalhes do hostname
         hostname_parts = parsed.hostname.split('.')
-        
+
         # Informações detectadas
         info = {
             "host": parsed.hostname,
@@ -36,7 +37,7 @@ def analyze_neon_url():
             "ssl_mode": "require",
             "channel_binding": "require"
         }
-        
+
         print("## 📋 CONFIGURAÇÃO DETECTADA")
         print(f"- **Provider**: {info['provider']}")
         print(f"- **Região**: {info['region']}")
@@ -48,14 +49,14 @@ def analyze_neon_url():
         print(f"- **SSL**: {info['ssl_mode']}")
         print(f"- **Channel Binding**: {info['channel_binding']}")
         print()
-        
+
         print("## 🔍 DETALHES TÉCNICOS")
         print(f"- **Host completo**: `{info['host']}`")
-        print(f"- **Connection string**: Configurada ✅")
-        print(f"- **Security**: SSL + Channel Binding ✅")
-        print(f"- **Performance**: Connection Pooling ✅")
+        print("- **Connection string**: Configurada ✅")
+        print("- **Security**: SSL + Channel Binding ✅")
+        print("- **Performance**: Connection Pooling ✅")
         print()
-        
+
         print("## 📊 STATUS CONHECIDO")
         print("- ✅ **Database_URL válida** e configurada")
         print("- ✅ **Credenciais** presentes")
@@ -63,7 +64,7 @@ def analyze_neon_url():
         print("- ✅ **Connection Pooling** ativo")
         print("- ✅ **Usado no projeto** local com sucesso")
         print()
-        
+
         # Análise do endpoint
         print("## 🎯 ANÁLISE DO ENDPOINT")
         if "pooler" in info['host']:
@@ -72,12 +73,12 @@ def analyze_neon_url():
             print("- 🔄 **Scaling**: Automático")
         else:
             print("- 📡 **Tipo**: Conexão direta")
-        
+
         if "us-east-2" in info['host']:
             print("- 🌍 **Região**: US East 2 (Ohio)")
             print("- 📍 **Localização**: América do Norte")
             print("- ⚡ **Latência**: Baixa para usuarios US/BR")
-        
+
         print()
         print("## 💡 INFORMAÇÕES ADICIONAIS ÚTEIS")
         print()
@@ -105,11 +106,11 @@ def analyze_neon_url():
         print("- Usage metrics")
         print("- Billing alerts")
         print()
-        
-        # Criar relatório
-        report_content = f"""# Neon Database Configuration Report
 
-**Data:** {__import__('time').strftime('%Y-%m-%d %H:%M:%S')}  
+        # Criar relatório
+        report_content = """# Neon Database Configuration Report
+
+**Data:** {__import__('time').strftime('%Y-%m-%d %H:%M:%S')}
 **Status:** ✅ CONFIGURADO E FUNCIONANDO
 
 ## 🔧 Configuração Atual
@@ -175,18 +176,19 @@ O Neon PostgreSQL está **100% configurado e funcionando**. A connection string 
 
 *Relatório gerado automaticamente com base na DATABASE_URL configurada*
 """
-        
+
         # Salvar relatório
         with open('/home/brendo/lore/docs/reports/NEON-CONFIGURATION.md', 'w', encoding='utf-8') as f:
             f.write(report_content)
-        
+
         print("📄 **Relatório salvo**: `docs/reports/NEON-CONFIGURATION.md`")
-        
+
         return info
-        
+
     except Exception as e:
         print(f"❌ Erro ao analisar URL: {e}")
         return None
+
 
 if __name__ == "__main__":
     analyze_neon_url()

@@ -18,6 +18,7 @@ import sys
 from pathlib import Path
 import importlib.util
 
+
 def check_python_syntax(file_path):
     """Verifica sintaxe Python de um arquivo"""
     try:
@@ -30,6 +31,7 @@ def check_python_syntax(file_path):
     except Exception as e:
         return False, f"Error reading file: {e}"
 
+
 def check_imports(file_path):
     """Verifica se imports funcionam"""
     try:
@@ -41,37 +43,39 @@ def check_imports(file_path):
     except Exception as e:
         return False, f"Import error: {e}"
 
+
 def main():
     """Executa verificação de erros"""
     project_root = Path(__file__).parent.parent
     python_files = []
-    
+
     # Encontrar todos os arquivos Python
     for pattern in ["**/*.py"]:
         python_files.extend(project_root.glob(pattern))
-    
+
     # Filtrar arquivos do .venv
     python_files = [f for f in python_files if ".venv" not in str(f)]
-    
+
     print("🔍 Verificando erros no projeto...")
     errors_found = 0
-    
+
     for file_path in python_files:
         # Verificar sintaxe
         syntax_ok, syntax_error = check_python_syntax(file_path)
         if not syntax_ok:
             print(f"❌ {file_path}: {syntax_error}")
             errors_found += 1
-        
+
         # Verificar se arquivo está vazio (quando não deveria)
         if file_path.stat().st_size == 0 and file_path.name != "__init__.py":
             print(f"⚠️ {file_path}: Arquivo vazio")
-    
+
     if errors_found == 0:
         print("✅ Nenhum erro encontrado!")
     else:
         print(f"❌ {errors_found} erros encontrados.")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

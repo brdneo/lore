@@ -27,27 +27,33 @@ warnings.filterwarnings("ignore", message=".*ScriptRunContext.*")
 # Configurar para modo silencioso
 os.environ["STREAMLIT_LOGGER_LEVEL"] = "ERROR"
 
+
 def print_header(title):
     """Imprime cabeçalho formatado"""
     print(f"\n{'='*60}")
     print(f"  {title}")
     print('='*60)
 
+
 def print_success(message):
     """Imprime mensagem de sucesso"""
     print(f"✅ {message}")
+
 
 def print_error(message):
     """Imprime mensagem de erro"""
     print(f"❌ {message}")
 
+
 def print_warning(message):
     """Imprime mensagem de aviso"""
     print(f"⚠️ {message}")
 
+
 def check_file_exists(file_path):
     """Verifica se arquivo existe"""
     return Path(file_path).exists()
+
 
 def check_directory_structure():
     """Verifica estrutura de diretórios"""
@@ -90,6 +96,7 @@ def check_directory_structure():
         else:
             print_error(f"Arquivo {file_path} não encontrado")
 
+
 def check_python_imports():
     """Verifica se os imports principais funcionam"""
     print_header("VERIFICAÇÃO DE IMPORTS")
@@ -126,6 +133,7 @@ def check_python_imports():
         except Exception as e:
             print_error(f"Import {module_name}: {str(e)}")
 
+
 def check_dependencies():
     """Verifica dependências instaladas"""
     print_header("VERIFICAÇÃO DE DEPENDÊNCIAS")
@@ -156,6 +164,7 @@ def check_dependencies():
             else:
                 print_error(f"Pacote {display_name} não instalado")
 
+
 def run_tests():
     """Executa testes unitários"""
     print_header("EXECUÇÃO DE TESTES")
@@ -185,6 +194,7 @@ def run_tests():
         else:
             print_warning(f"Arquivo de teste {test_file} não encontrado")
 
+
 def check_config_files():
     """Verifica arquivos de configuração"""
     print_header("VERIFICAÇÃO DE CONFIGURAÇÕES")
@@ -202,6 +212,7 @@ def check_config_files():
             print_success(f"Config {config_file}")
         else:
             print_warning(f"Config {config_file} não encontrado")
+
 
 def check_documentation():
     """Verifica documentação organizada"""
@@ -221,6 +232,7 @@ def check_documentation():
             print_success(f"Doc {doc_file}")
         else:
             print_warning(f"Doc {doc_file} não encontrado")
+
 
 def validate_api_server():
     """Valida se o servidor API pode ser iniciado"""
@@ -258,6 +270,7 @@ def validate_api_server():
         print_warning(f"API server não pode ser validado: {str(e)}")
         print_warning("Isso pode ser normal se dependências não estiverem instaladas")
 
+
 def main():
     """Função principal de validação"""
     print("🌟 Lore N.A. - Validador de Projeto")
@@ -280,6 +293,7 @@ def main():
     print("✅ Validação completa executada!")
     print("📊 Verifique os resultados acima para identificar problemas")
     print("🚀 Se tudo estiver verde, o projeto está pronto para execução!")
+
 
 if __name__ == "__main__":
     main()

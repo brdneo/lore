@@ -20,22 +20,23 @@ from datetime import datetime
 # Adicionar src ao path
 sys.path.append('/home/brendo/lore/src')
 
+
 class RoadmapAnalyzer:
     """Analisador de aderência ao roadmap dos próximos passos"""
-    
+
     def __init__(self, project_root: str = "/home/brendo/lore"):
         self.project_root = Path(project_root)
         self.src_dir = self.project_root / "src"
-        
+
         # Roadmap estruturado baseado no PROXIMOS-PASSOS.md
         self.roadmap = self._load_roadmap_structure()
-        
+
         # Resultados da análise
         self.implementation_status = {}
-        
+
     def _load_roadmap_structure(self) -> Dict[str, Any]:
         """Carrega estrutura do roadmap do PROXIMOS-PASSOS.md"""
-        
+
         return {
             "sistema_nucleo": {
                 "description": "SISTEMA NÚCLEO COMPLETO ✅",
@@ -44,7 +45,7 @@ class RoadmapAnalyzer:
                         "description": "Sistema de DNA Digital Completo",
                         "requirements": [
                             "Genesis Protocol com 5 universos",
-                            "25+ traits genéticos comportamentais", 
+                            "25+ traits genéticos comportamentais",
                             "Herança, crossover, mutação e fitness scoring"
                         ],
                         "files": ["agent_dna.py", "evolved_agent.py"],
@@ -236,10 +237,10 @@ class RoadmapAnalyzer:
                 }
             }
         }
-    
+
     def analyze_file_implementation(self, file_path: Path) -> Dict[str, Any]:
         """Analisa implementação de um arquivo específico"""
-        
+
         if not file_path.exists():
             return {
                 "exists": False,
@@ -248,26 +249,26 @@ class RoadmapAnalyzer:
                 "classes": 0,
                 "complexity_score": 0
             }
-        
+
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
-            
+
             lines = len(content.split('\n'))
             functions = content.count('def ')
             classes = content.count('class ')
-            
+
             # Score de complexidade baseado em tamanho e estrutura
             complexity_score = min(100, (lines / 10) + (functions * 5) + (classes * 10))
-            
+
             # Verificar imports e dependências avançadas
             advanced_imports = [
                 'asyncio', 'typing', 'dataclass', 'json', 'logging',
                 'requests', 'fastapi', 'streamlit', 'sqlite3', 'threading'
             ]
-            
+
             imports_found = sum(1 for imp in advanced_imports if imp in content)
-            
+
             return {
                 "exists": True,
                 "lines": lines,
@@ -277,7 +278,7 @@ class RoadmapAnalyzer:
                 "advanced_imports": imports_found,
                 "content_preview": content[:200] + "..." if len(content) > 200 else content
             }
-            
+
         except Exception as e:
             return {
                 "exists": True,
@@ -287,29 +288,29 @@ class RoadmapAnalyzer:
                 "classes": 0,
                 "complexity_score": 0
             }
-    
+
     def check_concept_implementation(self, concepts: List[str]) -> Dict[str, Any]:
         """Verifica implementação de conceitos no código"""
-        
+
         python_files = list(self.src_dir.glob("*.py"))
         concept_evidence = {}
-        
+
         for concept in concepts:
             concept_evidence[concept] = {
                 "files_with_concept": [],
                 "total_occurrences": 0,
                 "implemented": False
             }
-        
+
         for py_file in python_files:
             try:
                 with open(py_file, 'r', encoding='utf-8') as f:
                     content = f.read().lower()
-                
+
                 for concept in concepts:
                     concept_lower = concept.lower()
                     occurrences = content.count(concept_lower)
-                    
+
                     if occurrences > 0:
                         concept_evidence[concept]["files_with_concept"].append({
                             "file": py_file.name,
@@ -317,42 +318,42 @@ class RoadmapAnalyzer:
                         })
                         concept_evidence[concept]["total_occurrences"] += occurrences
                         concept_evidence[concept]["implemented"] = True
-                        
+
             except Exception:
                 continue
-        
+
         return concept_evidence
-    
+
     def analyze_requirements_implementation(self, requirements: List[str]) -> Dict[str, Any]:
         """Analisa implementação de requisitos específicos"""
-        
+
         requirement_status = {}
-        
+
         for req in requirements:
             # Extrair palavras-chave do requisito
             keywords = self._extract_keywords(req)
-            
+
             # Verificar implementação dos conceitos
             concept_evidence = self.check_concept_implementation(keywords)
-            
+
             # Determinar status baseado na evidência
             implemented_concepts = sum(1 for evidence in concept_evidence.values() if evidence["implemented"])
             total_concepts = len(keywords)
-            
+
             implementation_percentage = (implemented_concepts / total_concepts * 100) if total_concepts > 0 else 0
-            
+
             requirement_status[req] = {
                 "keywords": keywords,
                 "implementation_percentage": implementation_percentage,
                 "concept_evidence": concept_evidence,
                 "status": "implemented" if implementation_percentage >= 70 else "partial" if implementation_percentage >= 30 else "missing"
             }
-        
+
         return requirement_status
-    
+
     def _extract_keywords(self, requirement: str) -> List[str]:
         """Extrai palavras-chave de um requisito"""
-        
+
         # Mapear conceitos para palavras-chave
         keyword_mapping = {
             "Genesis Protocol": ["genesis", "protocol"],
@@ -416,37 +417,37 @@ class RoadmapAnalyzer:
             "resolução coletiva": ["collective", "solve", "group"],
             "criatividade emergente": ["creativity", "creative", "emergent"]
         }
-        
+
         keywords = []
         requirement_lower = requirement.lower()
-        
+
         for concept, concept_keywords in keyword_mapping.items():
             if concept.lower() in requirement_lower:
                 keywords.extend(concept_keywords)
-        
+
         # Adicionar palavras-chave diretas do requisito
         words = requirement_lower.split()
         for word in words:
             if len(word) > 3 and word not in ['com', 'para', 'que', 'uma', 'dos', 'das', 'entre']:
                 keywords.append(word)
-        
+
         return list(set(keywords))  # Remover duplicatas
-    
+
     def analyze_roadmap_implementation(self) -> Dict[str, Any]:
         """Análise completa da implementação do roadmap"""
-        
+
         print("🔍 ANÁLISE COMPLETA DO ROADMAP PROXIMOS-PASSOS.md")
         print("=" * 70)
-        
+
         for phase_key, phase in self.roadmap.items():
             print(f"\n📋 {phase['description']}")
             print("-" * 50)
-            
+
             phase_results = {}
-            
+
             for item_key, item in phase["items"].items():
                 print(f"\n🔎 Analisando: {item['description']}")
-                
+
                 # Verificar arquivos específicos se existirem
                 if "files" in item and item["files"][0].endswith('.py'):
                     file_analysis = {}
@@ -454,34 +455,36 @@ class RoadmapAnalyzer:
                         file_path = self.src_dir / file_name
                         analysis = self.analyze_file_implementation(file_path)
                         file_analysis[file_name] = analysis
-                        
+
                         if analysis["exists"]:
                             print(f"   ✅ {file_name}: {analysis['lines']} linhas, {analysis['functions']} funções")
                         else:
                             print(f"   ❌ {file_name}: Arquivo não encontrado")
-                    
+
                     item["file_analysis"] = file_analysis
-                
+
                 # Analisar requisitos
                 requirements_analysis = self.analyze_requirements_implementation(item["requirements"])
                 item["requirements_analysis"] = requirements_analysis
-                
+
                 # Calcular score geral do item
                 if "file_analysis" in item:
                     # Items com arquivos específicos
                     existing_files = sum(1 for analysis in item["file_analysis"].values() if analysis["exists"])
                     total_files = len(item["file_analysis"])
                     file_score = (existing_files / total_files * 100) if total_files > 0 else 0
-                    
-                    avg_complexity = sum(analysis.get("complexity_score", 0) for analysis in item["file_analysis"].values()) / total_files
-                    
+
+                    avg_complexity = sum(analysis.get("complexity_score", 0)
+                                         for analysis in item["file_analysis"].values()) / total_files
+
                     # Score baseado na existência de arquivos e complexidade
                     item_score = (file_score * 0.6) + (min(avg_complexity, 100) * 0.4)
                 else:
                     # Items conceituais - baseado na implementação de requisitos
-                    req_scores = [req_analysis["implementation_percentage"] for req_analysis in requirements_analysis.values()]
+                    req_scores = [req_analysis["implementation_percentage"]
+                                  for req_analysis in requirements_analysis.values()]
                     item_score = sum(req_scores) / len(req_scores) if req_scores else 0
-                
+
                 # Determinar status
                 if item_score >= 80:
                     item["status"] = "implemented"
@@ -492,10 +495,10 @@ class RoadmapAnalyzer:
                 else:
                     item["status"] = "missing"
                     status_icon = "❌"
-                
+
                 item["implementation_score"] = item_score
                 print(f"   {status_icon} Score de implementação: {item_score:.1f}%")
-                
+
                 # Mostrar detalhes dos requisitos
                 for req, req_analysis in requirements_analysis.items():
                     if req_analysis["implementation_percentage"] >= 70:
@@ -504,36 +507,36 @@ class RoadmapAnalyzer:
                         print(f"      ⚠️ {req}: {req_analysis['implementation_percentage']:.0f}%")
                     else:
                         print(f"      ❌ {req}: {req_analysis['implementation_percentage']:.0f}%")
-                
+
                 phase_results[item_key] = item
-            
+
             # Calcular score da fase
             phase_scores = [item["implementation_score"] for item in phase_results.values()]
             phase["implementation_score"] = sum(phase_scores) / len(phase_scores) if phase_scores else 0
-            
+
             print(f"\n📊 SCORE DA FASE: {phase['implementation_score']:.1f}%")
-            
+
             self.implementation_status[phase_key] = phase
-    
+
     def generate_roadmap_report(self) -> str:
         """Gera relatório completo da análise do roadmap"""
-        
+
         report = []
         report.append("# 📋 RELATÓRIO COMPLETO - ANÁLISE DO ROADMAP PROXIMOS-PASSOS.md")
         report.append(f"**Data:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         report.append("")
-        
+
         # Calcular estatísticas gerais
         total_items = 0
         implemented_items = 0
         partial_items = 0
         missing_items = 0
-        
+
         phase_scores = []
-        
+
         for phase_key, phase in self.implementation_status.items():
             phase_scores.append(phase["implementation_score"])
-            
+
             for item_key, item in phase["items"].items():
                 total_items += 1
                 if item["status"] == "implemented":
@@ -542,28 +545,28 @@ class RoadmapAnalyzer:
                     partial_items += 1
                 else:
                     missing_items += 1
-        
+
         overall_score = sum(phase_scores) / len(phase_scores) if phase_scores else 0
-        
+
         # Resumo executivo
         report.append("## 🎯 RESUMO EXECUTIVO")
         report.append("")
         report.append(f"**Score Geral de Implementação:** {overall_score:.1f}%")
         report.append("")
-        report.append(f"**Estatísticas do Roadmap:**")
+        report.append("**Estatísticas do Roadmap:**")
         report.append(f"- 📊 Total de itens analisados: {total_items}")
         report.append(f"- ✅ Implementados: {implemented_items} ({implemented_items/total_items*100:.1f}%)")
         report.append(f"- ⚠️ Parcialmente implementados: {partial_items} ({partial_items/total_items*100:.1f}%)")
         report.append(f"- ❌ Não implementados: {missing_items} ({missing_items/total_items*100:.1f}%)")
         report.append("")
-        
+
         # Status por fase
         report.append("## 📋 STATUS POR FASE")
         report.append("")
-        
+
         for phase_key, phase in self.implementation_status.items():
             score = phase["implementation_score"]
-            
+
             if score >= 80:
                 status_icon = "✅ COMPLETA"
             elif score >= 60:
@@ -572,74 +575,74 @@ class RoadmapAnalyzer:
                 status_icon = "⚠️ INICIADA"
             else:
                 status_icon = "❌ NÃO INICIADA"
-            
+
             report.append(f"### {phase['description']}")
             report.append(f"**Status:** {status_icon} ({score:.1f}%)")
             report.append("")
-            
+
             # Listar itens da fase
             for item_key, item in phase["items"].items():
                 item_score = item["implementation_score"]
-                
+
                 if item["status"] == "implemented":
                     item_icon = "✅"
                 elif item["status"] == "partial":
                     item_icon = "⚠️"
                 else:
                     item_icon = "❌"
-                
+
                 report.append(f"- {item_icon} **{item['description']}**: {item_score:.1f}%")
-                
+
                 # Mostrar requisitos críticos
                 if item["status"] != "implemented":
                     missing_reqs = []
                     for req, req_analysis in item["requirements_analysis"].items():
                         if req_analysis["implementation_percentage"] < 30:
                             missing_reqs.append(req)
-                    
+
                     if missing_reqs:
                         report.append(f"  - 🔴 Requisitos ausentes: {len(missing_reqs)}")
                         for req in missing_reqs[:2]:  # Mostrar apenas os 2 primeiros
                             report.append(f"    - {req}")
                         if len(missing_reqs) > 2:
                             report.append(f"    - ... e mais {len(missing_reqs) - 2}")
-            
+
             report.append("")
-        
+
         # Próximos passos recomendados
         report.append("## 🚀 PRÓXIMOS PASSOS RECOMENDADOS")
         report.append("")
-        
+
         # Identificar prioridades baseadas no roadmap
         priorities = []
-        
+
         # Itens da Fase 1 com baixa implementação
         fase1 = self.implementation_status.get("fase1_consolidacao", {})
         if fase1.get("implementation_score", 0) < 80:
             priorities.append("1. 🔧 **Completar Fase 1 (Consolidação)** - Otimização, robustez e analytics")
-        
+
         # Sistema núcleo com lacunas
         nucleo = self.implementation_status.get("sistema_nucleo", {})
         if nucleo.get("implementation_score", 0) < 95:
             priorities.append("2. 🌟 **Finalizar Sistema Núcleo** - Completar funcionalidades básicas")
-        
+
         # Próximas fases
         fase2 = self.implementation_status.get("fase2_expansao", {})
         if fase2.get("implementation_score", 0) < 20:
             priorities.append("3. 🤖 **Iniciar Fase 2** - IA conversacional e governo democrático")
-        
+
         if not priorities:
             priorities.append("🎉 **Roadmap bem avançado!** Considerar Fase 3 - Inovações conceituais")
-        
+
         for priority in priorities:
             report.append(priority)
-        
+
         report.append("")
-        
+
         # Conclusão
         report.append("## 📊 CONCLUSÃO")
         report.append("")
-        
+
         if overall_score >= 80:
             conclusion = "🎉 **EXCELENTE** - Roadmap muito bem implementado"
         elif overall_score >= 60:
@@ -648,45 +651,46 @@ class RoadmapAnalyzer:
             conclusion = "⚠️ **REGULAR** - Implementação parcial, precisa de foco"
         else:
             conclusion = "❌ **BAIXO** - Roadmap pouco implementado"
-        
+
         report.append(f"**Avaliação Geral:** {conclusion}")
         report.append(f"**Score:** {overall_score:.1f}% de aderência ao roadmap")
         report.append("")
-        
+
         report.append("---")
         report.append("*Relatório gerado automaticamente pela análise do roadmap Lore N.A.*")
-        
+
         return "\n".join(report)
+
 
 def main():
     """Função principal"""
     print("📋 LORE N.A. - ANÁLISE COMPLETA DO ROADMAP")
     print("=" * 60)
-    
+
     analyzer = RoadmapAnalyzer()
-    
+
     # Executar análise
     analyzer.analyze_roadmap_implementation()
-    
+
     # Gerar relatório
     report = analyzer.generate_roadmap_report()
-    
+
     # Salvar relatório
     report_file = Path("/home/brendo/lore/docs/reports/ANALISE-ROADMAP-COMPLETA.md")
     report_file.parent.mkdir(parents=True, exist_ok=True)
-    
+
     with open(report_file, 'w', encoding='utf-8') as f:
         f.write(report)
-    
+
     print(f"\n📄 Relatório salvo em: {report_file}")
-    
+
     # Resumo final
     phase_scores = [phase["implementation_score"] for phase in analyzer.implementation_status.values()]
     overall_score = sum(phase_scores) / len(phase_scores) if phase_scores else 0
-    
-    print(f"\n🎯 RESULTADO FINAL:")
+
+    print("\n🎯 RESULTADO FINAL:")
     print(f"   📊 Score geral do roadmap: {overall_score:.1f}%")
-    
+
     for phase_key, phase in analyzer.implementation_status.items():
         score = phase["implementation_score"]
         if score >= 80:
@@ -697,8 +701,9 @@ def main():
             status = "⚠️ INICIADA"
         else:
             status = "❌ NÃO INICIADA"
-        
+
         print(f"   {status}: {phase['description']} ({score:.1f}%)")
+
 
 if __name__ == "__main__":
     main()

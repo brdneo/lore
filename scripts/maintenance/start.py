@@ -25,6 +25,7 @@ import argparse
 # Adicionar src ao path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
+
 def start_api_server(port=8000):
     """Inicia o servidor API"""
     try:
@@ -47,7 +48,7 @@ def start_api_server(port=8000):
         import uvicorn
 
         host = "0.0.0.0"
-        print(f"🚀 Iniciando Lore N.A. API Server")
+        print("🚀 Iniciando Lore N.A. API Server")
         print(f"🌐 URL: http://{host}:{port}")
         print(f"📖 Docs: http://{host}:{port}/docs")
         print("🔥 Pressione Ctrl+C para parar")
@@ -57,6 +58,7 @@ def start_api_server(port=8000):
     except Exception as e:
         print(f"❌ Erro ao iniciar API server: {e}")
         return False
+
 
 def start_dashboard(port=8501):
     """Inicia o dashboard Streamlit"""
@@ -68,7 +70,7 @@ def start_dashboard(port=8501):
             "--server.headless", "true"
         ]
 
-        print(f"📊 Iniciando Dashboard Streamlit")
+        print("📊 Iniciando Dashboard Streamlit")
         print(f"🌐 URL: http://localhost:{port}")
 
         process = subprocess.Popen(cmd)
@@ -77,6 +79,7 @@ def start_dashboard(port=8501):
     except Exception as e:
         print(f"❌ Erro ao iniciar dashboard: {e}")
         return None
+
 
 def main():
     """Função principal"""
@@ -127,6 +130,7 @@ def main():
     else:
         # Iniciar apenas API (padrão)
         start_api_server(args.api_port)
+
 
 if __name__ == "__main__":
     try:

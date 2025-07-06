@@ -20,6 +20,7 @@ import threading
 # Add the src directory to Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
+
 def check_dependencies():
     """Verifica se as dependências estão instaladas"""
     try:
@@ -30,6 +31,7 @@ def check_dependencies():
     except ImportError:
         return False
 
+
 def install_dependencies():
     """Instala dependências automaticamente"""
     print("🔧 Instalando dependências...")
@@ -38,6 +40,7 @@ def install_dependencies():
         return True
     except subprocess.CalledProcessError:
         return False
+
 
 def start_api_server():
     """Inicia o servidor API"""
@@ -75,6 +78,7 @@ def start_api_server():
         print(f"❌ Erro ao iniciar API server: {e}")
         return False
 
+
 def start_dashboard():
     """Inicia o dashboard Streamlit"""
     try:
@@ -86,6 +90,7 @@ def start_dashboard():
     except Exception as e:
         print(f"❌ Erro ao iniciar dashboard: {e}")
         return False
+
 
 def main():
     """Função principal"""
@@ -116,6 +121,7 @@ def main():
 
     # Iniciar API server (bloqueia thread principal)
     start_api_server()
+
 
 if __name__ == "__main__":
     try:
