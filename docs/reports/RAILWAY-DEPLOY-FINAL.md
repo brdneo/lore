@@ -35,9 +35,9 @@ DATABASE_URL=postgresql://neondb_owner:npg_Il2RJN8hGwYb@ep-orange-fog-a5a3ol11-p
 -   ✅ `config/railway.json` atualizado com dados reais
 -   ✅ Projeto linkado via Railway CLI
 -   ✅ Variáveis de ambiente configuradas:
-    -   `DATABASE_URL` (Neon PostgreSQL)
-    -   `JWT_SECRET`
-    -   `PORT=8080`
+  -   `DATABASE_URL` (Neon PostgreSQL)
+  -   `JWT_SECRET`
+  -   `PORT=8080`
 
 ### 2. **Deploy Executado**
 
@@ -141,20 +141,20 @@ python main.py  # testar localmente primeiro
 
 1. **Projeto Settings**:
 
-    - Nome do projeto no Neon dashboard
-    - Branch configurada (main/develop)
-    - Compute tier (CPU/RAM allocation)
+  - Nome do projeto no Neon dashboard
+  - Branch configurada (main/develop)
+  - Compute tier (CPU/RAM allocation)
 
 2. **Performance & Usage**:
 
-    - Connection limits configurados
-    - Storage usage atual
-    - Plan ativo (Free/Pro/Scale)
+  - Connection limits configurados
+  - Storage usage atual
+  - Plan ativo (Free/Pro/Scale)
 
 3. **Security & Monitoring**:
-    - IP allowlist (se configurado)
-    - Monitoring/alerts ativos
-    - Backup schedule/retention
+  - IP allowlist (se configurado)
+  - Monitoring/alerts ativos
+  - Backup schedule/retention
 
 **🎉 Conclusão**: O Neon está **100% configurado e funcionando perfeitamente!**
 

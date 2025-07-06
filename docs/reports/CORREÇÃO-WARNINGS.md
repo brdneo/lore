@@ -13,9 +13,9 @@ O projeto Lore N.A. apresentava **699 erros** e **291 warnings** no VS Code. Ap�
 
 -   ❌ **Problema:** Erros de tipagem com `connection.closed`, `DATABASE_URL` None, e acesso a resultados de query
 -   ✅ **Solução:**
-    -   Substituído `connection.closed` por verificação via query SELECT 1
-    -   Adicionado `str()` para conversão segura de DATABASE_URL
-    -   Adicionado `type: ignore` para resultados de query com cast para int()
+  -   Substituído `connection.closed` por verificação via query SELECT 1
+  -   Adicionado `str()` para conversão segura de DATABASE_URL
+  -   Adicionado `type: ignore` para resultados de query com cast para int()
 
 ### 2. **dashboard.py**
 

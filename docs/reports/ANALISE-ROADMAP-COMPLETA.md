@@ -27,7 +27,7 @@
 
 - ❌ **Otimização de Performance**: 33.3%
   - 🔴 Requisitos ausentes: 1
-    - Cache inteligente para cálculos genéticos
+  - Cache inteligente para cálculos genéticos
 - ⚠️ **Robustez do Sistema**: 65.1%
 - ✅ **Analytics Avançadas**: 81.5%
 
@@ -38,7 +38,7 @@
 - ⚠️ **Governo Digital Democrático**: 44.4%
 - ⚠️ **Persistência Distribuída**: 61.7%
   - 🔴 Requisitos ausentes: 1
-    - Sincronização entre instâncias
+  - Sincronização entre instâncias
 
 ### FASE 3: INOVAÇÕES CONCEITUAIS (3-6 meses)
 **Status:** ⚠️ INICIADA (49.7%)
@@ -47,15 +47,15 @@
 - ⚠️ **Evolução Dirigida**: 57.8%
 - ❌ **Gamificação e Interação**: 38.9%
   - 🔴 Requisitos ausentes: 1
-    - Interface de "criador de mundos"
+  - Interface de "criador de mundos"
 
 ### FASE 4: EXPANSÃO TÉCNICA (6-12 meses)
 **Status:** ⚠️ INICIADA (54.1%)
 
 - ❌ **Plataformas Múltiplas**: 34.4%
   - 🔴 Requisitos ausentes: 2
-    - API pública para desenvolvedores
-    - Plugins para outras plataformas
+  - API pública para desenvolvedores
+  - Plugins para outras plataformas
 - ⚠️ **Blockchain e NFTs**: 64.4%
 - ⚠️ **IA Coletiva Emergente**: 63.3%
 

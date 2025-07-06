@@ -19,22 +19,22 @@
 
 1. **❌ Main.py incorreto**: Referenciava diretório inexistente `services/agent_runner`
 
-    - ✅ **Corrigido**: Atualizado para usar `src/`
+  - ✅ **Corrigido**: Atualizado para usar `src/`
 
 2. **❌ Requirements.txt incorreto**: Apontava para caminho errado
 
-    - ✅ **Corrigido**: Atualizado para `-r src/requirements.txt`
+  - ✅ **Corrigido**: Atualizado para `-r src/requirements.txt`
 
 3. **❌ Arquivo inválido**: `src/=3.8` era um log de instalação
 
-    - ✅ **Corrigido**: Arquivo removido
+  - ✅ **Corrigido**: Arquivo removido
 
 4. **❌ Ambiente virtual corrompido**: `.venv` com problemas
 
-    - ✅ **Corrigido**: Recriado ambiente e instaladas dependências
+  - ✅ **Corrigido**: Recriado ambiente e instaladas dependências
 
 5. **❌ Testes com paths incorretos**: Não encontravam módulos
-    - ✅ **Corrigido**: Atualizados paths nos testes
+  - ✅ **Corrigido**: Atualizados paths nos testes
 
 ### 3. 📦 Dependências Instaladas
 

@@ -111,41 +111,41 @@ curl http://localhost:8000/health
 
 ### **Fase 2: Produção Robusta (1-2 dias)**
 
-5. **Monitoramento & Logs**
+1. **Monitoramento & Logs**
 
-    - Configurar alertas Railway
-    - Implementar logging estruturado
-    - Adicionar métricas de performance
+  - Configurar alertas Railway
+  - Implementar logging estruturado
+  - Adicionar métricas de performance
 
-6. **Segurança**
+2. **Segurança**
 
-    - Configurar CORS adequadamente
-    - Implementar rate limiting
-    - Adicionar autenticação JWT
+  - Configurar CORS adequadamente
+  - Implementar rate limiting
+  - Adicionar autenticação JWT
 
-7. **Escalabilidade**
-    - Otimizar queries do database
-    - Implementar cache (Redis)
-    - Configurar workers múltiplos
+3. **Escalabilidade**
+  - Otimizar queries do database
+  - Implementar cache (Redis)
+  - Configurar workers múltiplos
 
 ### **Fase 3: Features Avançadas (1 semana)**
 
-8. **CI/CD Pipeline**
+1. **CI/CD Pipeline**
 
-    - GitHub Actions para testes
-    - Deploy automático com validação
-    - Rollback automático em falhas
+  - GitHub Actions para testes
+  - Deploy automático com validação
+  - Rollback automático em falhas
 
-9. **Backup & Recovery**
+2. **Backup & Recovery**
 
-    - Backup automático do Neon
-    - Procedure de disaster recovery
-    - Versionamento de database
+  - Backup automático do Neon
+  - Procedure de disaster recovery
+  - Versionamento de database
 
-10. **Expansão**
-    - WebSockets para real-time
-    - API rate limiting
-    - Multi-tenancy support
+3. **Expansão**
+  - WebSockets para real-time
+  - API rate limiting
+  - Multi-tenancy support
 
 ---
 

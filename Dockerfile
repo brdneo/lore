@@ -4,7 +4,7 @@
 # ================================
 # Stage 1: Rust Build Environment
 # ================================
-FROM rust:1.75-slim AS rust-builder
+FROM rust:1.80-slim AS rust-builder
 
 WORKDIR /usr/src/app
 
@@ -12,7 +12,8 @@ WORKDIR /usr/src/app
 RUN apt-get update && apt-get install -y \
     pkg-config \
     libssl-dev \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 # Copy Rust workspace configuration
 COPY Cargo.toml Cargo.lock ./
@@ -24,14 +25,15 @@ RUN cargo build --release
 # ====================================
 # Stage 2: Python Build Environment  
 # ====================================
-FROM python:3.11-slim AS python-builder
+FROM python:3.12-slim AS python-builder
 
 WORKDIR /app
 
 # Install Python build dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 # Copy Python package configuration
 COPY python/requirements.txt ./
@@ -48,7 +50,7 @@ COPY config/ ./config/
 # ==============================
 # Stage 3: Production Runtime
 # ==============================
-FROM python:3.11-slim AS runtime
+FROM python:3.12-slim AS runtime
 
 # Create non-root user for security
 RUN useradd --create-home --shell /bin/bash lore
@@ -58,7 +60,8 @@ WORKDIR /app
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y \
     curl \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 # Copy built artifacts from previous stages
 COPY --from=rust-builder /usr/src/app/target/release/ ./target/release/
