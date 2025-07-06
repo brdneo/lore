@@ -8,8 +8,8 @@ on:
 
 env:
     CARGO_TERM_COLOR: always
-    PYTHON_VERSION: "3.11"
-    RUST_VERSION: "1.75"
+    PYTHON_VERSION: "3.12"
+    RUST_VERSION: "1.80"
 
 jobs:
     # ============================
@@ -195,8 +195,8 @@ jobs:
               uses: docker/login-action@v3
               continue-on-error: true
               with:
-                  username: ${{ secrets.DOCKER_USERNAME || 'dummy' }}
-                  password: ${{ secrets.DOCKER_PASSWORD || 'dummy' }}
+                  username: dummy
+                  password: dummy
 
             - name: Extract metadata
               id: meta
@@ -209,12 +209,12 @@ jobs:
                       type=sha
                       type=raw,value=latest,enable={{is_default_branch}}
 
-            - name: Build and push
+            - name: Build only (no push)
               uses: docker/build-push-action@v5
               with:
                   context: .
                   platforms: linux/amd64,linux/arm64
-                  push: ${{ secrets.DOCKER_USERNAME != '' }}
+                  push: false
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
                   cache-from: type=gha
