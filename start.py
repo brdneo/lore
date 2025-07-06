@@ -1,32 +1,36 @@
 #!/usr/bin/env python3
 """
-Convenience wrapper for the main start script.
-This maintains backward compatibility while redirecting to the new structure.
+Wrapper script para iniciar o projeto Lore N.A.
+Redireciona para scripts/maintenance/start.py
 """
 
-import sys
 import os
+import sys
 import subprocess
 from pathlib import Path
 
+
 def main():
-    """Run the actual start script from the scripts/maintenance directory."""
-    script_path = Path(__file__).parent / "scripts" / "maintenance" / "start.py"
-    
-    if not script_path.exists():
-        print(f"❌ Error: Start script not found at {script_path}")
-        print("Make sure the project structure is correct.")
+    """Executa o script principal de start"""
+    project_root = Path(__file__).parent
+    main_script = project_root / "scripts" / "maintenance" / "start.py"
+
+    if not main_script.exists():
+        print(f"❌ Arquivo principal não encontrado: {main_script}")
         sys.exit(1)
-    
-    print("🔄 Redirecting to scripts/maintenance/start.py...")
-    
-    # Pass all arguments to the actual script
-    cmd = [sys.executable, str(script_path)] + sys.argv[1:]
-    
+
+    # Executar o script principal
     try:
-        subprocess.run(cmd, check=True)
-    except subprocess.CalledProcessError as e:
-        sys.exit(e.returncode)
+        result = subprocess.run([sys.executable, str(main_script)] + sys.argv[1:],
+                                cwd=project_root)
+        sys.exit(result.returncode)
+    except KeyboardInterrupt:
+        print("\n⚠️  Execução interrompida pelo usuário")
+        sys.exit(1)
+    except Exception as e:
+        print(f"❌ Erro ao executar: {e}")
+        sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
